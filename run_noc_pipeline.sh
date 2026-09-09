@@ -331,17 +331,11 @@ echo "comm_bytes_conserved = $BYTES_OK"                  >> "$RUN_DIR/quality_ga
 echo "$GATE_JSON"                                        >> "$RUN_DIR/quality_gate.txt"
 
 if [ "$WSE_PLAN_CAPTURE" = 1 ]; then
-  if [ "$MODE" = long ]; then
-    python3 "$WSE_PLAN_VALIDATOR" "$WSE_PLAN" "$CCDG_TRIMONLY" \
-      --threshold 0.02 > "$RUN_DIR/wse_plan_validation.json" || true
-    echo "wse_plan_vs_ccdg = PARTIAL (CommBrick only; Kspace/FFT not exported)" \
+  if python3 "$WSE_PLAN_VALIDATOR" "$WSE_PLAN" "$CCDG_TRIMONLY" \
+      --threshold 0.02 > "$RUN_DIR/wse_plan_validation.json"; then
+    echo "wse_plan_vs_ccdg = PASS (p2p per-direction bytes <= 2%; Kspace collectives covered)" \
       >> "$RUN_DIR/quality_gate.txt"
-    log "WSE plan 对拍: PARTIAL（long 的 Kspace/FFT 尚未纳入 Phase 0 导出）"
-  elif python3 "$WSE_PLAN_VALIDATOR" "$WSE_PLAN" "$CCDG_TRIMONLY" \
-        --threshold 0.02 > "$RUN_DIR/wse_plan_validation.json"; then
-    echo "wse_plan_vs_ccdg = PASS (per-direction bytes <= 2%)" \
-      >> "$RUN_DIR/quality_gate.txt"
-    log "WSE plan 对拍: PASS (逐方向字节偏差 <= 2%)"
+    log "WSE plan 对拍: PASS (逐方向字节偏差 <= 2%，Kspace collective 已覆盖)"
   else
     echo "wse_plan_vs_ccdg = FAIL" >> "$RUN_DIR/quality_gate.txt"
     echo "ERROR: WSE plan 与 trimonly CCDG 对拍失败: $RUN_DIR/wse_plan_validation.json" >&2

@@ -48,8 +48,15 @@ def main() -> int:
     plan_bytes: collections.Counter[Direction] = collections.Counter()
     plan_messages: collections.Counter[Direction] = collections.Counter()
     phase_bytes: collections.Counter[str] = collections.Counter()
+    plan_collectives: collections.Counter[tuple[str, int]] = collections.Counter()
     for record in plan.get("records", []):
-        if record.get("kind") != "message" or record.get("scope") != "run":
+        if record.get("scope") != "run":
+            continue
+        if record.get("kind") == "collective":
+            key = (str(record.get("operation", "")).upper(), int(record["bytes"]))
+            plan_collectives[key] += 1
+            continue
+        if record.get("kind") != "message":
             continue
         src = int(record["src"])
         dst = int(record["dst"])
@@ -61,7 +68,10 @@ def main() -> int:
 
     ccdg_bytes: collections.Counter[Direction] = collections.Counter()
     ccdg_messages: collections.Counter[Direction] = collections.Counter()
+    ccdg_collectives: collections.Counter[tuple[str, int]] = collections.Counter()
     for node in ccdg.get("nodes", []):
+        if node.get("type") in ("ALLREDUCE", "ALLTOALLV"):
+            ccdg_collectives[(str(node["type"]), int(node.get("comm_bytes", 0)))] += 1
         if node.get("type") not in ("SEND", "ISEND"):
             continue
         src = int(node["rank"])
@@ -93,8 +103,25 @@ def main() -> int:
             }
         )
 
+    collective_comparisons = []
+    collectives_passed = True
+    for key in sorted(plan_collectives):
+        expected_count = int(plan_collectives[key])
+        observed_count = int(ccdg_collectives[key])
+        item_passed = observed_count >= expected_count
+        collectives_passed = collectives_passed and item_passed
+        collective_comparisons.append(
+            {
+                "operation": key[0],
+                "bytes": key[1],
+                "plan_count": expected_count,
+                "ccdg_count": observed_count,
+                "passed": item_passed,
+            }
+        )
+
     report = {
-        "passed": passed and bool(comparisons),
+        "passed": passed and bool(comparisons) and collectives_passed,
         "threshold": args.threshold,
         "num_ranks": ranks,
         "plan_total_bytes": sum(plan_bytes.values()),
@@ -103,6 +130,8 @@ def main() -> int:
         "ccdg_total_messages": sum(ccdg_messages.values()),
         "plan_phase_bytes": dict(sorted(phase_bytes.items())),
         "directions": comparisons,
+        "kspace_collectives_covered": collectives_passed,
+        "kspace_collectives": collective_comparisons,
     }
     print(json.dumps(report, indent=2, sort_keys=True))
     return 0 if report["passed"] else 1

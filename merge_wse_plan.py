@@ -46,18 +46,20 @@ def read_shard(path: str) -> tuple[dict[str, Any], list[dict[str, Any]]]:
 
 def main() -> int:
     args = parse_args()
-    shards = sorted(glob.glob(f"{args.prefix}.rank*.jsonl"))
-    if len(shards) != args.expected_ranks:
+    base_shards = sorted(glob.glob(f"{args.prefix}.rank*.jsonl"))
+    component_shards = sorted(glob.glob(f"{args.prefix}.*.rank*.jsonl"))
+    if len(base_shards) != args.expected_ranks:
         raise SystemExit(
             f"ERROR: expected {args.expected_ranks} WSE-plan shards, found "
-            f"{len(shards)} for {args.prefix}.rank*.jsonl"
+            f"{len(base_shards)} for {args.prefix}.rank*.jsonl"
         )
 
     rank_metadata: list[dict[str, Any]] = []
+    component_metadata: list[dict[str, Any]] = []
     records: list[dict[str, Any]] = []
     seen_ranks: set[int] = set()
     procgrid: tuple[int, ...] | None = None
-    for shard in shards:
+    for shard in base_shards:
         metadata, shard_records = read_shard(shard)
         rank = int(metadata["rank"])
         if rank in seen_ranks:
@@ -86,18 +88,58 @@ def main() -> int:
             f"extra={sorted(seen_ranks-expected)}"
         )
 
+    component_ranks: dict[str, set[int]] = collections.defaultdict(set)
+    for shard in component_shards:
+        metadata, shard_records = read_shard(shard)
+        rank = int(metadata["rank"])
+        component = str(metadata.get("component", "unknown"))
+        if rank in component_ranks[component]:
+            raise SystemExit(
+                f"ERROR: duplicate {component} shard for rank {rank}"
+            )
+        if int(metadata["num_ranks"]) != args.expected_ranks:
+            raise SystemExit(
+                f"ERROR: {component} rank {rank} reports "
+                f"num_ranks={metadata['num_ranks']}, expected {args.expected_ranks}"
+            )
+        component_ranks[component].add(rank)
+        component_metadata.append(metadata)
+        records.extend(shard_records)
+
+    for component, ranks in component_ranks.items():
+        if ranks != expected:
+            raise SystemExit(
+                f"ERROR: {component} shard coverage mismatch: "
+                f"missing={sorted(expected-ranks)} extra={sorted(ranks-expected)}"
+            )
+
     rank_metadata.sort(key=lambda item: int(item["rank"]))
-    records.sort(key=lambda item: (int(item.get("rank", -1)), int(item.get("seq", -1))))
+    component_metadata.sort(
+        key=lambda item: (str(item.get("component", "")), int(item["rank"]))
+    )
+    records.sort(
+        key=lambda item: (
+            int(item.get("rank", -1)),
+            str(item.get("component", "commbrick")),
+            int(item.get("seq", -1)),
+        )
+    )
 
     summary: dict[str, dict[str, dict[str, int]]] = collections.defaultdict(
-        lambda: collections.defaultdict(lambda: {"messages": 0, "bytes": 0})
+        lambda: collections.defaultdict(
+            lambda: {"messages": 0, "collectives": 0, "bytes": 0}
+        )
     )
     for record in records:
-        if record.get("kind") != "message":
+        kind = record.get("kind")
+        if kind not in ("message", "collective"):
             continue
         scope = str(record.get("scope", "unknown"))
         phase = str(record.get("phase", "unknown"))
-        summary[scope][phase]["messages"] += 1
+        if kind == "message":
+            summary[scope][phase]["messages"] += 1
+        else:
+            summary[scope][phase]["collectives"] += 1
         summary[scope][phase]["bytes"] += int(record.get("bytes", 0))
 
     output = {
@@ -105,6 +147,7 @@ def main() -> int:
         "num_ranks": args.expected_ranks,
         "procgrid": list(procgrid or ()),
         "rank_metadata": rank_metadata,
+        "component_metadata": component_metadata,
         "summary": {scope: dict(phases) for scope, phases in summary.items()},
         "records": records,
     }
@@ -128,10 +171,12 @@ def main() -> int:
 
     run_summary = output["summary"].get("run", {})
     run_messages = sum(int(v["messages"]) for v in run_summary.values())
+    run_collectives = sum(int(v["collectives"]) for v in run_summary.values())
     run_bytes = sum(int(v["bytes"]) for v in run_summary.values())
     print(
         f"WSE plan merged: ranks={args.expected_ranks} "
-        f"run_messages={run_messages} run_bytes={run_bytes} output={output_path}"
+        f"run_messages={run_messages} run_collectives={run_collectives} "
+        f"run_bytes={run_bytes} output={output_path}"
     )
     return 0
 

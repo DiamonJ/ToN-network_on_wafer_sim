@@ -48,8 +48,15 @@ fi
 
 LMP_NEEDS_BUILD=0
 [ ! -x "$PKG/install/bin/lmp" ] && LMP_NEEDS_BUILD=1
-[ "$PKG/lammps-src/src/comm_brick.cpp" -nt "$PKG/install/bin/lmp" ] && LMP_NEEDS_BUILD=1
-[ "$PKG/lammps-src/src/comm_brick.h" -nt "$PKG/install/bin/lmp" ] && LMP_NEEDS_BUILD=1
+for src in \
+  "$PKG/lammps-src/src/comm_brick.cpp" \
+  "$PKG/lammps-src/src/comm_brick.h" \
+  "$PKG/lammps-src/src/wse_plan_kspace.h" \
+  "$PKG/lammps-src/src/grid3d.cpp" \
+  "$PKG/lammps-src/src/KSPACE/pppm.cpp" \
+  "$PKG/lammps-src/src/KSPACE/remap.cpp"; do
+  [ "$src" -nt "$PKG/install/bin/lmp" ] && LMP_NEEDS_BUILD=1
+done
 if [ "$SKIP_LMP_BUILD" != 1 ] && [ "$LMP_NEEDS_BUILD" = 1 ]; then
   # PATH 里可能有 vendor 自带的坏 cmake；选第一个能真正运行的
   CMAKE_BIN=""
