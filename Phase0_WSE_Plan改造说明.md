@@ -42,7 +42,79 @@ Phase 0 尚未改变后续编译器输入；Phase 1 才会让 WSE 编译器直�
 
 ## 3. LAMMPS 源码改造
 
-### 3.1 CommBrick 通信
+### 3.1 各文件的功能与核心改造
+
+- `lammps-src/src/comm_brick.h`
+  - 功能：声明 LAMMPS 原子域分解的通信对象。
+  - 改造：增加 plan 文件句柄、事件序号、setup epoch 和 emitter 方法声明。
+
+- `lammps-src/src/comm_brick.cpp`
+  - 功能：执行原子 ghost 建立、坐标发送和力归并。
+  - 改造：从实际 pack 返回值取得 count，在真正执行 `MPI_Send` 前记录
+    `borders`、`forward`、`reverse` 和 Pair 附加通信；`setup()` 额外输出
+    swap 维度、方向、轮次、邻居和 PBC 信息。
+  - 核心设计：记录发送端即可重建全局消息，不重复记录接收端，也不增加 MPI。
+
+- `lammps-src/src/wse_plan_kspace.h`
+  - 功能：为 PPPM、Grid3d 和 FFT remap 提供共享 Kspace writer。
+  - 改造：新增 header-only singleton，统一保存 rank、timestep、setup/run
+    上下文以及 Kspace 事件序号。
+  - 核心设计：Kspace 单独写 `.kspace.rankNNNN.jsonl`，避免与 CommBrick 的
+    stdio buffer 竞争同一个文件。
+
+- `lammps-src/src/KSPACE/pppm.cpp`
+  - 功能：组织 PPPM 的网格映射、FFT、场插值和全局归约。
+  - 改造：在 `PPPM::compute()` 入口调用 `begin()` 设置上下文，在出口调用
+    `end()`；记录 energy 和 virial Allreduce。
+  - 核心设计：由这里向底层 writer 传入已有的 rank 和 `update->setupflag`，
+    底层插桩无需额外调用 MPI 查询状态。
+
+- `lammps-src/src/grid3d.cpp`
+  - 功能：交换 PPPM 分布式网格的 ghost 数据。
+  - 改造：在 brick/tiled 的 forward 和 reverse 实际发送位置记录目标 rank、
+    `nper × 网格点数`、datatype 大小和字节数。
+  - 核心设计：`grid_reverse` 表示电荷密度回收，`grid_forward` 表示电场传播。
+
+- `lammps-src/src/KSPACE/remap.cpp`
+  - 功能：完成 brick decomposition 与 FFT decomposition 之间的数据转置。
+  - 改造：在 `remap_3d()` 的每个点对点发送前记录 `fft_remap`；collective
+    路径记录 Alltoallv。
+  - 核心设计：所有上层 FFT transpose 都汇聚到 `remap_3d()`，因此一个插桩点
+    能覆盖内部多次 FFT remap，不会像只修改 `Remap::perform()` 那样漏记。
+
+- `merge_wse_plan.py`
+  - 功能：把运行时分片转换成单个编译器输入候选。
+  - 改造：同时发现 CommBrick 和 Kspace 两类分片，检查 rank 是否完整、
+    `num_ranks` 是否一致，然后按 component/rank/seq 合并并生成 phase 汇总。
+
+- `validate_wse_plan.py`
+  - 功能：以 DUMPI 生成的 trim-only CCDG 校验源码 plan。
+  - 改造：逐方向比较 run-scope 点对点消息数和字节数，并检查 Kspace
+    collective 是否能在 CCDG 中找到足够数量的同类型、同大小记录。
+
+- `run_noc_pipeline.sh`
+  - 功能：组织 LAMMPS、DUMPI、CCDG、BookSim 全流水线。
+  - 改造：默认启用 `WSE_PLAN_CAPTURE=1`，向 MPI rank 传递
+    `LAMMPS_WSE_PLAN`，运行后自动 merge、validate，并把结果写入质量闸门。
+  - 核心设计：现阶段保留原有 DUMPI/BookSim 链路，只增加并行的源码 plan
+    链路，因此原实验入口和参数保持不变。
+
+- `smoke_test.sh`
+  - 功能：构建并检查复现环境。
+  - 改造：当 CommBrick、PPPM、Grid3d、remap 或 writer 源码比已安装
+    `lmp` 更新时，自动重新构建 LAMMPS，避免运行旧二进制。
+
+整体数据流可以概括为：
+
+```text
+LAMMPS 已计算出的通信参数
+  → 各发送点写 per-rank JSONL
+  → merge_wse_plan.py 合并
+  → validate_wse_plan.py 与 CCDG 对拍
+  → wse_plan.json 作为 Phase 1 的输入候选
+```
+
+### 3.2 CommBrick 通信
 
 涉及文件：
 
@@ -71,7 +143,7 @@ wse_plan.rank0001.jsonl
 - `reverse`：力的反向归并；
 - `pair_forward`、`pair_reverse`：Cu/EAM 等 Pair 样式的附加通信。
 
-### 3.2 PPPM Grid3d 与 FFT
+### 3.3 PPPM Grid3d 与 FFT
 
 涉及文件：
 
@@ -101,7 +173,7 @@ wse_plan.kspace.rank0001.jsonl
 `remap_3d()` 是统一插桩点，因为 `brick2fft` 和 FFT 内部多次 transpose 最终都会
 经过这里。只修改上层 `Remap::perform()` 会遗漏 FFT 内部通信。
 
-### 3.3 Kspace writer
+### 3.4 Kspace writer
 
 `WsePlanKspace` 是 header-only singleton，负责：
 
