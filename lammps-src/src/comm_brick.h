@@ -16,6 +16,8 @@
 
 #include "comm.h"
 
+#include <cstdio>
+
 namespace LAMMPS_NS {
 
 class CommBrick : public Comm {
@@ -76,6 +78,22 @@ class CommBrick : public Comm {
   double *buf_recv;        // recv buffer for all comm
   int maxsend, maxrecv;    // current size of send/recv buffer
   int smax, rmax;          // max size in atoms of single borders send/recv
+
+  // Optional source-level communication-plan export.  Each MPI rank writes
+  // its own JSONL shard, so enabling the exporter never adds MPI calls or
+  // shared-file synchronization to the communication path.
+  FILE *wse_plan_fp;
+  long long wse_plan_seq;
+  int wse_plan_setup_epoch;
+  bool wse_plan_checked;
+  bool wse_plan_metadata_written;
+
+  void wse_plan_open();
+  void wse_plan_close();
+  void wse_plan_write_metadata();
+  void wse_plan_write_setup();
+  void wse_plan_write_message(const char *, int, int, int, int, int);
+  void wse_plan_swap_info(int, int &, int &, int &) const;
 
   // NOTE: init_buffers is called from a constructor and must not be made virtual
   void init_buffers();

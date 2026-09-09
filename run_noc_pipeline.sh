@@ -19,6 +19,7 @@
 #   CCDG_COMPUTE_CAP  计算能力 ops/s（默认 2.5e10，两档与 demand 编译器共用）
 #   CCDG_DEMAND_OPTS  ccdg_demand.py 附加参数（如 "--phase" 启用相位格点档）
 #   CCDG_INJECT_QDEPTH / CCDG_COMPUTE_RATE 透传 run_ccdg_mesh.sh
+#   WSE_PLAN_CAPTURE  LAMMPS 源码级 CommBrick plan 导出（默认 1；0=禁用）
 #
 # 流程（真实 LAMMPS 只跑一次）:
 #   ① 生成 in.lammps（无 minimize，仅 run 段）
@@ -50,6 +51,8 @@ DUMPI2CCDG=$ROOT/dumpi2ccdg/dumpi2ccdg
 DEMAND_CC=$ROOT/booksim2/ccdg_demand.py
 BS_RUNNER=$ROOT/booksim2/run_ccdg_mesh.sh
 RESULTS_DIR=$ROOT/booksim2/results
+WSE_PLAN_MERGER=$ROOT/merge_wse_plan.py
+WSE_PLAN_VALIDATOR=$ROOT/validate_wse_plan.py
 
 MODE=${1:-}
 RANKS=${2:-}
@@ -60,6 +63,7 @@ CAPTURE_STEPS=${CAPTURE_STEPS:-1}
 BS_TIMEOUT=${BOOKSIM_TIMEOUT:-5400}
 COMPUTE_CAP=${CCDG_COMPUTE_CAP:-2.5e10}
 DEMAND_OPTS=${CCDG_DEMAND_OPTS:-}
+WSE_PLAN_CAPTURE=${WSE_PLAN_CAPTURE:-1}
 
 usage() { sed -n '2,30p' "$0" | sed 's/^# \{0,1\}//'; exit 2; }
 log() { echo "[$(date +%H:%M:%S)] $*" >&2; }
@@ -70,6 +74,7 @@ case "$MODE" in short|long) ;; *) usage ;; esac
 case "$SYSTEM" in cu|h2o|lialocl) ;; *) echo "ERROR: 体系须为 cu|h2o|lialocl"; usage ;; esac
 [[ "$NATOMS" =~ ^[0-9]+$ ]] && [ "$NATOMS" -ge 1 ] || { echo "ERROR: 原子数须为正整数"; exit 2; }
 case "$SIMMODE" in free|demand|both) ;; *) echo "ERROR: 模式须为 free|demand|both"; usage ;; esac
+case "$WSE_PLAN_CAPTURE" in 0|1) ;; *) echo "ERROR: WSE_PLAN_CAPTURE 须为 0 或 1"; exit 2 ;; esac
 [[ "$CAPTURE_STEPS" =~ ^[0-9]+$ ]] && [ "$CAPTURE_STEPS" -ge 1 ] || { echo "ERROR: CAPTURE_STEPS 须为正整数"; exit 2; }
 K=$(awk -v r="$RANKS" 'BEGIN{k=int(sqrt(r)+0.5); if(k*k==r) print k; else print 0}')
 [ "$K" -gt 0 ] || { echo "ERROR: rank数 $RANKS 须为完全平方数（BookSim 方形 mesh k=√N）"; exit 2; }
@@ -77,6 +82,11 @@ K=$(awk -v r="$RANKS" 'BEGIN{k=int(sqrt(r)+0.5); if(k*k==r) print k; else print 
 for f in "$LMP" "$LIBDUMPI" "$DUMPI2CCDG" "$DEMAND_CC" "$BS_RUNNER"; do
   [ -e "$f" ] || { echo "ERROR: 缺少组件 $f"; exit 2; }
 done
+if [ "$WSE_PLAN_CAPTURE" = 1 ]; then
+  for f in "$WSE_PLAN_MERGER" "$WSE_PLAN_VALIDATOR"; do
+    [ -f "$f" ] || { echo "ERROR: 缺少 WSE plan 工具 $f"; exit 2; }
+  done
+fi
 
 PAIR_SUFFIX=cut; [ "$MODE" = long ] && PAIR_SUFFIX=long
 RUN_DIR=$ROOT/runs/pipeline/${MODE}_${SYSTEM}_${NATOMS}a_${RANKS}r_$(date +%Y%m%d_%H%M%S)
@@ -220,10 +230,19 @@ log "in.lammps 已生成 (实际原子 ${ACTUAL_ATOMS})"
 export LD_PRELOAD=$LIBDUMPI
 export LD_LIBRARY_PATH=$INSTALL/lib:${LD_LIBRARY_PATH:-}
 export DUMPI_OUTDIR=$RUN_DIR
+WSE_MPI_ARGS=()
+WSE_PLAN_PREFIX=$RUN_DIR/wse_plan
+WSE_PLAN=$RUN_DIR/wse_plan.json
+if [ "$WSE_PLAN_CAPTURE" = 1 ]; then
+  export LAMMPS_WSE_PLAN=$WSE_PLAN_PREFIX
+  WSE_MPI_ARGS=(-x LAMMPS_WSE_PLAN)
+else
+  unset LAMMPS_WSE_PLAN
+fi
 
 log "运行真实 LAMMPS (mpirun -np $RANKS, DUMPI 截获中)..."
 ( cd "$RUN_DIR" && timeout 1800 mpirun -np "$RANKS" --allow-run-as-root --oversubscribe \
-    -x LD_PRELOAD -x LD_LIBRARY_PATH -x DUMPI_OUTDIR \
+    -x LD_PRELOAD -x LD_LIBRARY_PATH -x DUMPI_OUTDIR "${WSE_MPI_ARGS[@]}" \
     "$LMP" -in in.lammps > lammps.log 2>&1 )
 RC=$?
 if [ $RC -ne 0 ]; then
@@ -236,6 +255,16 @@ NMETA=$(ls "$RUN_DIR"/dumpi-*.meta 2>/dev/null | wc -l)
 LOOP_TIME=$(grep -oP 'Loop time of \K[0-9.]+' "$RUN_DIR/lammps.log" | tail -1)
 [ -n "$LOOP_TIME" ] || { echo "ERROR: log 中无 Loop time（裁剪窗口无法锚定）"; exit 2; }
 log "DUMPI meta=$NMETA  Loop time=${LOOP_TIME}s (run 段，纯迭代口径)"
+if [ "$WSE_PLAN_CAPTURE" = 1 ]; then
+  python3 "$WSE_PLAN_MERGER" "$WSE_PLAN_PREFIX" \
+    --expected-ranks "$RANKS" -o "$WSE_PLAN" \
+    > "$RUN_DIR/wse_plan_merge.log" 2>&1 || {
+      echo "ERROR: WSE plan 合并失败" >&2
+      cat "$RUN_DIR/wse_plan_merge.log" >&2
+      exit 2
+    }
+  log "$(cat "$RUN_DIR/wse_plan_merge.log")"
+fi
 
 # ── ③ dumpi2ccdg ×3 ─────────────────────────────────────────────────────
 CCDG=$RUN_DIR/trace_${RANKS}ranks_global.ccdg
@@ -300,6 +329,25 @@ echo "barrier_anchored_ranks = $ANCHORED / $RANKS"       >> "$RUN_DIR/quality_ga
 echo "anchor_span_vs_loop_avg_pct = ${SPAN_DEV:-NA}%"    >> "$RUN_DIR/quality_gate.txt"
 echo "comm_bytes_conserved = $BYTES_OK"                  >> "$RUN_DIR/quality_gate.txt"
 echo "$GATE_JSON"                                        >> "$RUN_DIR/quality_gate.txt"
+
+if [ "$WSE_PLAN_CAPTURE" = 1 ]; then
+  if [ "$MODE" = long ]; then
+    python3 "$WSE_PLAN_VALIDATOR" "$WSE_PLAN" "$CCDG_TRIMONLY" \
+      --threshold 0.02 > "$RUN_DIR/wse_plan_validation.json" || true
+    echo "wse_plan_vs_ccdg = PARTIAL (CommBrick only; Kspace/FFT not exported)" \
+      >> "$RUN_DIR/quality_gate.txt"
+    log "WSE plan 对拍: PARTIAL（long 的 Kspace/FFT 尚未纳入 Phase 0 导出）"
+  elif python3 "$WSE_PLAN_VALIDATOR" "$WSE_PLAN" "$CCDG_TRIMONLY" \
+        --threshold 0.02 > "$RUN_DIR/wse_plan_validation.json"; then
+    echo "wse_plan_vs_ccdg = PASS (per-direction bytes <= 2%)" \
+      >> "$RUN_DIR/quality_gate.txt"
+    log "WSE plan 对拍: PASS (逐方向字节偏差 <= 2%)"
+  else
+    echo "wse_plan_vs_ccdg = FAIL" >> "$RUN_DIR/quality_gate.txt"
+    echo "ERROR: WSE plan 与 trimonly CCDG 对拍失败: $RUN_DIR/wse_plan_validation.json" >&2
+    exit 2
+  fi
+fi
 
 log "闸门: BARRIER锚定 $ANCHORED/$RANKS  span偏差均值 ${SPAN_DEV:-NA}%  bytes守恒=$BYTES_OK"
 grep -q '"all_first_barrier": true' <<<"$GATE_JSON" || log "警告: 存在首节点非 BARRIER 的 rank（窗口锚定可疑），详见 quality_gate.txt"

@@ -29,9 +29,12 @@
 #include "memory.h"
 #include "neighbor.h"
 #include "pair.h"
+#include "update.h"
 
 #include <cmath>
+#include <cstdlib>
 #include <cstring>
+#include <string>
 
 using namespace LAMMPS_NS;
 
@@ -60,6 +63,7 @@ CommBrick::CommBrick(LAMMPS *lmp) :
 
 CommBrick::~CommBrick()
 {
+  wse_plan_close();
   CommBrick::free_swap();
   if (mode == Comm::MULTI) {
     CommBrick::free_multi();
@@ -104,6 +108,12 @@ CommBrick::CommBrick(LAMMPS * /*lmp*/, Comm *oldcomm) : Comm(*oldcomm)
 
 void CommBrick::init_buffers()
 {
+  wse_plan_fp = nullptr;
+  wse_plan_seq = 0;
+  wse_plan_setup_epoch = 0;
+  wse_plan_checked = false;
+  wse_plan_metadata_written = false;
+
   multilo = multihi = nullptr;
   cutghostmulti = nullptr;
 
@@ -125,6 +135,129 @@ void CommBrick::init_buffers()
     maxsendlist[i] = BUFMIN;
     memory->create(sendlist[i],BUFMIN,"comm:sendlist[i]");
   }
+}
+
+/* ---------------------------------------------------------------------- */
+
+void CommBrick::wse_plan_open()
+{
+  if (wse_plan_checked) return;
+  wse_plan_checked = true;
+
+  const char *prefix = getenv("LAMMPS_WSE_PLAN");
+  if (!prefix || !prefix[0]) return;
+
+  char rank_suffix[32];
+  snprintf(rank_suffix,sizeof(rank_suffix),".rank%04d.jsonl",me);
+  std::string filename = std::string(prefix) + rank_suffix;
+  wse_plan_fp = fopen(filename.c_str(),"w");
+  if (!wse_plan_fp)
+    error->one(FLERR,"Cannot open LAMMPS_WSE_PLAN rank shard");
+
+  // Keep exporter I/O out of the measured communication path as much as
+  // possible.  Every rank owns a separate file; no MPI or file locking is
+  // introduced.
+  setvbuf(wse_plan_fp,nullptr,_IOFBF,1U << 20);
+}
+
+/* ---------------------------------------------------------------------- */
+
+void CommBrick::wse_plan_close()
+{
+  if (wse_plan_fp) {
+    fclose(wse_plan_fp);
+    wse_plan_fp = nullptr;
+  }
+}
+
+/* ---------------------------------------------------------------------- */
+
+void CommBrick::wse_plan_write_metadata()
+{
+  wse_plan_open();
+  if (!wse_plan_fp || wse_plan_metadata_written) return;
+
+  fprintf(wse_plan_fp,
+          "{\"kind\":\"metadata\",\"schema_version\":1,"
+          "\"rank\":%d,\"num_ranks\":%d,"
+          "\"procgrid\":[%d,%d,%d],\"myloc\":[%d,%d,%d]}\n",
+          me,nprocs,procgrid[0],procgrid[1],procgrid[2],
+          myloc[0],myloc[1],myloc[2]);
+  wse_plan_metadata_written = true;
+}
+
+/* ---------------------------------------------------------------------- */
+
+void CommBrick::wse_plan_swap_info(int target, int &dim, int &direction,
+                                   int &round) const
+{
+  int cursor = 0;
+  dim = -1;
+  direction = 0;
+  round = -1;
+  for (int d = 0; d < 3; d++) {
+    const int count = 2 * maxneed[d];
+    if (target >= cursor && target < cursor + count) {
+      const int ineed = target - cursor;
+      dim = d;
+      direction = (ineed % 2 == 0) ? -1 : 1;
+      round = ineed / 2;
+      return;
+    }
+    cursor += count;
+  }
+}
+
+/* ---------------------------------------------------------------------- */
+
+void CommBrick::wse_plan_write_setup()
+{
+  wse_plan_write_metadata();
+  if (!wse_plan_fp) return;
+
+  for (int iswap = 0; iswap < nswap; iswap++) {
+    int dim,direction,round;
+    wse_plan_swap_info(iswap,dim,direction,round);
+    const double ghost = (dim >= 0) ? cutghost[dim] : 0.0;
+    fprintf(wse_plan_fp,
+            "{\"kind\":\"swap_setup\",\"seq\":%lld,\"epoch\":%d,"
+            "\"timestep\":%lld,\"rank\":%d,\"swap\":%d,"
+            "\"dimension\":%d,\"direction\":%d,\"round\":%d,"
+            "\"send_proc\":%d,\"recv_proc\":%d,"
+            "\"pbc\":%s,\"ghost_width\":%.17g}\n",
+            wse_plan_seq++,wse_plan_setup_epoch,
+            static_cast<long long>(update->ntimestep),me,iswap,
+            dim,direction,round,sendproc[iswap],recvproc[iswap],
+            pbc_flag[iswap] ? "true" : "false",ghost);
+  }
+  wse_plan_setup_epoch++;
+}
+
+/* ---------------------------------------------------------------------- */
+
+void CommBrick::wse_plan_write_message(const char *phase, int iswap, int dst,
+                                       int atom_count, int value_count,
+                                       int datatype_bytes)
+{
+  wse_plan_write_metadata();
+  if (!wse_plan_fp || value_count <= 0 || dst == me) return;
+
+  int dim,direction,round;
+  wse_plan_swap_info(iswap,dim,direction,round);
+  const char *scope = update->setupflag ? "setup" : "run";
+  const unsigned long long bytes =
+    static_cast<unsigned long long>(value_count) *
+    static_cast<unsigned long long>(datatype_bytes);
+  fprintf(wse_plan_fp,
+          "{\"kind\":\"message\",\"seq\":%lld,\"scope\":\"%s\","
+          "\"phase\":\"%s\",\"timestep\":%lld,\"rank\":%d,"
+          "\"swap\":%d,\"dimension\":%d,\"direction\":%d,\"round\":%d,"
+          "\"src\":%d,\"dst\":%d,\"atom_count\":%d,"
+          "\"value_count\":%d,\"datatype_bytes\":%d,\"bytes\":%llu}\n",
+          wse_plan_seq++,scope,phase,
+          static_cast<long long>(update->ntimestep),me,iswap,
+          dim,direction,round,me,dst,atom_count,value_count,
+          datatype_bytes,bytes);
 }
 
 /* ---------------------------------------------------------------------- */
@@ -480,6 +613,11 @@ void CommBrick::setup()
       iswap++;
     }
   }
+
+  // Export only data already computed by setup().  Actual send-list sizes
+  // are emitted later by borders()/forward_comm()/reverse_comm(), where
+  // they are known exactly.
+  wse_plan_write_setup();
 }
 
 /* ----------------------------------------------------------------------
@@ -555,13 +693,21 @@ void CommBrick::forward_comm(int /*dummy*/)
           MPI_Irecv(buf,size_forward_recv[iswap],MPI_DOUBLE,recvproc[iswap],0,world,&request);
         }
         n = avec->pack_comm(sendnum[iswap],sendlist[iswap],buf_send,pbc_flag[iswap],pbc[iswap]);
-        if (n) MPI_Send(buf_send,n,MPI_DOUBLE,sendproc[iswap],0,world);
+        if (n) {
+          wse_plan_write_message("forward",iswap,sendproc[iswap],
+                                 sendnum[iswap],n,sizeof(double));
+          MPI_Send(buf_send,n,MPI_DOUBLE,sendproc[iswap],0,world);
+        }
         if (size_forward_recv[iswap]) MPI_Wait(&request,MPI_STATUS_IGNORE);
       } else if (ghost_velocity) {
         if (size_forward_recv[iswap])
           MPI_Irecv(buf_recv,size_forward_recv[iswap],MPI_DOUBLE,recvproc[iswap],0,world,&request);
         n = avec->pack_comm_vel(sendnum[iswap],sendlist[iswap],buf_send,pbc_flag[iswap],pbc[iswap]);
-        if (n) MPI_Send(buf_send,n,MPI_DOUBLE,sendproc[iswap],0,world);
+        if (n) {
+          wse_plan_write_message("forward",iswap,sendproc[iswap],
+                                 sendnum[iswap],n,sizeof(double));
+          MPI_Send(buf_send,n,MPI_DOUBLE,sendproc[iswap],0,world);
+        }
         if (size_forward_recv[iswap]) MPI_Wait(&request,MPI_STATUS_IGNORE);
         avec->unpack_comm_vel(recvnum[iswap],firstrecv[iswap],buf_recv);
       } else {
@@ -569,7 +715,11 @@ void CommBrick::forward_comm(int /*dummy*/)
           MPI_Irecv(buf_recv,size_forward_recv[iswap],MPI_DOUBLE,
                     recvproc[iswap],0,world,&request);
         n = avec->pack_comm(sendnum[iswap],sendlist[iswap],buf_send,pbc_flag[iswap],pbc[iswap]);
-        if (n) MPI_Send(buf_send,n,MPI_DOUBLE,sendproc[iswap],0,world);
+        if (n) {
+          wse_plan_write_message("forward",iswap,sendproc[iswap],
+                                 sendnum[iswap],n,sizeof(double));
+          MPI_Send(buf_send,n,MPI_DOUBLE,sendproc[iswap],0,world);
+        }
         if (size_forward_recv[iswap]) MPI_Wait(&request,MPI_STATUS_IGNORE);
         avec->unpack_comm(recvnum[iswap],firstrecv[iswap],buf_recv);
       }
@@ -614,6 +764,9 @@ void CommBrick::reverse_comm()
           MPI_Irecv(buf_recv,size_reverse_recv[iswap],MPI_DOUBLE,sendproc[iswap],0,world,&request);
         if (size_reverse_send[iswap]) {
           buf = f[firstrecv[iswap]];
+          wse_plan_write_message("reverse",iswap,recvproc[iswap],
+                                 recvnum[iswap],size_reverse_send[iswap],
+                                 sizeof(double));
           MPI_Send(buf,size_reverse_send[iswap],MPI_DOUBLE,recvproc[iswap],0,world);
         }
         if (size_reverse_recv[iswap]) MPI_Wait(&request,MPI_STATUS_IGNORE);
@@ -621,7 +774,11 @@ void CommBrick::reverse_comm()
         if (size_reverse_recv[iswap])
           MPI_Irecv(buf_recv,size_reverse_recv[iswap],MPI_DOUBLE,sendproc[iswap],0,world,&request);
         n = avec->pack_reverse(recvnum[iswap],firstrecv[iswap],buf_send);
-        if (n) MPI_Send(buf_send,n,MPI_DOUBLE,recvproc[iswap],0,world);
+        if (n) {
+          wse_plan_write_message("reverse",iswap,recvproc[iswap],
+                                 recvnum[iswap],n,sizeof(double));
+          MPI_Send(buf_send,n,MPI_DOUBLE,recvproc[iswap],0,world);
+        }
         if (size_reverse_recv[iswap]) MPI_Wait(&request,MPI_STATUS_IGNORE);
       }
       avec->unpack_reverse(sendnum[iswap],sendlist[iswap],buf_recv);
@@ -914,6 +1071,10 @@ void CommBrick::borders()
       else
         n = avec->pack_border(nsend,sendlist[iswap],buf_send,pbc_flag[iswap],pbc[iswap]);
 
+      if (sendproc[iswap] != me && n)
+        wse_plan_write_message("borders",iswap,sendproc[iswap],
+                               nsend,n,sizeof(double));
+
       // swap atoms with other proc
       // no MPI calls except SendRecv if nsend/nrecv = 0
       // put incoming ghosts at end of my atom arrays
@@ -1003,8 +1164,11 @@ void CommBrick::forward_comm(Pair *pair)
     if (sendproc[iswap] != me) {
       if (recvnum[iswap])
         MPI_Irecv(buf_recv,nsize*recvnum[iswap],MPI_DOUBLE,recvproc[iswap],0,world,&request);
-      if (sendnum[iswap])
+      if (sendnum[iswap]) {
+        wse_plan_write_message("pair_forward",iswap,sendproc[iswap],
+                               sendnum[iswap],n,sizeof(double));
         MPI_Send(buf_send,n,MPI_DOUBLE,sendproc[iswap],0,world);
+      }
       if (recvnum[iswap]) MPI_Wait(&request,MPI_STATUS_IGNORE);
       buf = buf_recv;
     } else buf = buf_send;
@@ -1040,8 +1204,11 @@ void CommBrick::reverse_comm(Pair *pair)
     if (sendproc[iswap] != me) {
       if (sendnum[iswap])
         MPI_Irecv(buf_recv,nsize*sendnum[iswap],MPI_DOUBLE,sendproc[iswap],0,world,&request);
-      if (recvnum[iswap])
+      if (recvnum[iswap]) {
+        wse_plan_write_message("pair_reverse",iswap,recvproc[iswap],
+                               recvnum[iswap],n,sizeof(double));
         MPI_Send(buf_send,n,MPI_DOUBLE,recvproc[iswap],0,world);
+      }
       if (sendnum[iswap]) MPI_Wait(&request,MPI_STATUS_IGNORE);
       buf = buf_recv;
     } else buf = buf_send;

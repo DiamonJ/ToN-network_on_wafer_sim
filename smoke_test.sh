@@ -46,7 +46,11 @@ else
   log "BookSim 已构建，跳过"
 fi
 
-if [ "$SKIP_LMP_BUILD" != 1 ] && [ ! -x "$PKG/install/bin/lmp" ]; then
+LMP_NEEDS_BUILD=0
+[ ! -x "$PKG/install/bin/lmp" ] && LMP_NEEDS_BUILD=1
+[ "$PKG/lammps-src/src/comm_brick.cpp" -nt "$PKG/install/bin/lmp" ] && LMP_NEEDS_BUILD=1
+[ "$PKG/lammps-src/src/comm_brick.h" -nt "$PKG/install/bin/lmp" ] && LMP_NEEDS_BUILD=1
+if [ "$SKIP_LMP_BUILD" != 1 ] && [ "$LMP_NEEDS_BUILD" = 1 ]; then
   # PATH 里可能有 vendor 自带的坏 cmake；选第一个能真正运行的
   CMAKE_BIN=""
   for c in /usr/bin/cmake /usr/local/bin/cmake "$(command -v cmake)"; do
