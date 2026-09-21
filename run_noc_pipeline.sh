@@ -18,8 +18,12 @@
 #   BOOKSIM_TIMEOUT   BookSim 单档超时秒（默认 5400）
 #   CCDG_COMPUTE_CAP  计算能力 ops/s（默认 2.5e10，两档与 demand 编译器共用）
 #   CCDG_DEMAND_OPTS  ccdg_demand.py 附加参数（如 "--phase" 启用相位格点档）
+#   WSE_COMPILE       short 模式生成 Phase-1 WSE program/est/report（默认 1）
 #   CCDG_INJECT_QDEPTH / CCDG_COMPUTE_RATE 透传 run_ccdg_mesh.sh
 #   WSE_PLAN_CAPTURE  LAMMPS 源码级 CommBrick plan 导出（默认 1；0=禁用）
+#   FLOPS_CAPTURE     perf 每-rank 硬件 DP ops 捕捉（默认 0；1=启用）
+#   FLOPS_STEPS       perf 测量步数（默认 100；用 run(N)-run(0) 排除 setup）
+#   FLOPS_REPEATS     PMU 重复次数（默认 3；逐 rank 取中位数）
 #
 # 流程（真实 LAMMPS 只跑一次）:
 #   ① 生成 in.lammps（无 minimize，仅 run 段）
@@ -34,6 +38,10 @@
 # 退出码: 0=全部档 PASS   1=有档 unresolved≠0 或 sent≠recv   2=流水线错误
 # 产物: runs/pipeline/<mode>_<体系>_<原子数>a_<rank数>r_<时间戳>/
 #   ├── in.lammps / lammps.log / dumpi-*.bin|meta
+#   ├── static_cost_estimate.json                      （in.lammps 理论 T1/C1）
+#   ├── static_cost_validation.txt/.json               [FLOPS_CAPTURE=1]
+#   ├── wse_phase1.program.json / .est / .report.json  [short + WSE_COMPILE=1]
+#   ├── flops_profile/flops_summary.json               [FLOPS_CAPTURE=1]
 #   ├── trace_<R>ranks_global.ccdg / compact_<R>ranks_global.ccdg
 #   ├── trimonly_<R>ranks_global.ccdg            （两档共同载体，同源对比的前提）
 #   ├── quality_gate.txt                          （闸门证据，BARRIER 锚定 span 等）
@@ -53,6 +61,12 @@ BS_RUNNER=$ROOT/booksim2/run_ccdg_mesh.sh
 RESULTS_DIR=$ROOT/booksim2/results
 WSE_PLAN_MERGER=$ROOT/merge_wse_plan.py
 WSE_PLAN_VALIDATOR=$ROOT/validate_wse_plan.py
+WSE_COMPILER=$ROOT/wse_compiler.py
+WSE_CFG=$ROOT/booksim2/ccdg_lammps_4x4.cfg
+WSE_RUNNER=$ROOT/booksim2/run_wse_program.sh
+FLOPS_PROFILER=$ROOT/profile_lammps_flops.sh
+STATIC_ESTIMATOR=$ROOT/estimate_lammps_cost.py
+COST_VALIDATOR=$ROOT/validate_static_cost.py
 
 MODE=${1:-}
 RANKS=${2:-}
@@ -64,6 +78,9 @@ BS_TIMEOUT=${BOOKSIM_TIMEOUT:-5400}
 COMPUTE_CAP=${CCDG_COMPUTE_CAP:-2.5e10}
 DEMAND_OPTS=${CCDG_DEMAND_OPTS:-}
 WSE_PLAN_CAPTURE=${WSE_PLAN_CAPTURE:-1}
+WSE_COMPILE=${WSE_COMPILE:-1}
+FLOPS_CAPTURE=${FLOPS_CAPTURE:-0}
+FLOPS_STEPS=${FLOPS_STEPS:-100}
 
 usage() { sed -n '2,30p' "$0" | sed 's/^# \{0,1\}//'; exit 2; }
 log() { echo "[$(date +%H:%M:%S)] $*" >&2; }
@@ -75,17 +92,33 @@ case "$SYSTEM" in cu|h2o|lialocl) ;; *) echo "ERROR: 体系须为 cu|h2o|lialocl
 [[ "$NATOMS" =~ ^[0-9]+$ ]] && [ "$NATOMS" -ge 1 ] || { echo "ERROR: 原子数须为正整数"; exit 2; }
 case "$SIMMODE" in free|demand|both) ;; *) echo "ERROR: 模式须为 free|demand|both"; usage ;; esac
 case "$WSE_PLAN_CAPTURE" in 0|1) ;; *) echo "ERROR: WSE_PLAN_CAPTURE 须为 0 或 1"; exit 2 ;; esac
+case "$WSE_COMPILE" in 0|1) ;; *) echo "ERROR: WSE_COMPILE 须为 0 或 1"; exit 2 ;; esac
+case "$FLOPS_CAPTURE" in 0|1) ;; *) echo "ERROR: FLOPS_CAPTURE 须为 0 或 1"; exit 2 ;; esac
 [[ "$CAPTURE_STEPS" =~ ^[0-9]+$ ]] && [ "$CAPTURE_STEPS" -ge 1 ] || { echo "ERROR: CAPTURE_STEPS 须为正整数"; exit 2; }
+[[ "$FLOPS_STEPS" =~ ^[0-9]+$ ]] && [ "$FLOPS_STEPS" -ge 1 ] || { echo "ERROR: FLOPS_STEPS 须为正整数"; exit 2; }
 K=$(awk -v r="$RANKS" 'BEGIN{k=int(sqrt(r)+0.5); if(k*k==r) print k; else print 0}')
 [ "$K" -gt 0 ] || { echo "ERROR: rank数 $RANKS 须为完全平方数（BookSim 方形 mesh k=√N）"; exit 2; }
 
-for f in "$LMP" "$LIBDUMPI" "$DUMPI2CCDG" "$DEMAND_CC" "$BS_RUNNER"; do
+for f in "$LMP" "$LIBDUMPI" "$DUMPI2CCDG" "$DEMAND_CC" "$BS_RUNNER" "$STATIC_ESTIMATOR"; do
   [ -e "$f" ] || { echo "ERROR: 缺少组件 $f"; exit 2; }
 done
 if [ "$WSE_PLAN_CAPTURE" = 1 ]; then
   for f in "$WSE_PLAN_MERGER" "$WSE_PLAN_VALIDATOR"; do
     [ -f "$f" ] || { echo "ERROR: 缺少 WSE plan 工具 $f"; exit 2; }
   done
+fi
+if [ "$WSE_COMPILE" = 1 ]; then
+  [ "$WSE_PLAN_CAPTURE" = 1 ] || { echo "ERROR: WSE_COMPILE=1 需要 WSE_PLAN_CAPTURE=1"; exit 2; }
+  for f in "$WSE_COMPILER" "$WSE_CFG" "$WSE_RUNNER"; do
+    [ -f "$f" ] || { echo "ERROR: 缺少 WSE compiler 输入 $f"; exit 2; }
+  done
+fi
+if [ "$FLOPS_CAPTURE" = 1 ]; then
+  [ -x "$FLOPS_PROFILER" ] || { echo "ERROR: 缺少可执行工具 $FLOPS_PROFILER"; exit 2; }
+  [ "$WSE_PLAN_CAPTURE" = 1 ] || {
+    echo "ERROR: FLOPS_CAPTURE=1 需要 WSE_PLAN_CAPTURE=1 以验证真实 T1" >&2
+    exit 2
+  }
 fi
 
 PAIR_SUFFIX=cut; [ "$MODE" = long ] && PAIR_SUFFIX=long
@@ -225,6 +258,13 @@ EOF
 }
 ACTUAL_ATOMS=$(make_input "$CAPTURE_STEPS" "$RUN_DIR")
 log "in.lammps 已生成 (实际原子 ${ACTUAL_ATOMS})"
+python3 "$STATIC_ESTIMATOR" "$RUN_DIR/in.lammps" \
+  -o "$RUN_DIR/static_cost_estimate.json" 2> "$RUN_DIR/static_cost_estimate.log" || {
+    echo "ERROR: in.lammps 静态 T1/C1 估算失败" >&2
+    cat "$RUN_DIR/static_cost_estimate.log" >&2
+    exit 2
+  }
+log "$(cat "$RUN_DIR/static_cost_estimate.log")"
 
 # ── ② DUMPI capture ──────────────────────────────────────────────────────
 export LD_PRELOAD=$LIBDUMPI
@@ -264,6 +304,48 @@ if [ "$WSE_PLAN_CAPTURE" = 1 ]; then
       exit 2
     }
   log "$(cat "$RUN_DIR/wse_plan_merge.log")"
+fi
+if [ "$WSE_COMPILE" = 1 ] && [ "$MODE" = short ]; then
+  log "编译 Phase-1 WSE program (cfg=$(basename "$WSE_CFG")) ..."
+  python3 "$WSE_COMPILER" "$WSE_PLAN" "$RUN_DIR/static_cost_estimate.json" "$WSE_CFG" \
+    --wse-fast-profile --compute-capability "$COMPUTE_CAP" -o "$RUN_DIR/wse_phase1" \
+    > "$RUN_DIR/wse_compile.log" 2>&1 || {
+      echo "ERROR: Phase-1 WSE 编译失败" >&2
+      cat "$RUN_DIR/wse_compile.log" >&2
+      exit 2
+    }
+  log "$(tail -2 "$RUN_DIR/wse_compile.log" | tr '\n' ' ')"
+  "$WSE_RUNNER" "$RUN_DIR/wse_phase1.program.json" "$WSE_CFG" "$BS_TIMEOUT" \
+    > "$RUN_DIR/wse_acceptance.log" 2>&1 || {
+      echo "ERROR: WSE v1 BookSim 验收失败（cycles/branch/command/congestion）" >&2
+      cat "$RUN_DIR/wse_acceptance.log" >&2
+      exit 2
+    }
+  log "$(cat "$RUN_DIR/wse_acceptance.log")"
+elif [ "$WSE_COMPILE" = 1 ]; then
+  log "Phase-1 WSE compiler 仅支持 short；long/PPPM 留给后续阶段"
+fi
+if [ "$FLOPS_CAPTURE" = 1 ]; then
+  log "捕捉每-rank 硬件 DP ops (${FLOPS_STEPS} 步，扣除 run 0 baseline)..."
+  FLOPS_OUT_DIR=$RUN_DIR/flops_profile \
+    "$FLOPS_PROFILER" "$RANKS" "$RUN_DIR/in.lammps" "$FLOPS_STEPS" "$LMP" \
+    > "$RUN_DIR/flops_profile.log" 2>&1 || {
+      echo "ERROR: FLOPS 捕捉失败" >&2
+      cat "$RUN_DIR/flops_profile.log" >&2
+      exit 2
+    }
+  log "$(tail -1 "$RUN_DIR/flops_profile.log")"
+  python3 "$COST_VALIDATOR" \
+    "$RUN_DIR/static_cost_estimate.json" \
+    "$WSE_PLAN" \
+    "$RUN_DIR/flops_profile/flops_summary.json" \
+    -o "$RUN_DIR/static_cost_validation" \
+    > "$RUN_DIR/static_cost_validation.log" 2>&1 || {
+      echo "ERROR: 静态 T1/C1 与真实 profile 对拍失败" >&2
+      cat "$RUN_DIR/static_cost_validation.log" >&2
+      exit 2
+    }
+  log "$(cat "$RUN_DIR/static_cost_validation.log")"
 fi
 
 # ── ③ dumpi2ccdg ×3 ─────────────────────────────────────────────────────
@@ -341,6 +423,10 @@ if [ "$WSE_PLAN_CAPTURE" = 1 ]; then
     echo "ERROR: WSE plan 与 trimonly CCDG 对拍失败: $RUN_DIR/wse_plan_validation.json" >&2
     exit 2
   fi
+fi
+if [ "$WSE_COMPILE" = 1 ] && [ "$MODE" = short ]; then
+  echo "wse_compiler_booksim = PASS (cycles<=1%, counts conserved, congestion<=0.1%)" \
+    >> "$RUN_DIR/quality_gate.txt"
 fi
 
 log "闸门: BARRIER锚定 $ANCHORED/$RANKS  span偏差均值 ${SPAN_DEV:-NA}%  bytes守恒=$BYTES_OK"
