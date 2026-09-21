@@ -1,0 +1,63 @@
+# Editor, Python, and local agent state
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.coverage
+.DS_Store
+.vscode/
+.idea/
+.agents/
+.codex/
+.trae/
+
+# Native build products
+*.o
+*.a
+*.so
+*.so.*
+*.lo
+*.la
+*.d
+*.exe
+*.out
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+compile_commands.json
+
+# Locally built/installed dependencies. Project-owned LAMMPS instrumentation
+# files that are already tracked remain tracked despite these rules.
+/install/
+/lammps-src/*
+/sst-dumpi/
+/booksim2/
+/dumpi2ccdg/dumpi2ccdg
+/dumpi2ccdg/dumpi2ccdg.o
+
+# Runtime output and captured traces
+/runs/
+dumpi-*.bin
+dumpi-*.meta
+log.lammps
+lammps.log
+*.trace
+*.stats
+*.log
+
+# Generated WSE/CCDG intermediates. Keep compact reports, summary tables, and
+# checked-in fixtures by adding them explicitly when they are intentional.
+*.program.json
+*.replay.ccdg
+*.replay.est
+*.booksim.cfg
+*.booksim.stats
+*.acceptance.json
+wse_plan.json
+wse_plan.rank*.jsonl
+
+# Reproduction archives belong in release/object storage, not Git history.
+/*.tar
+/*.tar.gz
+/*.tgz
+/*.zip
