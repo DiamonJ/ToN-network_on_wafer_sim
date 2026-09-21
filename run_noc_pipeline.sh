@@ -21,9 +21,12 @@
 #   WSE_COMPILE       short 模式生成 Phase-1 WSE program/est/report（默认 1）
 #   CCDG_INJECT_QDEPTH / CCDG_COMPUTE_RATE 透传 run_ccdg_mesh.sh
 #   WSE_PLAN_CAPTURE  LAMMPS 源码级 CommBrick plan 导出（默认 1；0=禁用）
-#   FLOPS_CAPTURE     perf 每-rank 硬件 DP ops 捕捉（默认 0；1=启用）
-#   FLOPS_STEPS       perf 测量步数（默认 100；用 run(N)-run(0) 排除 setup）
-#   FLOPS_REPEATS     PMU 重复次数（默认 3；逐 rank 取中位数）
+#   COMPUTE_CAPTURE   perf 每-rank 指令/周期/墙时捕捉（默认 0；1=启用）
+#   FLOPS_CAPTURE     COMPUTE_CAPTURE 的兼容旧名称
+#   COMPUTE_STEPS     perf 测量步数（默认 100；用 run(N)-run(0) 排除 setup）
+#   COMPUTE_REPEATS   PMU 重复次数（默认 3；逐 rank 取中位数）
+#   FLOPS_STEPS/FLOPS_REPEATS 为兼容旧名称
+#   CPU_FREQUENCY_GHZ 显式 CPU GHz；未设置则读取 sysfs，并传播 min/max 边界
 #
 # 流程（真实 LAMMPS 只跑一次）:
 #   ① 生成 in.lammps（无 minimize，仅 run 段）
@@ -41,7 +44,7 @@
 #   ├── static_cost_estimate.json                      （in.lammps 理论 T1/C1）
 #   ├── static_cost_validation.txt/.json               [FLOPS_CAPTURE=1]
 #   ├── wse_phase1.program.json / .est / .report.json  [short + WSE_COMPILE=1]
-#   ├── flops_profile/flops_summary.json               [FLOPS_CAPTURE=1]
+#   ├── compute_profile/compute_profile.json           [COMPUTE_CAPTURE=1]
 #   ├── trace_<R>ranks_global.ccdg / compact_<R>ranks_global.ccdg
 #   ├── trimonly_<R>ranks_global.ccdg            （两档共同载体，同源对比的前提）
 #   ├── quality_gate.txt                          （闸门证据，BARRIER 锚定 span 等）
@@ -79,8 +82,9 @@ COMPUTE_CAP=${CCDG_COMPUTE_CAP:-2.5e10}
 DEMAND_OPTS=${CCDG_DEMAND_OPTS:-}
 WSE_PLAN_CAPTURE=${WSE_PLAN_CAPTURE:-1}
 WSE_COMPILE=${WSE_COMPILE:-1}
-FLOPS_CAPTURE=${FLOPS_CAPTURE:-0}
-FLOPS_STEPS=${FLOPS_STEPS:-100}
+COMPUTE_CAPTURE=${COMPUTE_CAPTURE:-${FLOPS_CAPTURE:-0}}
+COMPUTE_STEPS=${COMPUTE_STEPS:-${FLOPS_STEPS:-100}}
+COMPUTE_REPEATS=${COMPUTE_REPEATS:-${FLOPS_REPEATS:-3}}
 
 usage() { sed -n '2,30p' "$0" | sed 's/^# \{0,1\}//'; exit 2; }
 log() { echo "[$(date +%H:%M:%S)] $*" >&2; }
@@ -93,9 +97,10 @@ case "$SYSTEM" in cu|h2o|lialocl) ;; *) echo "ERROR: 体系须为 cu|h2o|lialocl
 case "$SIMMODE" in free|demand|both) ;; *) echo "ERROR: 模式须为 free|demand|both"; usage ;; esac
 case "$WSE_PLAN_CAPTURE" in 0|1) ;; *) echo "ERROR: WSE_PLAN_CAPTURE 须为 0 或 1"; exit 2 ;; esac
 case "$WSE_COMPILE" in 0|1) ;; *) echo "ERROR: WSE_COMPILE 须为 0 或 1"; exit 2 ;; esac
-case "$FLOPS_CAPTURE" in 0|1) ;; *) echo "ERROR: FLOPS_CAPTURE 须为 0 或 1"; exit 2 ;; esac
+case "$COMPUTE_CAPTURE" in 0|1) ;; *) echo "ERROR: COMPUTE_CAPTURE 须为 0 或 1"; exit 2 ;; esac
 [[ "$CAPTURE_STEPS" =~ ^[0-9]+$ ]] && [ "$CAPTURE_STEPS" -ge 1 ] || { echo "ERROR: CAPTURE_STEPS 须为正整数"; exit 2; }
-[[ "$FLOPS_STEPS" =~ ^[0-9]+$ ]] && [ "$FLOPS_STEPS" -ge 1 ] || { echo "ERROR: FLOPS_STEPS 须为正整数"; exit 2; }
+[[ "$COMPUTE_STEPS" =~ ^[0-9]+$ ]] && [ "$COMPUTE_STEPS" -ge 1 ] || { echo "ERROR: COMPUTE_STEPS 须为正整数"; exit 2; }
+[[ "$COMPUTE_REPEATS" =~ ^[0-9]+$ ]] && [ "$COMPUTE_REPEATS" -ge 1 ] || { echo "ERROR: COMPUTE_REPEATS 须为正整数"; exit 2; }
 K=$(awk -v r="$RANKS" 'BEGIN{k=int(sqrt(r)+0.5); if(k*k==r) print k; else print 0}')
 [ "$K" -gt 0 ] || { echo "ERROR: rank数 $RANKS 须为完全平方数（BookSim 方形 mesh k=√N）"; exit 2; }
 
@@ -113,10 +118,10 @@ if [ "$WSE_COMPILE" = 1 ]; then
     [ -f "$f" ] || { echo "ERROR: 缺少 WSE compiler 输入 $f"; exit 2; }
   done
 fi
-if [ "$FLOPS_CAPTURE" = 1 ]; then
+if [ "$COMPUTE_CAPTURE" = 1 ]; then
   [ -x "$FLOPS_PROFILER" ] || { echo "ERROR: 缺少可执行工具 $FLOPS_PROFILER"; exit 2; }
   [ "$WSE_PLAN_CAPTURE" = 1 ] || {
-    echo "ERROR: FLOPS_CAPTURE=1 需要 WSE_PLAN_CAPTURE=1 以验证真实 T1" >&2
+    echo "ERROR: COMPUTE_CAPTURE=1 需要 WSE_PLAN_CAPTURE=1 以验证真实 T1" >&2
     exit 2
   }
 fi
@@ -325,20 +330,20 @@ if [ "$WSE_COMPILE" = 1 ] && [ "$MODE" = short ]; then
 elif [ "$WSE_COMPILE" = 1 ]; then
   log "Phase-1 WSE compiler 仅支持 short；long/PPPM 留给后续阶段"
 fi
-if [ "$FLOPS_CAPTURE" = 1 ]; then
-  log "捕捉每-rank 硬件 DP ops (${FLOPS_STEPS} 步，扣除 run 0 baseline)..."
-  FLOPS_OUT_DIR=$RUN_DIR/flops_profile \
-    "$FLOPS_PROFILER" "$RANKS" "$RUN_DIR/in.lammps" "$FLOPS_STEPS" "$LMP" \
-    > "$RUN_DIR/flops_profile.log" 2>&1 || {
-      echo "ERROR: FLOPS 捕捉失败" >&2
-      cat "$RUN_DIR/flops_profile.log" >&2
+if [ "$COMPUTE_CAPTURE" = 1 ]; then
+  log "捕捉每-rank 指令/周期/墙时 (${COMPUTE_STEPS} 步，扣除 run 0 baseline)..."
+  COMPUTE_PROFILE_DIR=$RUN_DIR/compute_profile COMPUTE_REPEATS=$COMPUTE_REPEATS \
+    "$FLOPS_PROFILER" "$RANKS" "$RUN_DIR/in.lammps" "$COMPUTE_STEPS" "$LMP" \
+    > "$RUN_DIR/compute_profile.log" 2>&1 || {
+    echo "ERROR: 计算 profile 捕捉失败" >&2
+    cat "$RUN_DIR/compute_profile.log" >&2
       exit 2
     }
-  log "$(tail -1 "$RUN_DIR/flops_profile.log")"
+  log "$(tail -1 "$RUN_DIR/compute_profile.log")"
   python3 "$COST_VALIDATOR" \
     "$RUN_DIR/static_cost_estimate.json" \
     "$WSE_PLAN" \
-    "$RUN_DIR/flops_profile/flops_summary.json" \
+    "$RUN_DIR/compute_profile/compute_profile.json" \
     -o "$RUN_DIR/static_cost_validation" \
     > "$RUN_DIR/static_cost_validation.log" 2>&1 || {
       echo "ERROR: 静态 T1/C1 与真实 profile 对拍失败" >&2

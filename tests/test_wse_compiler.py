@@ -145,6 +145,24 @@ class WseCompilerTest(unittest.TestCase):
             program["hardware"]["compute_capability_ops_s"], 2.5e10
         )
 
+    def test_new_cost_schema_uses_uncalibrated_upper_bound(self):
+        self.cost["ranks"] = [
+            {
+                "rank": rank,
+                "C1_steady_ops_lower": 10 + rank,
+                "C1_steady_ops_upper": 20 + rank,
+            }
+            for rank in range(4)
+        ]
+        self.cost_path.write_text(json.dumps(self.cost), encoding="utf-8")
+        program, _, _ = compile_program(
+            self.plan_path, self.cost_path, self.cfg_path
+        )
+        self.assertEqual(
+            [row["ops"] for row in program["compute_model"]["blocks"]],
+            [20, 21, 22, 23],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

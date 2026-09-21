@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Estimate per-rank LAMMPS communication (T1) and computation (C1)."""
+"""Derive uncalibrated per-rank LAMMPS T1/C1 theoretical bounds."""
 
 import argparse
 import json
@@ -16,7 +16,41 @@ PPPM_ACONS_5 = (
     517231.0 / 106536960.0,
     106640677.0 / 11737571328.0,
 )
-EAM_PAIR_OPS_RANGE = (62.0, 66.0)
+# Source-counted scalar arithmetic conventions.  Each add/subtract, multiply,
+# divide/reciprocal, sqrt, and exp is one algorithmic operation.  The bounds
+# reflect branches visible in the kernels (table/direct Coulomb, energy/virial,
+# and Newton updates); they are not fitted to a hardware profile.
+PAIR_DISTANCE_OPS = {
+    "coordinate_subtractions": 3,
+    "squared_distance_multiplications": 3,
+    "squared_distance_additions": 2,
+}
+EAM_DENSITY_OPS = {
+    "radial_coordinate": 3,
+    "two_cubic_interpolations_and_accumulations": 14,
+}
+EAM_FORCE_OPS = {
+    "radial_coordinate": 3,
+    "three_quadratic_interpolations": 12,
+    "one_cubic_interpolation": 6,
+    "reciprocal_and_pair_terms": 11,
+    "force_accumulation": 12,
+}
+EAM_EMBED_OPS_RANGE = (6, 14)
+EAM_ENERGY_VIRIAL_EXTRA_OPS = 12
+LJ_COUL_FORCE_OPS_RANGE = (27, 44)
+LJ_COUL_ENERGY_VIRIAL_EXTRA_OPS = 20
+PPPM_PARTICLE_GRID_OPS_RANGE = (8, 20)
+PPPM_FFT_BUTTERFLY_OPS_RANGE = (10, 20)
+PPPM_MESH_FIELD_OPS_RANGE = (12, 20)
+FFT_SCALAR_BYTES = 8
+FFT_COMPLEX_SCALARS = 2
+PPPM_FFT_TRANSFORMS_IK = 4  # one forward density FFT plus three inverse gradients
+FFT_REMAPS_PER_TRANSFORM_RANGE = (2, 4)  # mid1/mid2; optional pre/post
+
+
+def operation_sum(parts):
+    return float(sum(parts.values()))
 
 
 def commands(path):
@@ -372,7 +406,6 @@ def estimate(system):
         grid, gewald = pppm_grid(system)
         mesh = math.prod(grid)
         grid_copies = grid_halo_copies(grid, procgrid)
-        nonlocal_fraction = 1.0 - 1.0 / ranks
         kspace = {
             "grid": grid,
             "order": 5,
@@ -380,7 +413,23 @@ def estimate(system):
             "mesh_points": mesh,
             "grid_reverse_bytes_per_rank": grid_copies * 8.0,
             "grid_forward_bytes_per_rank": grid_copies * 3.0 * 8.0,
-            "fft_remap_bytes_per_rank": mesh / ranks * 160.0 * nonlocal_fraction,
+            # Each FFT has two mandatory mid-remaps and up to two optional
+            # pre/post remaps (fft3d.cpp).  Each complex mesh value carries two
+            # FFT_SCALARs.  brick2fft adds one real-scalar remap.  The lower
+            # remote-traffic bound is zero because a remap may be local for a
+            # particular decomposition; the upper bound sends every element
+            # for every possible remap to another rank.
+            "fft_remap_bytes_lower_per_rank": 0.0,
+            "fft_remap_bytes_upper_per_rank": (
+                mesh / ranks
+                * (
+                    FFT_SCALAR_BYTES
+                    + PPPM_FFT_TRANSFORMS_IK
+                    * FFT_REMAPS_PER_TRANSFORM_RANGE[1]
+                    * FFT_COMPLEX_SCALARS
+                    * FFT_SCALAR_BYTES
+                )
+            ),
         }
 
     rank_results = []
@@ -403,43 +452,80 @@ def estimate(system):
             "grid_reverse_bytes": 0.0,
             "grid_forward_bytes": 0.0,
             "fft_remap_bytes": 0.0,
+            "fft_remap_bytes_lower": 0.0,
+            "fft_remap_bytes_upper": 0.0,
         }
 
         integrate_ops = 18.0 * nlocal
+        distance_ops = operation_sum(PAIR_DISTANCE_OPS)
         if system["pair_style"] == "eam":
+            # PairEAM traverses the neighbor list once for density and once for
+            # forces, so the distance expression is evaluated twice.
+            eam_pair_lower = operation_sum(EAM_DENSITY_OPS) + operation_sum(EAM_FORCE_OPS)
+            eam_pair_upper = eam_pair_lower + EAM_ENERGY_VIRIAL_EXTRA_OPS
             pair_min = (
-                8.0 * nlist
-                + EAM_PAIR_OPS_RANGE[0] * npair
-                + 20.0 * (nlocal + nghost)
+                2.0 * distance_ops * nlist
+                + eam_pair_lower * npair
+                + EAM_EMBED_OPS_RANGE[0] * nlocal
             )
             pair_max = (
-                8.0 * nlist
-                + EAM_PAIR_OPS_RANGE[1] * npair
-                + 20.0 * (nlocal + nghost)
+                2.0 * distance_ops * nlist
+                + eam_pair_upper * npair
+                + EAM_EMBED_OPS_RANGE[1] * nlocal
             )
         else:
-            pair_min = 8.0 * nlist + 45.0 * npair
-            pair_max = 8.0 * nlist + 50.0 * npair
-        pppm_ops = 0.0
+            pair_min = distance_ops * nlist + LJ_COUL_FORCE_OPS_RANGE[0] * npair
+            pair_max = distance_ops * nlist + (
+                LJ_COUL_FORCE_OPS_RANGE[1] + LJ_COUL_ENERGY_VIRIAL_EXTRA_OPS
+            ) * npair
+        pppm_min = 0.0
+        pppm_max = 0.0
         if kspace:
-            for key in ("grid_reverse_bytes_per_rank", "grid_forward_bytes_per_rank",
-                        "fft_remap_bytes_per_rank"):
+            for key in ("grid_reverse_bytes_per_rank", "grid_forward_bytes_per_rank"):
                 comm[key.removesuffix("_per_rank")] = kspace[key] * scale
+            comm["fft_remap_bytes_lower"] = (
+                kspace["fft_remap_bytes_lower_per_rank"] * scale
+            )
+            comm["fft_remap_bytes_upper"] = (
+                kspace["fft_remap_bytes_upper_per_rank"] * scale
+            )
+            # Compatibility/budget field: use the conservative theoretical upper bound.
+            comm["fft_remap_bytes"] = comm["fft_remap_bytes_upper"]
             mesh_local = kspace["mesh_points"] / ranks * scale
             particle_grid = nlocal * kspace["order"] ** 3
-            pppm_ops = (40.0 * particle_grid +
-                        20.0 * mesh_local * math.log2(kspace["mesh_points"]) +
-                        20.0 * mesh_local)
+            fft_stages = math.log2(kspace["mesh_points"])
+            pppm_min = (
+                PPPM_PARTICLE_GRID_OPS_RANGE[0] * particle_grid
+                + PPPM_FFT_BUTTERFLY_OPS_RANGE[0] * mesh_local * fft_stages
+                + PPPM_MESH_FIELD_OPS_RANGE[0] * mesh_local
+            )
+            pppm_max = (
+                PPPM_PARTICLE_GRID_OPS_RANGE[1] * particle_grid
+                + PPPM_FFT_BUTTERFLY_OPS_RANGE[1] * mesh_local * fft_stages
+                + PPPM_MESH_FIELD_OPS_RANGE[1] * mesh_local
+            )
 
-        steady_t1 = (comm["forward_bytes"] + comm["reverse_bytes"] +
-                     comm["pair_forward_reverse_bytes"] + comm["grid_reverse_bytes"] +
-                     comm["grid_forward_bytes"] + comm["fft_remap_bytes"])
-        rebuild_t1 = (comm["borders_bytes"] + comm["reverse_bytes"] +
-                      comm["pair_forward_reverse_bytes"] + comm["grid_reverse_bytes"] +
-                      comm["grid_forward_bytes"] + comm["fft_remap_bytes"])
-        compute_min = integrate_ops + pair_min + pppm_ops
-        compute_max = integrate_ops + pair_max + pppm_ops
-        compute_midpoint = 0.5 * (compute_min + compute_max)
+        steady_without_fft = (
+            comm["forward_bytes"] + comm["reverse_bytes"]
+            + comm["pair_forward_reverse_bytes"] + comm["grid_reverse_bytes"]
+            + comm["grid_forward_bytes"]
+        )
+        rebuild_without_fft = (
+            comm["borders_bytes"] + comm["reverse_bytes"]
+            + comm["pair_forward_reverse_bytes"] + comm["grid_reverse_bytes"]
+            + comm["grid_forward_bytes"]
+        )
+        steady_t1_lower = steady_without_fft + comm["fft_remap_bytes_lower"]
+        steady_t1_upper = steady_without_fft + comm["fft_remap_bytes_upper"]
+        rebuild_t1_lower = rebuild_without_fft + comm["fft_remap_bytes_lower"]
+        rebuild_t1_upper = rebuild_without_fft + comm["fft_remap_bytes_upper"]
+        # Compatibility/budget fields use the conservative upper endpoint.
+        steady_t1 = steady_t1_upper
+        rebuild_t1 = rebuild_t1_upper
+        compute_min = integrate_ops + pair_min + pppm_min
+        compute_max = integrate_ops + pair_max + pppm_max
+        t1_lower = min(steady_t1_lower, rebuild_t1_lower)
+        t1_upper = max(steady_t1_upper, rebuild_t1_upper)
         rank_results.append({
             "rank": rank,
             "nlocal": nlocal,
@@ -450,16 +536,26 @@ def estimate(system):
             "T1_send_bytes": steady_t1,
             "T1_steady_send_bytes": steady_t1,
             "T1_rebuild_send_bytes": rebuild_t1,
+            "T1_send_bytes_lower": t1_lower,
+            "T1_send_bytes_upper": t1_upper,
+            "T1_steady_send_bytes_lower": steady_t1_lower,
+            "T1_steady_send_bytes_upper": steady_t1_upper,
+            "T1_rebuild_send_bytes_lower": rebuild_t1_lower,
+            "T1_rebuild_send_bytes_upper": rebuild_t1_upper,
             "computation": {
                 "integrate_ops": integrate_ops,
                 "pair_ops_min": pair_min,
                 "pair_ops_max": pair_max,
-                "pppm_ops": pppm_ops,
+                "pppm_ops_min": pppm_min,
+                "pppm_ops_max": pppm_max,
             },
-            "C1_ops": compute_midpoint,
             "C1_steady_ops_min": compute_min,
             "C1_steady_ops_max": compute_max,
-            "C1_steady_ops_midpoint": compute_midpoint,
+            "C1_steady_ops_lower": compute_min,
+            "C1_steady_ops_upper": compute_max,
+            # A simulator needs one scheduling budget.  Use the derived upper
+            # bound, never a fitted midpoint or profile-derived coefficient.
+            "C1_steady_ops_budget": compute_max,
         })
 
     def stats(field):
@@ -468,8 +564,8 @@ def estimate(system):
                 "minimum": min(values), "maximum": max(values)}
 
     return {
-        "schema_version": 1,
-        "model": "static_uniform_density_v1",
+        "schema_version": 2,
+        "model": "static_uncalibrated_bounds_v2",
         "input": {
             "atoms": natoms,
             "box": lengths,
@@ -485,17 +581,42 @@ def estimate(system):
         },
         "assumptions": {
             "scope": "one steady Verlet timestep",
-            "communication_metric": "application send payload; collectives excluded",
+            "communication_metric": (
+                "application send payload bytes; collectives and atom migration "
+                "exchange are excluded"
+            ),
             "C1_metric": (
-                "modeled double-precision arithmetic-equivalent operations; "
-                "validate against lane-weighted FP_ARITH_INST_RETIRED"
+                "algorithmic scalar-equivalent operation bounds; not converted "
+                "to retired instructions with a fitted coefficient"
+            ),
+            "calibration": "none",
+            "bounds_policy": (
+                "T1 lower/upper span steady versus neighbor-rebuild traffic; "
+                "C1 lower/upper come from explicit kernel operation-count ranges"
             ),
             "newton_pair": True,
             "uniform_density_for_neighbors_and_ghosts": True,
-            "pair_candidate_ops": 8,
-            "lj_coul_kernel_ops_range": [45, 50],
-            "eam_pair_ops_range": list(EAM_PAIR_OPS_RANGE),
-            "pppm_fft_remap": "160 bytes/grid-point × (1-1/ranks), topology approximation",
+            "operation_counting_convention": (
+                "one scalar-equivalent operation per source add/subtract, "
+                "multiply, divide/reciprocal, sqrt, or exp"
+            ),
+            "pair_distance_operation_breakdown": PAIR_DISTANCE_OPS,
+            "lj_coul_force_ops_range": list(LJ_COUL_FORCE_OPS_RANGE),
+            "lj_coul_energy_virial_extra_ops_upper": LJ_COUL_ENERGY_VIRIAL_EXTRA_OPS,
+            "eam_density_operation_breakdown": EAM_DENSITY_OPS,
+            "eam_force_operation_breakdown": EAM_FORCE_OPS,
+            "eam_embedding_ops_range_per_atom": list(EAM_EMBED_OPS_RANGE),
+            "eam_energy_virial_extra_ops_upper": EAM_ENERGY_VIRIAL_EXTRA_OPS,
+            "pppm_particle_grid_ops_range": list(PPPM_PARTICLE_GRID_OPS_RANGE),
+            "pppm_fft_butterfly_ops_range": list(PPPM_FFT_BUTTERFLY_OPS_RANGE),
+            "pppm_mesh_field_ops_range": list(PPPM_MESH_FIELD_OPS_RANGE),
+            "pppm_fft_remap": {
+                "fft_scalar_bytes": FFT_SCALAR_BYTES,
+                "complex_scalars": FFT_COMPLEX_SCALARS,
+                "transforms_ik": PPPM_FFT_TRANSFORMS_IK,
+                "remaps_per_transform_range": list(FFT_REMAPS_PER_TRANSFORM_RANGE),
+                "remote_fraction_range": [0.0, 1.0],
+            },
             "commbrick_copies": "coordinate-level replay of CommBrick borders swaps",
         },
         "swap_geometry": swaps,
@@ -504,10 +625,17 @@ def estimate(system):
             "T1_send_bytes": stats("T1_send_bytes"),
             "T1_steady_send_bytes": stats("T1_steady_send_bytes"),
             "T1_rebuild_send_bytes": stats("T1_rebuild_send_bytes"),
-            "C1_ops": stats("C1_ops"),
+            "T1_send_bytes_lower": stats("T1_send_bytes_lower"),
+            "T1_send_bytes_upper": stats("T1_send_bytes_upper"),
+            "T1_steady_send_bytes_lower": stats("T1_steady_send_bytes_lower"),
+            "T1_steady_send_bytes_upper": stats("T1_steady_send_bytes_upper"),
+            "T1_rebuild_send_bytes_lower": stats("T1_rebuild_send_bytes_lower"),
+            "T1_rebuild_send_bytes_upper": stats("T1_rebuild_send_bytes_upper"),
             "C1_steady_ops_min": stats("C1_steady_ops_min"),
             "C1_steady_ops_max": stats("C1_steady_ops_max"),
-            "C1_steady_ops_midpoint": stats("C1_steady_ops_midpoint"),
+            "C1_steady_ops_lower": stats("C1_steady_ops_lower"),
+            "C1_steady_ops_upper": stats("C1_steady_ops_upper"),
+            "C1_steady_ops_budget": stats("C1_steady_ops_budget"),
         },
         "ranks": rank_results,
     }
@@ -515,7 +643,7 @@ def estimate(system):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Estimate per-rank T1 send bytes and C1 scalar-equivalent operations")
+        description="Derive per-rank T1 byte and C1 operation bounds without calibration")
     parser.add_argument("input", type=Path, help="LAMMPS input file")
     parser.add_argument("-o", "--output", type=Path, help="JSON output path")
     args = parser.parse_args()
@@ -529,8 +657,10 @@ def main():
         print(text, end="")
     summary = result["summary"]
     print(
-        f"T1 steady avg={summary['T1_steady_send_bytes']['average']:.0f} B/rank/step; "
-        f"C1 avg={summary['C1_steady_ops_midpoint']['average']:.0f} ops/rank/step",
+        f"T1 avg bound=[{summary['T1_send_bytes_lower']['average']:.0f}, "
+        f"{summary['T1_send_bytes_upper']['average']:.0f}] B/rank/step; "
+        f"C1 avg bound=[{summary['C1_steady_ops_lower']['average']:.0f}, "
+        f"{summary['C1_steady_ops_upper']['average']:.0f}] ops/rank/step",
         file=__import__("sys").stderr,
     )
 

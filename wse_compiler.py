@@ -306,7 +306,15 @@ def compile_program(
         warnings.append("compute capability is zero; using legacy ccdg_compute_rate")
     compute_blocks = []
     for item in cost["ranks"]:
-        ops = float(item["C1_steady_ops_midpoint"])
+        # Scheduling needs one scalar.  New estimates deliberately avoid a
+        # calibrated midpoint and use the theoretical upper bound.  The
+        # midpoint fallback keeps old captured fixtures readable.
+        if "C1_steady_ops_upper" in item:
+            ops = float(item["C1_steady_ops_upper"])
+        elif "C1_steady_ops_max" in item:
+            ops = float(item["C1_steady_ops_max"])
+        else:
+            ops = float(item["C1_steady_ops_midpoint"])
         compute_blocks.append(
             {"rank": int(item["rank"]), "ops": ops, "cycles": math.ceil(ops / rate)}
         )
