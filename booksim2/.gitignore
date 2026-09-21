@@ -1,0 +1,15 @@
+*~
+\#*#
+._*
+.Apple*
+.DS_Store
+
+# Local builds and generated simulation output
+booksim
+*.o
+*.py[cod]
+__pycache__/
+*.log
+*.stats
+*_stats.txt
+results/

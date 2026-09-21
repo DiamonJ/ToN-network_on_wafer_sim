@@ -31,7 +31,6 @@ compile_commands.json
 /install/
 /lammps-src/*
 /sst-dumpi/
-/booksim2/
 /dumpi2ccdg/dumpi2ccdg
 /dumpi2ccdg/dumpi2ccdg.o
 
