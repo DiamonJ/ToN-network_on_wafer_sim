@@ -43,7 +43,10 @@ CCDGTrafficManager::CCDGTrafficManager(const Configuration &config,
                                        const vector<Network *> &net)
   : TrafficManager(config, net),
     _msg_id_counter(0), _total_sim_cycles(0),
-    _total_packets_sent(0), _total_packets_received(0)
+    _total_packets_sent(0), _total_packets_received(0),
+    _injected_flits_total(0), _injected_packets_total(0),
+    _injection_capacity_slots(0), _backlogged_injection_slots(0),
+    _flit_queue_cycles_total(0), _packet_queue_cycles_total(0)
 {
   // Read CCDG-specific configuration
   _ccdg_file = config.GetStr("ccdg_file");
@@ -158,6 +161,61 @@ int CCDGTrafficManager::_getFlitCount(uint64_t bytes) const
   int flits = (int)((bytes + _flit_size_bytes - 1) / _flit_size_bytes);
   if (flits < 1) flits = 1;
   return flits;
+}
+
+double CCDGTrafficManager::_AverageFlitQueueCycles() const
+{
+  return _injected_flits_total > 0 ?
+    (double)_flit_queue_cycles_total / (double)_injected_flits_total : 0.0;
+}
+
+double CCDGTrafficManager::_AveragePacketQueueCycles() const
+{
+  return _injected_packets_total > 0 ?
+    (double)_packet_queue_cycles_total / (double)_injected_packets_total : 0.0;
+}
+
+double CCDGTrafficManager::_AverageInjectionRate() const
+{
+  return _injection_capacity_slots > 0 ?
+    (double)_injected_flits_total / (double)_injection_capacity_slots : 0.0;
+}
+
+double CCDGTrafficManager::_InjectionSaturationRatio() const
+{
+  return _injection_capacity_slots > 0 ?
+    (double)_backlogged_injection_slots / (double)_injection_capacity_slots : 0.0;
+}
+
+double CCDGTrafficManager::_SaturatedInjectionRate() const
+{
+  return _backlogged_injection_slots > 0 ?
+    (double)_injected_flits_total / (double)_backlogged_injection_slots : 0.0;
+}
+
+double CCDGTrafficManager::_ExposedCommunicationToComputeRatio() const
+{
+  double compute = 0.0, communication = 0.0;
+  for (int rank = 0; rank < _num_ranks; ++rank) {
+    compute += _pe_state[rank].compute_cycles_acc;
+    communication += _pe_state[rank].blocked_cycles;
+    communication += _pe_state[rank].congestion_cycles;
+  }
+  if (compute > 0.0) return communication / compute;
+  return communication > 0.0 ? numeric_limits<double>::infinity() : 0.0;
+}
+
+double CCDGTrafficManager::_CommunicationToComputeRatio() const
+{
+  double compute = 0.0, communication = 0.0;
+  for (int rank = 0; rank < _num_ranks; ++rank) {
+    compute += _pe_state[rank].compute_cycles_acc;
+    communication += _pe_state[rank].blocked_cycles;
+    communication += _pe_state[rank].congestion_cycles;
+    communication += _pe_state[rank].sched_wait_cycles;
+  }
+  if (compute > 0.0) return communication / compute;
+  return communication > 0.0 ? numeric_limits<double>::infinity() : 0.0;
 }
 
 bool CCDGTrafficManager::_parseCCDG(const std::string &filename)
@@ -944,6 +1002,7 @@ bool CCDGTrafficManager::_SingleSim()
     _pe_state[r].blocked_cycles = 0.0;
     _pe_state[r].congestion_cycles = 0.0;
     _pe_state[r].compute_cycles_acc = 0.0;
+    _pe_state[r].sched_wait_cycles = 0.0;
     _coll_state[r] = PECollState();
   }
 
@@ -962,6 +1021,12 @@ bool CCDGTrafficManager::_SingleSim()
   _total_sim_cycles = 0;
   _total_packets_sent = 0;
   _total_packets_received = 0;
+  _injected_flits_total = 0;
+  _injected_packets_total = 0;
+  _injection_capacity_slots = 0;
+  _backlogged_injection_slots = 0;
+  _flit_queue_cycles_total = 0;
+  _packet_queue_cycles_total = 0;
 
   // Initialize all PEs to their first node
   for (int r = 0; r < _num_ranks; r++) {
@@ -1092,6 +1157,16 @@ bool CCDGTrafficManager::_SingleSim()
     // Inject packets from _partial_packets into the network
     for (int subnet = 0; subnet < _subnets; ++subnet) {
       for (int n = 0; n < _nodes; ++n) {
+        ++_injection_capacity_slots;
+        bool injection_backlogged = false;
+        for (int c = 0; c < _classes; ++c) {
+          if (!_partial_packets[n][c].empty() &&
+              _partial_packets[n][c].front()->subnetwork == subnet) {
+            injection_backlogged = true;
+            break;
+          }
+        }
+        if (injection_backlogged) ++_backlogged_injection_slots;
         // Wavelet gating: hold flit injection for this node (flit-level
         // window pause; injection resumes on the next HEAD window). Only
         // count cycles where the node actually has queued flits waiting,
@@ -1233,6 +1308,12 @@ bool CCDGTrafficManager::_SingleSim()
                        << "." << endl;
           }
           f->itime = _time;
+          ++_injected_flits_total;
+          _flit_queue_cycles_total += (uint64_t)max(0, _time - f->ctime);
+          if (f->head) {
+            ++_injected_packets_total;
+            _packet_queue_cycles_total += (uint64_t)max(0, _time - f->ctime);
+          }
 
           if (!_partial_packets[n][c].empty() && !f->tail) {
             Flit *const nf = _partial_packets[n][c].front();
@@ -1388,6 +1469,12 @@ bool CCDGTrafficManager::_SingleSim()
        << " max_queue_at_trigger=" << _bp_max_seen << endl;
   cout << "Packets sent: " << _total_packets_sent
        << ", received: " << _total_packets_received << endl;
+  cout << "Injection metrics: average_packet_queue_cycles="
+       << _AveragePacketQueueCycles()
+       << " average_flit_queue_cycles=" << _AverageFlitQueueCycles()
+       << " average_injection_rate=" << _AverageInjectionRate()
+       << " injection_saturation_ratio=" << _InjectionSaturationRatio()
+       << " saturated_injection_rate=" << _SaturatedInjectionRate() << endl;
 
   // Aggregate PE dwell statistics: compute vs blocked (exposed comm wait)
   // vs congestion (send-side backpressure) vs sched_wait (orchestration
@@ -1411,7 +1498,11 @@ bool CCDGTrafficManager::_SingleSim()
        << " sched_wait_cycles=" << (long long)sum_sched
        << " congestion_ratio=" << congestion_ratio
        << " blocked_ratio=" << blocked_ratio
-       << " sched_wait_ratio=" << sched_ratio << endl;
+       << " sched_wait_ratio=" << sched_ratio
+       << " exposed_communication_to_compute_ratio="
+       << _ExposedCommunicationToComputeRatio()
+       << " communication_to_compute_ratio="
+       << _CommunicationToComputeRatio() << endl;
 
   // Check if all cross edges were resolved
   int unresolved = 0;
@@ -1448,6 +1539,15 @@ void CCDGTrafficManager::WriteStats(ostream &os) const
   os << "total_sim_cycles = " << _total_sim_cycles << ";" << endl;
   os << "total_packets_sent = " << _total_packets_sent << ";" << endl;
   os << "total_packets_received = " << _total_packets_received << ";" << endl;
+  os << "injected_flits_total = " << _injected_flits_total << ";" << endl;
+  os << "injected_packets_total = " << _injected_packets_total << ";" << endl;
+  os << "injection_capacity_slots = " << _injection_capacity_slots << ";" << endl;
+  os << "backlogged_injection_slots = " << _backlogged_injection_slots << ";" << endl;
+  os << "average_packet_queue_cycles = " << _AveragePacketQueueCycles() << ";" << endl;
+  os << "average_flit_queue_cycles = " << _AverageFlitQueueCycles() << ";" << endl;
+  os << "average_injection_rate = " << _AverageInjectionRate() << ";" << endl;
+  os << "injection_saturation_ratio = " << _InjectionSaturationRatio() << ";" << endl;
+  os << "saturated_injection_rate = " << _SaturatedInjectionRate() << ";" << endl;
   double sum_compute = 0.0, sum_blocked = 0.0, sum_congestion = 0.0;
   double sum_sched = 0.0;
   for (int r = 0; r < _num_ranks; r++) {
@@ -1464,6 +1564,14 @@ void CCDGTrafficManager::WriteStats(ostream &os) const
   os << "blocked_ratio = " << ((dwell > 0.0) ? sum_blocked / dwell : 0.0) << ";" << endl;
   os << "congestion_ratio = " << ((dwell > 0.0) ? sum_congestion / dwell : 0.0) << ";" << endl;
   os << "sched_wait_ratio = " << ((dwell > 0.0) ? sum_sched / dwell : 0.0) << ";" << endl;
+  os << "exposed_communication_cycles = "
+     << (long long)(sum_blocked + sum_congestion) << ";" << endl;
+  os << "communication_cycles = "
+     << (long long)(sum_blocked + sum_congestion + sum_sched) << ";" << endl;
+  os << "exposed_communication_to_compute_ratio = "
+     << _ExposedCommunicationToComputeRatio() << ";" << endl;
+  os << "communication_to_compute_ratio = "
+     << _CommunicationToComputeRatio() << ";" << endl;
 }
 
 void CCDGTrafficManager::DisplayStats(ostream &os) const
@@ -1472,6 +1580,11 @@ void CCDGTrafficManager::DisplayStats(ostream &os) const
   os << "Total simulation cycles = " << _total_sim_cycles << endl;
   os << "Total packets sent = " << _total_packets_sent << endl;
   os << "Total packets received = " << _total_packets_received << endl;
+  os << "Average packet queue cycles = " << _AveragePacketQueueCycles() << endl;
+  os << "Average flit queue cycles = " << _AverageFlitQueueCycles() << endl;
+  os << "Average injection rate = " << _AverageInjectionRate() << endl;
+  os << "Injection saturation ratio = " << _InjectionSaturationRatio() << endl;
+  os << "Saturated injection rate = " << _SaturatedInjectionRate() << endl;
   double sum_congestion = 0.0;
   double sum_compute = 0.0, sum_blocked = 0.0, sum_sched = 0.0;
   for (int r = 0; r < _num_ranks; r++) {
@@ -1488,6 +1601,10 @@ void CCDGTrafficManager::DisplayStats(ostream &os) const
   os << "congestion_ratio = " << ((dwell > 0.0) ? sum_congestion / dwell : 0.0) << endl;
   os << "Blocked ratio = " << ((dwell > 0.0) ? sum_blocked / dwell : 0.0) << endl;
   os << "sched_wait_ratio = " << ((dwell > 0.0) ? sum_sched / dwell : 0.0) << endl;
+  os << "Communication / compute ratio = "
+     << _CommunicationToComputeRatio() << endl;
+  os << "Exposed communication / compute ratio = "
+     << _ExposedCommunicationToComputeRatio() << endl;
 }
 
 void CCDGTrafficManager::DisplayOverallStats(ostream &os) const
@@ -1496,6 +1613,11 @@ void CCDGTrafficManager::DisplayOverallStats(ostream &os) const
   os << "Total simulation cycles = " << _total_sim_cycles << endl;
   os << "Total packets sent = " << _total_packets_sent << endl;
   os << "Total packets received = " << _total_packets_received << endl;
+  os << "Average packet queue cycles = " << _AveragePacketQueueCycles() << endl;
+  os << "Average flit queue cycles = " << _AverageFlitQueueCycles() << endl;
+  os << "Average injection rate = " << _AverageInjectionRate() << endl;
+  os << "Injection saturation ratio = " << _InjectionSaturationRatio() << endl;
+  os << "Saturated injection rate = " << _SaturatedInjectionRate() << endl;
   double sum_compute = 0.0, sum_blocked = 0.0, sum_congestion = 0.0;
   double sum_sched = 0.0;
   for (int r = 0; r < _num_ranks; r++) {
@@ -1512,4 +1634,8 @@ void CCDGTrafficManager::DisplayOverallStats(ostream &os) const
   os << "Blocked ratio = " << ((dwell > 0.0) ? sum_blocked / dwell : 0.0) << endl;
   os << "congestion_ratio = " << ((dwell > 0.0) ? sum_congestion / dwell : 0.0) << endl;
   os << "sched_wait_ratio = " << ((dwell > 0.0) ? sum_sched / dwell : 0.0) << endl;
+  os << "Communication / compute ratio = "
+     << _CommunicationToComputeRatio() << endl;
+  os << "Exposed communication / compute ratio = "
+     << _ExposedCommunicationToComputeRatio() << endl;
 }

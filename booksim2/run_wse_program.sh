@@ -79,6 +79,13 @@ branch_delivered = stat("wse_branches_delivered")
 command_expected = stat("wse_commands_expected")
 command_delivered = stat("wse_commands_delivered")
 congestion = stat("wse_congestion_ratio", float)
+average_packet_queue_cycles = stat("average_packet_queue_cycles", float)
+average_flit_queue_cycles = stat("average_flit_queue_cycles", float)
+average_injection_rate = stat("average_injection_rate", float)
+injection_saturation_ratio = stat("injection_saturation_ratio", float)
+saturated_injection_rate = stat("saturated_injection_rate", float)
+communication_to_compute_ratio = stat("communication_to_compute_ratio", float)
+exposed_communication_to_compute_ratio = stat("exposed_communication_to_compute_ratio", float)
 checks = {
     "cycles_within_1pct": error <= 0.01,
     "wavefronts_conserved": wave_injected == wave_expected,
@@ -96,6 +103,13 @@ result = {
     "branches": {"expected": branch_expected, "delivered": branch_delivered},
     "commands": {"expected": command_expected, "delivered": command_delivered},
     "congestion_ratio": congestion,
+    "average_packet_queue_cycles": average_packet_queue_cycles,
+    "average_flit_queue_cycles": average_flit_queue_cycles,
+    "average_injection_rate": average_injection_rate,
+    "injection_saturation_ratio": injection_saturation_ratio,
+    "saturated_injection_rate": saturated_injection_rate,
+    "communication_to_compute_ratio": communication_to_compute_ratio,
+    "exposed_communication_to_compute_ratio": exposed_communication_to_compute_ratio,
     "checks": checks,
     "program": sys.argv[3],
     "booksim_cfg": sys.argv[4],
@@ -107,6 +121,9 @@ with open(sys.argv[7], "w") as fh:
 print("WSE BookSim acceptance: "
       f"{result['status']} compiler={expected} measured={measured} error={error:.4%} "
       f"wavefronts={wave_injected}/{wave_expected} "
-      f"branches={branch_delivered}/{branch_expected} congestion={congestion:.4%}")
+      f"branches={branch_delivered}/{branch_expected} congestion={congestion:.4%} "
+      f"queue={average_packet_queue_cycles:.3f}cyc "
+      f"sat_injection={saturated_injection_rate:.4%} "
+      f"comm/compute={communication_to_compute_ratio:.6g}")
 raise SystemExit(0 if result["status"] == "PASS" else 1)
 PY

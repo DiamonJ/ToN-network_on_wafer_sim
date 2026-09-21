@@ -165,6 +165,12 @@ protected:
   int _total_sim_cycles;
   int _total_packets_sent;
   int _total_packets_received;
+  uint64_t _injected_flits_total;
+  uint64_t _injected_packets_total;
+  uint64_t _injection_capacity_slots;
+  uint64_t _backlogged_injection_slots;
+  uint64_t _flit_queue_cycles_total;
+  uint64_t _packet_queue_cycles_total;
 
   // ============ Internal Methods ============
 
@@ -191,6 +197,16 @@ protected:
 
   // Get the number of flits for a given message size
   int _getFlitCount(uint64_t bytes) const;
+
+  // CCDG-specific aggregate metrics.  A slot is one node/subnetwork injection
+  // opportunity in one cycle; a backlogged slot has a matching queued flit.
+  double _AverageFlitQueueCycles() const;
+  double _AveragePacketQueueCycles() const;
+  double _AverageInjectionRate() const;
+  double _InjectionSaturationRatio() const;
+  double _SaturatedInjectionRate() const;
+  double _ExposedCommunicationToComputeRatio() const;
+  double _CommunicationToComputeRatio() const;
 
   // Load the EST schedule file and attach each node's release time
   bool _loadScheduleFile();

@@ -6,12 +6,13 @@
 # v3 口径: 计算能力用环境变量 CCDG_COMPUTE_CAP 覆盖（默认 2.5e9 ops/s = 2.5GHz×1op/cycle，
 #          等价于旧 ccdg_compute_rate=1.25 ops/cycle @ noc 2.0GHz）；算力扫描传 1.25e9(=0.5×)/2.5e9(=1×)/5e9(=2×) 等；
 #          也可用 CCDG_COMPUTE_RATE（ops/cycle）直接指定（capability 置 0）
-# CSV: ccdg_dir,...,unresolved,steps,cycles_per_iter,timesteps_per_sec,gating,inject_blocked_cycles,blocked_cycles,blocked_ratio
+# CSV: ccdg_dir,...,average_packet_queue_cycles,average_flit_queue_cycles,
+#      average_injection_rate,saturated_injection_rate,communication_to_compute_ratio
 #      (cycles_per_iter=total_cycles/步数; timesteps_per_sec=1e9/(cycles_per_iter×NOC_PERIOD_NS))
 set -euo pipefail
 
 BS_DIR="$(cd "$(dirname "$0")" && pwd)"
-BOOKSIM="$BS_DIR/booksim"
+BOOKSIM="$BS_DIR/src/booksim"
 TEMPLATE="$BS_DIR/ccdg_lammps_4x4.cfg"
 RESULTS_DIR="$BS_DIR/results"
 CSV="$RESULTS_DIR/ccdg_mesh_results.csv"
@@ -123,6 +124,13 @@ UNRES="$(grep -oP 'WARNING: \K[0-9]+(?= cross-rank edges)' "$LOG" | tail -1 || t
 UNRES="${UNRES:-0}"
 BLOCKED="$(grep -oP 'wse_inject_blocked_cycles = \K[0-9]+' "$STATS" 2>/dev/null | tail -1 || true)"
 BLOCKED="${BLOCKED:-}"
+AVG_PACKET_QUEUE="$(grep -oP '^average_packet_queue_cycles = \K[^;]+' "$STATS" 2>/dev/null | tail -1 || true)"
+AVG_FLIT_QUEUE="$(grep -oP '^average_flit_queue_cycles = \K[^;]+' "$STATS" 2>/dev/null | tail -1 || true)"
+AVG_INJECTION_RATE="$(grep -oP '^average_injection_rate = \K[^;]+' "$STATS" 2>/dev/null | tail -1 || true)"
+SATURATED_INJECTION_RATE="$(grep -oP '^saturated_injection_rate = \K[^;]+' "$STATS" 2>/dev/null | tail -1 || true)"
+INJECTION_SATURATION_RATIO="$(grep -oP '^injection_saturation_ratio = \K[^;]+' "$STATS" 2>/dev/null | tail -1 || true)"
+COMM_COMPUTE_RATIO="$(grep -oP '^communication_to_compute_ratio = \K[^;]+' "$STATS" 2>/dev/null | tail -1 || true)"
+EXPOSED_COMM_COMPUTE_RATIO="$(grep -oP '^exposed_communication_to_compute_ratio = \K[^;]+' "$STATS" 2>/dev/null | tail -1 || true)"
 if [ -z "$CYCLES" ]; then
     # 回退到 stats 文件
     CYCLES="$(grep -oP 'total_sim_cycles = \K[0-9]+' "$STATS" 2>/dev/null | tail -1 || true)"
@@ -152,14 +160,30 @@ if [ -f "$CSV" ] && ! head -1 "$CSV" | grep -q "blocked_cycles"; then
     awk -F, 'NR==1{print $0",blocked_cycles,blocked_ratio"; next}
              {printf "%s,,,\n", $0}' "$CSV" > "$CSV.tmp" && mv "$CSV.tmp" "$CSV"
 fi
-[ -f "$CSV" ] || echo "ccdg_dir,mode,ranks,mesh,total_cycles,wall_sec,packets_sent,packets_recv,unresolved,steps,cycles_per_iter,timesteps_per_sec,gating,inject_blocked_cycles,blocked_cycles,blocked_ratio" > "$CSV"
+if [ -f "$CSV" ] && ! head -1 "$CSV" | grep -q "average_packet_queue_cycles"; then
+    awk -F, 'NR==1{print $0",average_packet_queue_cycles,average_flit_queue_cycles,average_injection_rate,injection_saturation_ratio,saturated_injection_rate,exposed_communication_to_compute_ratio,communication_to_compute_ratio"; next}
+             {print $0",,,,,,,"}' "$CSV" > "$CSV.tmp" && mv "$CSV.tmp" "$CSV"
+fi
+if [ -f "$CSV" ] && ! head -1 "$CSV" | grep -q "injection_saturation_ratio"; then
+    awk -F, 'BEGIN{OFS=","}
+             NR==1{for(i=1;i<=19;i++)printf "%s%s",$i,OFS; print "injection_saturation_ratio",$20,$21,$22; next}
+             {for(i=1;i<=19;i++)printf "%s%s",$i,OFS; print "",$20,$21,$22}' \
+        "$CSV" > "$CSV.tmp" && mv "$CSV.tmp" "$CSV"
+fi
+if [ -f "$CSV" ] && ! head -1 "$CSV" | grep -q "exposed_communication_to_compute_ratio"; then
+    awk -F, 'BEGIN{OFS=","}
+             NR==1{for(i=1;i<NF;i++)printf "%s%s",$i,OFS; print "exposed_communication_to_compute_ratio",$NF; next}
+             {for(i=1;i<NF;i++)printf "%s%s",$i,OFS; print "",$NF}' \
+        "$CSV" > "$CSV.tmp" && mv "$CSV.tmp" "$CSV"
+fi
+[ -f "$CSV" ] || echo "ccdg_dir,mode,ranks,mesh,total_cycles,wall_sec,packets_sent,packets_recv,unresolved,steps,cycles_per_iter,timesteps_per_sec,gating,inject_blocked_cycles,blocked_cycles,blocked_ratio,average_packet_queue_cycles,average_flit_queue_cycles,average_injection_rate,injection_saturation_ratio,saturated_injection_rate,exposed_communication_to_compute_ratio,communication_to_compute_ratio" > "$CSV"
 # 从 stats 文件解析 v3 统计（blocked_cycles/blocked_ratio 仅 v3 CCDG 有）
 COMPUTE_CYCLES="$(grep -oP 'compute_cycles = \K[0-9]+' "$STATS" 2>/dev/null | tail -1 || true)"
 BLOCKED_CYCLES="$(grep -oP 'blocked_cycles = \K[0-9]+' "$STATS" 2>/dev/null | tail -1 || true)"
 BLOCKED_RATIO="$(grep -oP 'blocked_ratio = \K[0-9.]+' "$STATS" 2>/dev/null | tail -1 || true)"
-echo "$DIRTAG$CAP_TAG$SCHED_TAG,$MODE,$RANKS,$MESH,$CYCLES,$WALL_S,${SENT:-},${RECV:-},$UNRES,$STEPS,$CPI,$TPS,$GATING_TAG,${BLOCKED:-},${BLOCKED_CYCLES:-},${BLOCKED_RATIO:-}" >> "$CSV"
+echo "$DIRTAG$CAP_TAG$SCHED_TAG,$MODE,$RANKS,$MESH,$CYCLES,$WALL_S,${SENT:-},${RECV:-},$UNRES,$STEPS,$CPI,$TPS,$GATING_TAG,${BLOCKED:-},${BLOCKED_CYCLES:-},${BLOCKED_RATIO:-},${AVG_PACKET_QUEUE:-},${AVG_FLIT_QUEUE:-},${AVG_INJECTION_RATE:-},${INJECTION_SATURATION_RATIO:-},${SATURATED_INJECTION_RATE:-},${EXPOSED_COMM_COMPUTE_RATIO:-},${COMM_COMPUTE_RATIO:-}" >> "$CSV"
 
-echo "[$(date +%H:%M:%S)] 完成: cycles=$CYCLES (≈${WALL_S}s @2GHz) steps=$STEPS cycles/iter=$CPI ($TPS steps/s) gating=$GATING_TAG blocked=${BLOCKED:-?} sent=${SENT:-?} recv=${RECV:-?} unresolved=$UNRES rc=$RC" >&2
+echo "[$(date +%H:%M:%S)] 完成: cycles=$CYCLES (≈${WALL_S}s @2GHz) steps=$STEPS cycles/iter=$CPI ($TPS steps/s) gating=$GATING_TAG blocked=${BLOCKED:-?} avg_packet_queue=${AVG_PACKET_QUEUE:-?} sat_injection=${SATURATED_INJECTION_RATE:-?} comm/compute=${COMM_COMPUTE_RATIO:-?} sent=${SENT:-?} recv=${RECV:-?} unresolved=$UNRES rc=$RC" >&2
 if [ "$UNRES" != "0" ]; then
     echo "警告: 存在未解析跨 rank 边: $UNRES" >&2
 fi

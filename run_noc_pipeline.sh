@@ -596,6 +596,13 @@ def parse_result(txt):
         "blocked_cycles": g(r"blocked_cycles = (\d+)", stats, int) or 0,
         "congestion_cycles": g(r"congestion_cycles = (\d+)", stats, int) or 0,
         "sched_wait_cycles": g(r"sched_wait_cycles = (\d+)", stats, int) or 0,
+        "average_packet_queue_cycles": g(r"average_packet_queue_cycles = ([^;]+)", stats),
+        "average_flit_queue_cycles": g(r"average_flit_queue_cycles = ([^;]+)", stats),
+        "average_injection_rate": g(r"average_injection_rate = ([^;]+)", stats),
+        "injection_saturation_ratio": g(r"injection_saturation_ratio = ([^;]+)", stats),
+        "saturated_injection_rate": g(r"saturated_injection_rate = ([^;]+)", stats),
+        "communication_to_compute_ratio": g(r"(?m)^communication_to_compute_ratio = ([^;]+)", stats),
+        "exposed_communication_to_compute_ratio": g(r"(?m)^exposed_communication_to_compute_ratio = ([^;]+)", stats),
         "packets_sent": g(r"Packets sent: (\d+)", log_b, int),
         "packets_recv": g(r"received: (\d+)", log_b, int),
         "unresolved": g(r"WARNING: (\d+) cross-rank edges", log_b, int) or 0,
@@ -615,6 +622,11 @@ for t in tags:
         missing.append(name)
         sims[name] = {"tag": name, "total_cycles": 0, "compute_cycles": 0,
                       "blocked_cycles": 0, "congestion_cycles": 0, "sched_wait_cycles": 0,
+                      "average_packet_queue_cycles": None, "average_flit_queue_cycles": None,
+                      "average_injection_rate": None, "saturated_injection_rate": None,
+                      "injection_saturation_ratio": None,
+                      "communication_to_compute_ratio": None,
+                      "exposed_communication_to_compute_ratio": None,
                       "packets_sent": None, "packets_recv": None, "unresolved": -1,
                       "wall_sec_at_2ghz": 0.0, "cycles_per_iter": 0, "timesteps_per_sec": 0,
                       "ledger_per_rank_avg": {k: 0 for k in ("compute", "blocked", "congestion", "sched_wait")},
@@ -682,6 +694,14 @@ for name, s in sims.items():
              f"congestion={s['ledger_per_rank_avg']['congestion']:,} "
              f"sched_wait={s['ledger_per_rank_avg']['sched_wait']:,} "
              f"sent={s['packets_sent']} recv={s['packets_recv']}")
+    L.append(
+        "        注入: "
+        f"packet_queue={s['average_packet_queue_cycles']} cyc "
+        f"flit_queue={s['average_flit_queue_cycles']} cyc "
+        f"average_rate={s['average_injection_rate']} "
+        f"saturated_rate={s['saturated_injection_rate']} "
+        f"comm/compute={s['communication_to_compute_ratio']}"
+    )
     L.append(f"        {s['tag']}")
 if comparisons:
     L.append(f"---- 同源档位对比 ----")
