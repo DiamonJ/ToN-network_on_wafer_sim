@@ -1,0 +1,29 @@
+{
+  "description": "4-rank LAMMPS LJ benchmark",
+  "num_ranks": 4,
+  "num_steps": 100,
+  "num_atoms": 32000,
+  "T_real_sec": 0.708475,
+  "cpu_use_pct": 98.0,
+  "mpi_breakdown": {
+    "Pair": {
+      "avg_time": 0.39646
+    },
+    "Neigh": {
+      "avg_time": 0.14634
+    },
+    "Comm": {
+      "avg_time": 0.12831
+    },
+    "Output": {
+      "avg_time": 0.02318
+    },
+    "Modify": {
+      "avg_time": 0.0066544
+    },
+    "Other": {
+      "avg_time": 0.007523
+    }
+  },
+  "trace_dir": "runs/trace_4ranks_20260721_201258/"
+}

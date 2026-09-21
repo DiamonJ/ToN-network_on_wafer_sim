@@ -1,0 +1,44 @@
+{
+  "title": "CCDG Validation Report - Critical Path Analysis",
+  "date": "2026-07-23",
+  "method": "Python critical path simulation (intra-rank dependencies only, cross-rank edges excluded from predecessor chain)",
+  "bandwidth_bps": 12500000000.0,
+  "latency_s": 1e-06,
+  "results": {
+    "4_ranks": {
+      "ccdg": "runs/trace_4ranks_20260721_201258/trace_4ranks_global.ccdg",
+      "T_real_sec": 0.708475,
+      "T_simgrid_sec": 0.708754,
+      "E_total_percent": 0.0393,
+      "pass_threshold_5percent": true,
+      "cpu_freq_ghz": 2.8544,
+      "num_ranks": 4,
+      "num_activities": 24860,
+      "exec_count": 11092,
+      "comm_count": 3601,
+      "sync_count": 10167,
+      "method": "Python critical path (intra-rank deps only)",
+      "simgrid_dag_comparison_sec": 0.708491,
+      "simgrid_dag_error_percent": 0.0023
+    },
+    "16_ranks": {
+      "ccdg": "runs/trace_16ranks_20260721_201406/trace_16ranks_global.ccdg",
+      "T_real_sec": 0.215466,
+      "T_simgrid_sec": 0.215759,
+      "E_total_percent": 0.136,
+      "pass_threshold_5percent": true,
+      "cpu_freq_ghz": 3.2653,
+      "num_ranks": 16,
+      "num_activities": 187240,
+      "exec_count": 64744,
+      "comm_count": 61295,
+      "sync_count": 61201,
+      "method": "Python critical path (intra-rank deps only)"
+    }
+  },
+  "summary": {
+    "4_ranks": "PASS (E_total=0.0393% < 5%)",
+    "16_ranks": "PASS (E_total=0.1360% < 5%)",
+    "conclusion": "Both 4-rank and 16-rank CCDG graphs are validated. The critical path analysis accurately predicts execution time within 0.14% error."
+  }
+}

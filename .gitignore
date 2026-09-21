@@ -56,6 +56,12 @@ lammps.log
 wse_plan.json
 wse_plan.rank*.jsonl
 
+# Raw measurement matrices and per-case plots. Keep the compact summaries at
+# traffic_pattern/results/ itself and the aggregated WSE Phase-3 outputs.
+/cases/*/flops_profile/*.csv
+/cases/*/flops_profile/in.run*.lammps
+/traffic_pattern/results/*/
+
 # Reproduction archives belong in release/object storage, not Git history.
 /*.tar
 /*.tar.gz

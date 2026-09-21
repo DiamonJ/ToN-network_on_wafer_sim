@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "scope": "run",
+  "warnings": [
+    "cfg k=2 is a template value; effective k=16 comes from wse_plan procgrid"
+  ],
+  "limitations": [
+    "source plan has aggregate message sizes but no payload lineage; coincident link loads are summed conservatively",
+    "compute is a static global barrier; source-level compute/communication overlap is not yet emitted",
+    "FFT remap, Grid3d, and collectives are outside the Phase-1 short-range compiler"
+  ],
+  "counts": {
+    "ranks": 256,
+    "messages": 10032,
+    "stages": 4,
+    "wavefronts": 48,
+    "link_reservation_retries": 24
+  },
+  "conservation": {
+    "input_messages": 10032,
+    "emitted_flows": 10032,
+    "input_bytes": 11974656,
+    "emitted_logical_bytes": 11974656
+  },
+  "cycles": {
+    "compute_barrier": 67353,
+    "communication_completion": 135993,
+    "compiled_total": 143547,
+    "wse_semantic_total": 135993,
+    "manager_replay_total": 143547
+  },
+  "assertions": {
+    "placement_bijective": true,
+    "z_compressed": true,
+    "individual_routes_acyclic": true,
+    "link_schedule_conflict_free": true,
+    "est_monotonic": true,
+    "message_count_conserved": true,
+    "message_bytes_conserved": true,
+    "fold_neighbor_hops_le_2": true
+  },
+  "replay": {
+    "packets": 3888,
+    "commands": 48,
+    "branches": 3840,
+    "bytes": 22477056,
+    "branch_link_bytes": 22477056,
+    "wavefronts": 48,
+    "completion_cycle": 143547
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "title": "CCDG Validation Report - SimGrid DAG",
+  "date": "2026-07-23",
+  "method": "SimGrid 4.1 DAG simulation with improved collective modeling",
+  "simgrid_version": "4.1",
+  "improvements": [
+    "ALLREDUCE: recursive doubling (log2(N) sequential steps)",
+    "BCAST: binomial tree (sequential sends to powers of 2)",
+    "CPU frequency: consistent baseline calibrated from rank=4"
+  ],
+  "cpu_freq_calibration": "Baseline from rank=4 (2.8000 GHz), used for all ranks",
+  "bandwidth_bps": 12500000000.0,
+  "latency_s": 1e-06,
+  "results": {
+    "4": {
+      "num_ranks": 4,
+      "ccdg": "trace_4ranks_global.ccdg",
+      "T_real_sec": 0.708475,
+      "T_simgrid_sec": 0.689783,
+      "E_total_percent": 2.6383,
+      "pass_threshold_5percent": true,
+      "cpu_freq_ghz": 2.8,
+      "num_activities": 23940,
+      "num_deps": 28991,
+      "exec_count": 21259,
+      "comm_count": 2681
+    },
+    "8": {
+      "num_ranks": 8,
+      "ccdg": "trace_8ranks_global.ccdg",
+      "T_real_sec": 0.344702,
+      "T_simgrid_sec": 0.333154,
+      "E_total_percent": 3.3501,
+      "pass_threshold_5percent": true,
+      "cpu_freq_ghz": 2.8,
+      "num_activities": 71548,
+      "num_deps": 89090,
+      "exec_count": 62460,
+      "comm_count": 9088
+    },
+    "16": {
+      "num_ranks": 16,
+      "ccdg": "trace_16ranks_global.ccdg",
+      "T_real_sec": 0.215466,
+      "T_simgrid_sec": 0.213787,
+      "E_total_percent": 0.7792,
+      "pass_threshold_5percent": true,
+      "cpu_freq_ghz": 2.8,
+      "num_activities": 148740,
+      "num_deps": 186513,
+      "exec_count": 125945,
+      "comm_count": 22795
+    },
+    "32": {
+      "num_ranks": 32,
+      "ccdg": "trace_32ranks_global.ccdg",
+      "T_real_sec": 0.148186,
+      "T_simgrid_sec": 0.149209,
+      "E_total_percent": 0.6903,
+      "pass_threshold_5percent": true,
+      "cpu_freq_ghz": 2.8,
+      "num_activities": 308579,
+      "num_deps": 387393,
+      "exec_count": 254826,
+      "comm_count": 53753
+    }
+  },
+  "summary": {
+    "4_ranks": "PASS (E_total=2.6383% < 5%)",
+    "8_ranks": "PASS (E_total=3.3501% < 5%)",
+    "16_ranks": "PASS (E_total=0.7792% < 5%)",
+    "32_ranks": "PASS (E_total=0.6903% < 5%)"
+  }
+}

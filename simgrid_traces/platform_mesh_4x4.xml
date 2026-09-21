@@ -1,0 +1,183 @@
+<?xml version='1.0'?>
+<!DOCTYPE platform SYSTEM "https://simgrid.org/simgrid.dtd">
+<platform version="4.1">
+  <zone id="mesh4x4" routing="Full">
+    <host id="host0" speed="1.42Gf"/>
+    <host id="host1" speed="1.42Gf"/>
+    <host id="host2" speed="1.42Gf"/>
+    <host id="host3" speed="1.42Gf"/>
+    <host id="host4" speed="1.42Gf"/>
+    <host id="host5" speed="1.42Gf"/>
+    <host id="host6" speed="1.42Gf"/>
+    <host id="host7" speed="1.42Gf"/>
+    <host id="host8" speed="1.42Gf"/>
+    <host id="host9" speed="1.42Gf"/>
+    <host id="host10" speed="1.42Gf"/>
+    <host id="host11" speed="1.42Gf"/>
+    <host id="host12" speed="1.42Gf"/>
+    <host id="host13" speed="1.42Gf"/>
+    <host id="host14" speed="1.42Gf"/>
+    <host id="host15" speed="1.42Gf"/>
+    <link id="loopback" bandwidth="100000MBps" latency="0.00000001s"/>
+    <link id="h0_1" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="v0_4" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="h1_2" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="v1_5" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="h2_3" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="v2_6" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="v3_7" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="h4_5" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="v4_8" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="h5_6" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="v5_9" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="h6_7" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="v6_10" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="v7_11" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="h8_9" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="v8_12" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="h9_10" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="v9_13" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="h10_11" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="v10_14" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="v11_15" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="h12_13" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="h13_14" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="h14_15" bandwidth="6800MBps" latency="0.00000001s"/>
+    <route src="host0" dst="host0"><link_ctn id="loopback"/></route>
+    <route src="host0" dst="host1"><link_ctn id="h0_1"/></route>
+    <route src="host0" dst="host2"><link_ctn id="h0_1"/><link_ctn id="h1_2"/></route>
+    <route src="host0" dst="host3"><link_ctn id="h0_1"/><link_ctn id="h1_2"/><link_ctn id="h2_3"/></route>
+    <route src="host0" dst="host4"><link_ctn id="v0_4"/></route>
+    <route src="host0" dst="host5"><link_ctn id="h0_1"/><link_ctn id="v1_5"/></route>
+    <route src="host0" dst="host6"><link_ctn id="h0_1"/><link_ctn id="h1_2"/><link_ctn id="v2_6"/></route>
+    <route src="host0" dst="host7"><link_ctn id="h0_1"/><link_ctn id="h1_2"/><link_ctn id="h2_3"/><link_ctn id="v3_7"/></route>
+    <route src="host0" dst="host8"><link_ctn id="v0_4"/><link_ctn id="v4_8"/></route>
+    <route src="host0" dst="host9"><link_ctn id="h0_1"/><link_ctn id="v1_5"/><link_ctn id="v5_9"/></route>
+    <route src="host0" dst="host10"><link_ctn id="h0_1"/><link_ctn id="h1_2"/><link_ctn id="v2_6"/><link_ctn id="v6_10"/></route>
+    <route src="host0" dst="host11"><link_ctn id="h0_1"/><link_ctn id="h1_2"/><link_ctn id="h2_3"/><link_ctn id="v3_7"/><link_ctn id="v7_11"/></route>
+    <route src="host0" dst="host12"><link_ctn id="v0_4"/><link_ctn id="v4_8"/><link_ctn id="v8_12"/></route>
+    <route src="host0" dst="host13"><link_ctn id="h0_1"/><link_ctn id="v1_5"/><link_ctn id="v5_9"/><link_ctn id="v9_13"/></route>
+    <route src="host0" dst="host14"><link_ctn id="h0_1"/><link_ctn id="h1_2"/><link_ctn id="v2_6"/><link_ctn id="v6_10"/><link_ctn id="v10_14"/></route>
+    <route src="host0" dst="host15"><link_ctn id="h0_1"/><link_ctn id="h1_2"/><link_ctn id="h2_3"/><link_ctn id="v3_7"/><link_ctn id="v7_11"/><link_ctn id="v11_15"/></route>
+    <route src="host1" dst="host1"><link_ctn id="loopback"/></route>
+    <route src="host1" dst="host2"><link_ctn id="h1_2"/></route>
+    <route src="host1" dst="host3"><link_ctn id="h1_2"/><link_ctn id="h2_3"/></route>
+    <route src="host1" dst="host4"><link_ctn id="h0_1"/><link_ctn id="v0_4"/></route>
+    <route src="host1" dst="host5"><link_ctn id="v1_5"/></route>
+    <route src="host1" dst="host6"><link_ctn id="h1_2"/><link_ctn id="v2_6"/></route>
+    <route src="host1" dst="host7"><link_ctn id="h1_2"/><link_ctn id="h2_3"/><link_ctn id="v3_7"/></route>
+    <route src="host1" dst="host8"><link_ctn id="h0_1"/><link_ctn id="v0_4"/><link_ctn id="v4_8"/></route>
+    <route src="host1" dst="host9"><link_ctn id="v1_5"/><link_ctn id="v5_9"/></route>
+    <route src="host1" dst="host10"><link_ctn id="h1_2"/><link_ctn id="v2_6"/><link_ctn id="v6_10"/></route>
+    <route src="host1" dst="host11"><link_ctn id="h1_2"/><link_ctn id="h2_3"/><link_ctn id="v3_7"/><link_ctn id="v7_11"/></route>
+    <route src="host1" dst="host12"><link_ctn id="h0_1"/><link_ctn id="v0_4"/><link_ctn id="v4_8"/><link_ctn id="v8_12"/></route>
+    <route src="host1" dst="host13"><link_ctn id="v1_5"/><link_ctn id="v5_9"/><link_ctn id="v9_13"/></route>
+    <route src="host1" dst="host14"><link_ctn id="h1_2"/><link_ctn id="v2_6"/><link_ctn id="v6_10"/><link_ctn id="v10_14"/></route>
+    <route src="host1" dst="host15"><link_ctn id="h1_2"/><link_ctn id="h2_3"/><link_ctn id="v3_7"/><link_ctn id="v7_11"/><link_ctn id="v11_15"/></route>
+    <route src="host2" dst="host2"><link_ctn id="loopback"/></route>
+    <route src="host2" dst="host3"><link_ctn id="h2_3"/></route>
+    <route src="host2" dst="host4"><link_ctn id="h1_2"/><link_ctn id="h0_1"/><link_ctn id="v0_4"/></route>
+    <route src="host2" dst="host5"><link_ctn id="h1_2"/><link_ctn id="v1_5"/></route>
+    <route src="host2" dst="host6"><link_ctn id="v2_6"/></route>
+    <route src="host2" dst="host7"><link_ctn id="h2_3"/><link_ctn id="v3_7"/></route>
+    <route src="host2" dst="host8"><link_ctn id="h1_2"/><link_ctn id="h0_1"/><link_ctn id="v0_4"/><link_ctn id="v4_8"/></route>
+    <route src="host2" dst="host9"><link_ctn id="h1_2"/><link_ctn id="v1_5"/><link_ctn id="v5_9"/></route>
+    <route src="host2" dst="host10"><link_ctn id="v2_6"/><link_ctn id="v6_10"/></route>
+    <route src="host2" dst="host11"><link_ctn id="h2_3"/><link_ctn id="v3_7"/><link_ctn id="v7_11"/></route>
+    <route src="host2" dst="host12"><link_ctn id="h1_2"/><link_ctn id="h0_1"/><link_ctn id="v0_4"/><link_ctn id="v4_8"/><link_ctn id="v8_12"/></route>
+    <route src="host2" dst="host13"><link_ctn id="h1_2"/><link_ctn id="v1_5"/><link_ctn id="v5_9"/><link_ctn id="v9_13"/></route>
+    <route src="host2" dst="host14"><link_ctn id="v2_6"/><link_ctn id="v6_10"/><link_ctn id="v10_14"/></route>
+    <route src="host2" dst="host15"><link_ctn id="h2_3"/><link_ctn id="v3_7"/><link_ctn id="v7_11"/><link_ctn id="v11_15"/></route>
+    <route src="host3" dst="host3"><link_ctn id="loopback"/></route>
+    <route src="host3" dst="host4"><link_ctn id="h2_3"/><link_ctn id="h1_2"/><link_ctn id="h0_1"/><link_ctn id="v0_4"/></route>
+    <route src="host3" dst="host5"><link_ctn id="h2_3"/><link_ctn id="h1_2"/><link_ctn id="v1_5"/></route>
+    <route src="host3" dst="host6"><link_ctn id="h2_3"/><link_ctn id="v2_6"/></route>
+    <route src="host3" dst="host7"><link_ctn id="v3_7"/></route>
+    <route src="host3" dst="host8"><link_ctn id="h2_3"/><link_ctn id="h1_2"/><link_ctn id="h0_1"/><link_ctn id="v0_4"/><link_ctn id="v4_8"/></route>
+    <route src="host3" dst="host9"><link_ctn id="h2_3"/><link_ctn id="h1_2"/><link_ctn id="v1_5"/><link_ctn id="v5_9"/></route>
+    <route src="host3" dst="host10"><link_ctn id="h2_3"/><link_ctn id="v2_6"/><link_ctn id="v6_10"/></route>
+    <route src="host3" dst="host11"><link_ctn id="v3_7"/><link_ctn id="v7_11"/></route>
+    <route src="host3" dst="host12"><link_ctn id="h2_3"/><link_ctn id="h1_2"/><link_ctn id="h0_1"/><link_ctn id="v0_4"/><link_ctn id="v4_8"/><link_ctn id="v8_12"/></route>
+    <route src="host3" dst="host13"><link_ctn id="h2_3"/><link_ctn id="h1_2"/><link_ctn id="v1_5"/><link_ctn id="v5_9"/><link_ctn id="v9_13"/></route>
+    <route src="host3" dst="host14"><link_ctn id="h2_3"/><link_ctn id="v2_6"/><link_ctn id="v6_10"/><link_ctn id="v10_14"/></route>
+    <route src="host3" dst="host15"><link_ctn id="v3_7"/><link_ctn id="v7_11"/><link_ctn id="v11_15"/></route>
+    <route src="host4" dst="host4"><link_ctn id="loopback"/></route>
+    <route src="host4" dst="host5"><link_ctn id="h4_5"/></route>
+    <route src="host4" dst="host6"><link_ctn id="h4_5"/><link_ctn id="h5_6"/></route>
+    <route src="host4" dst="host7"><link_ctn id="h4_5"/><link_ctn id="h5_6"/><link_ctn id="h6_7"/></route>
+    <route src="host4" dst="host8"><link_ctn id="v4_8"/></route>
+    <route src="host4" dst="host9"><link_ctn id="h4_5"/><link_ctn id="v5_9"/></route>
+    <route src="host4" dst="host10"><link_ctn id="h4_5"/><link_ctn id="h5_6"/><link_ctn id="v6_10"/></route>
+    <route src="host4" dst="host11"><link_ctn id="h4_5"/><link_ctn id="h5_6"/><link_ctn id="h6_7"/><link_ctn id="v7_11"/></route>
+    <route src="host4" dst="host12"><link_ctn id="v4_8"/><link_ctn id="v8_12"/></route>
+    <route src="host4" dst="host13"><link_ctn id="h4_5"/><link_ctn id="v5_9"/><link_ctn id="v9_13"/></route>
+    <route src="host4" dst="host14"><link_ctn id="h4_5"/><link_ctn id="h5_6"/><link_ctn id="v6_10"/><link_ctn id="v10_14"/></route>
+    <route src="host4" dst="host15"><link_ctn id="h4_5"/><link_ctn id="h5_6"/><link_ctn id="h6_7"/><link_ctn id="v7_11"/><link_ctn id="v11_15"/></route>
+    <route src="host5" dst="host5"><link_ctn id="loopback"/></route>
+    <route src="host5" dst="host6"><link_ctn id="h5_6"/></route>
+    <route src="host5" dst="host7"><link_ctn id="h5_6"/><link_ctn id="h6_7"/></route>
+    <route src="host5" dst="host8"><link_ctn id="h4_5"/><link_ctn id="v4_8"/></route>
+    <route src="host5" dst="host9"><link_ctn id="v5_9"/></route>
+    <route src="host5" dst="host10"><link_ctn id="h5_6"/><link_ctn id="v6_10"/></route>
+    <route src="host5" dst="host11"><link_ctn id="h5_6"/><link_ctn id="h6_7"/><link_ctn id="v7_11"/></route>
+    <route src="host5" dst="host12"><link_ctn id="h4_5"/><link_ctn id="v4_8"/><link_ctn id="v8_12"/></route>
+    <route src="host5" dst="host13"><link_ctn id="v5_9"/><link_ctn id="v9_13"/></route>
+    <route src="host5" dst="host14"><link_ctn id="h5_6"/><link_ctn id="v6_10"/><link_ctn id="v10_14"/></route>
+    <route src="host5" dst="host15"><link_ctn id="h5_6"/><link_ctn id="h6_7"/><link_ctn id="v7_11"/><link_ctn id="v11_15"/></route>
+    <route src="host6" dst="host6"><link_ctn id="loopback"/></route>
+    <route src="host6" dst="host7"><link_ctn id="h6_7"/></route>
+    <route src="host6" dst="host8"><link_ctn id="h5_6"/><link_ctn id="h4_5"/><link_ctn id="v4_8"/></route>
+    <route src="host6" dst="host9"><link_ctn id="h5_6"/><link_ctn id="v5_9"/></route>
+    <route src="host6" dst="host10"><link_ctn id="v6_10"/></route>
+    <route src="host6" dst="host11"><link_ctn id="h6_7"/><link_ctn id="v7_11"/></route>
+    <route src="host6" dst="host12"><link_ctn id="h5_6"/><link_ctn id="h4_5"/><link_ctn id="v4_8"/><link_ctn id="v8_12"/></route>
+    <route src="host6" dst="host13"><link_ctn id="h5_6"/><link_ctn id="v5_9"/><link_ctn id="v9_13"/></route>
+    <route src="host6" dst="host14"><link_ctn id="v6_10"/><link_ctn id="v10_14"/></route>
+    <route src="host6" dst="host15"><link_ctn id="h6_7"/><link_ctn id="v7_11"/><link_ctn id="v11_15"/></route>
+    <route src="host7" dst="host7"><link_ctn id="loopback"/></route>
+    <route src="host7" dst="host8"><link_ctn id="h6_7"/><link_ctn id="h5_6"/><link_ctn id="h4_5"/><link_ctn id="v4_8"/></route>
+    <route src="host7" dst="host9"><link_ctn id="h6_7"/><link_ctn id="h5_6"/><link_ctn id="v5_9"/></route>
+    <route src="host7" dst="host10"><link_ctn id="h6_7"/><link_ctn id="v6_10"/></route>
+    <route src="host7" dst="host11"><link_ctn id="v7_11"/></route>
+    <route src="host7" dst="host12"><link_ctn id="h6_7"/><link_ctn id="h5_6"/><link_ctn id="h4_5"/><link_ctn id="v4_8"/><link_ctn id="v8_12"/></route>
+    <route src="host7" dst="host13"><link_ctn id="h6_7"/><link_ctn id="h5_6"/><link_ctn id="v5_9"/><link_ctn id="v9_13"/></route>
+    <route src="host7" dst="host14"><link_ctn id="h6_7"/><link_ctn id="v6_10"/><link_ctn id="v10_14"/></route>
+    <route src="host7" dst="host15"><link_ctn id="v7_11"/><link_ctn id="v11_15"/></route>
+    <route src="host8" dst="host8"><link_ctn id="loopback"/></route>
+    <route src="host8" dst="host9"><link_ctn id="h8_9"/></route>
+    <route src="host8" dst="host10"><link_ctn id="h8_9"/><link_ctn id="h9_10"/></route>
+    <route src="host8" dst="host11"><link_ctn id="h8_9"/><link_ctn id="h9_10"/><link_ctn id="h10_11"/></route>
+    <route src="host8" dst="host12"><link_ctn id="v8_12"/></route>
+    <route src="host8" dst="host13"><link_ctn id="h8_9"/><link_ctn id="v9_13"/></route>
+    <route src="host8" dst="host14"><link_ctn id="h8_9"/><link_ctn id="h9_10"/><link_ctn id="v10_14"/></route>
+    <route src="host8" dst="host15"><link_ctn id="h8_9"/><link_ctn id="h9_10"/><link_ctn id="h10_11"/><link_ctn id="v11_15"/></route>
+    <route src="host9" dst="host9"><link_ctn id="loopback"/></route>
+    <route src="host9" dst="host10"><link_ctn id="h9_10"/></route>
+    <route src="host9" dst="host11"><link_ctn id="h9_10"/><link_ctn id="h10_11"/></route>
+    <route src="host9" dst="host12"><link_ctn id="h8_9"/><link_ctn id="v8_12"/></route>
+    <route src="host9" dst="host13"><link_ctn id="v9_13"/></route>
+    <route src="host9" dst="host14"><link_ctn id="h9_10"/><link_ctn id="v10_14"/></route>
+    <route src="host9" dst="host15"><link_ctn id="h9_10"/><link_ctn id="h10_11"/><link_ctn id="v11_15"/></route>
+    <route src="host10" dst="host10"><link_ctn id="loopback"/></route>
+    <route src="host10" dst="host11"><link_ctn id="h10_11"/></route>
+    <route src="host10" dst="host12"><link_ctn id="h9_10"/><link_ctn id="h8_9"/><link_ctn id="v8_12"/></route>
+    <route src="host10" dst="host13"><link_ctn id="h9_10"/><link_ctn id="v9_13"/></route>
+    <route src="host10" dst="host14"><link_ctn id="v10_14"/></route>
+    <route src="host10" dst="host15"><link_ctn id="h10_11"/><link_ctn id="v11_15"/></route>
+    <route src="host11" dst="host11"><link_ctn id="loopback"/></route>
+    <route src="host11" dst="host12"><link_ctn id="h10_11"/><link_ctn id="h9_10"/><link_ctn id="h8_9"/><link_ctn id="v8_12"/></route>
+    <route src="host11" dst="host13"><link_ctn id="h10_11"/><link_ctn id="h9_10"/><link_ctn id="v9_13"/></route>
+    <route src="host11" dst="host14"><link_ctn id="h10_11"/><link_ctn id="v10_14"/></route>
+    <route src="host11" dst="host15"><link_ctn id="v11_15"/></route>
+    <route src="host12" dst="host12"><link_ctn id="loopback"/></route>
+    <route src="host12" dst="host13"><link_ctn id="h12_13"/></route>
+    <route src="host12" dst="host14"><link_ctn id="h12_13"/><link_ctn id="h13_14"/></route>
+    <route src="host12" dst="host15"><link_ctn id="h12_13"/><link_ctn id="h13_14"/><link_ctn id="h14_15"/></route>
+    <route src="host13" dst="host13"><link_ctn id="loopback"/></route>
+    <route src="host13" dst="host14"><link_ctn id="h13_14"/></route>
+    <route src="host13" dst="host15"><link_ctn id="h13_14"/><link_ctn id="h14_15"/></route>
+    <route src="host14" dst="host14"><link_ctn id="loopback"/></route>
+    <route src="host14" dst="host15"><link_ctn id="h14_15"/></route>
+    <route src="host15" dst="host15"><link_ctn id="loopback"/></route>
+  </zone>
+</platform>

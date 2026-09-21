@@ -1,0 +1,1969 @@
+{
+  "schema_version": 1,
+  "model": "static_uniform_density_v1",
+  "input": {
+    "atoms": 2688,
+    "box": [
+      27.9879848,
+      51.9719744,
+      51.9320172
+    ],
+    "density": 0.035583873928093875,
+    "procgrid": [
+      8,
+      8,
+      1
+    ],
+    "num_ranks": 64,
+    "atom_style": "charge",
+    "pair_style": "lj/cut/coul/cut",
+    "force_cutoff": 10.0,
+    "neighbor_skin": 0.3,
+    "ghost_width": 10.3,
+    "kspace_accuracy": null
+  },
+  "assumptions": {
+    "scope": "one steady Verlet timestep",
+    "communication_metric": "application send payload; collectives excluded",
+    "newton_pair": true,
+    "uniform_density_for_neighbors_and_ghosts": true,
+    "pair_candidate_ops": 8,
+    "lj_coul_kernel_ops_range": [
+      45,
+      50
+    ],
+    "pppm_fft_remap": "160 bytes/grid-point \u00d7 (1-1/ranks), topology approximation",
+    "commbrick_copies": "coordinate-level replay of CommBrick borders swaps"
+  },
+  "swap_geometry": [
+    {
+      "dimension": 0,
+      "round": 0,
+      "volume": 2360.6198743212453
+    },
+    {
+      "dimension": 0,
+      "round": 1,
+      "volume": 2360.6198743212453
+    },
+    {
+      "dimension": 0,
+      "round": 2,
+      "volume": 2228.7096326388164
+    },
+    {
+      "dimension": 1,
+      "round": 0,
+      "volume": 16260.518636883857
+    },
+    {
+      "dimension": 1,
+      "round": 1,
+      "volume": 9520.04389027751
+    }
+  ],
+  "pppm": null,
+  "summary": {
+    "T1_send_bytes": {
+      "sum": 3592704.0,
+      "average": 56136.0,
+      "minimum": 54912.0,
+      "maximum": 57984.0
+    },
+    "T1_steady_send_bytes": {
+      "sum": 3592704.0,
+      "average": 56136.0,
+      "minimum": 54912.0,
+      "maximum": 57984.0
+    },
+    "T1_rebuild_send_bytes": {
+      "sum": 5987840.0,
+      "average": 93560.0,
+      "minimum": 91520.0,
+      "maximum": 96640.0
+    },
+    "C1_ops": {
+      "sum": 11315180.239136962,
+      "average": 176799.69123651503,
+      "minimum": 117866.46082434335,
+      "maximum": 235732.9216486867
+    },
+    "C1_steady_ops_min": {
+      "sum": 10814360.873740891,
+      "average": 168974.38865220142,
+      "minimum": 112649.59243480097,
+      "maximum": 225299.18486960194
+    },
+    "C1_steady_ops_max": {
+      "sum": 11815999.604533028,
+      "average": 184624.99382082856,
+      "minimum": 123083.3292138857,
+      "maximum": 246166.6584277714
+    },
+    "C1_steady_ops_midpoint": {
+      "sum": 11315180.239136962,
+      "average": 176799.69123651503,
+      "minimum": 117866.46082434335,
+      "maximum": 235732.9216486867
+    }
+  },
+  "ranks": [
+    {
+      "rank": 0,
+      "nlocal": 40,
+      "nghost_estimate": 1565.0804560218826,
+      "neighbor_entries_estimate": 3257.4931112568383,
+      "force_pairs_estimate": 2981.0676511670686,
+      "communication": {
+        "forward_bytes": 27456.0,
+        "reverse_bytes": 27456.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 64064.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 54912.0,
+      "T1_steady_send_bytes": 54912.0,
+      "T1_rebuild_send_bytes": 91520.0,
+      "computation": {
+        "integrate_ops": 720.0,
+        "pair_ops_min": 160207.98919257277,
+        "pair_ops_max": 175113.32744840812,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 168380.65832049045,
+      "C1_steady_ops_min": 160927.98919257277,
+      "C1_steady_ops_max": 175833.32744840812,
+      "C1_steady_ops_midpoint": 168380.65832049045
+    },
+    {
+      "rank": 1,
+      "nlocal": 56,
+      "nghost_estimate": 2191.1126384306353,
+      "neighbor_entries_estimate": 4560.490355759574,
+      "force_pairs_estimate": 4173.494711633896,
+      "communication": {
+        "forward_bytes": 27936.0,
+        "reverse_bytes": 27936.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65184.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 55872.0,
+      "T1_steady_send_bytes": 55872.0,
+      "T1_rebuild_send_bytes": 93120.0,
+      "computation": {
+        "integrate_ops": 1008.0,
+        "pair_ops_min": 224291.18486960194,
+        "pair_ops_max": 245158.6584277714,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 235732.9216486867,
+      "C1_steady_ops_min": 225299.18486960194,
+      "C1_steady_ops_max": 246166.6584277714,
+      "C1_steady_ops_midpoint": 235732.9216486867
+    },
+    {
+      "rank": 2,
+      "nlocal": 40,
+      "nghost_estimate": 1565.0804560218826,
+      "neighbor_entries_estimate": 3257.4931112568383,
+      "force_pairs_estimate": 2981.0676511670686,
+      "communication": {
+        "forward_bytes": 27456.0,
+        "reverse_bytes": 27456.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 64064.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 54912.0,
+      "T1_steady_send_bytes": 54912.0,
+      "T1_rebuild_send_bytes": 91520.0,
+      "computation": {
+        "integrate_ops": 720.0,
+        "pair_ops_min": 160207.98919257277,
+        "pair_ops_max": 175113.32744840812,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 168380.65832049045,
+      "C1_steady_ops_min": 160927.98919257277,
+      "C1_steady_ops_max": 175833.32744840812,
+      "C1_steady_ops_midpoint": 168380.65832049045
+    },
+    {
+      "rank": 3,
+      "nlocal": 56,
+      "nghost_estimate": 2191.1126384306353,
+      "neighbor_entries_estimate": 4560.490355759574,
+      "force_pairs_estimate": 4173.494711633896,
+      "communication": {
+        "forward_bytes": 27936.0,
+        "reverse_bytes": 27936.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65184.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 55872.0,
+      "T1_steady_send_bytes": 55872.0,
+      "T1_rebuild_send_bytes": 93120.0,
+      "computation": {
+        "integrate_ops": 1008.0,
+        "pair_ops_min": 224291.18486960194,
+        "pair_ops_max": 245158.6584277714,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 235732.9216486867,
+      "C1_steady_ops_min": 225299.18486960194,
+      "C1_steady_ops_max": 246166.6584277714,
+      "C1_steady_ops_midpoint": 235732.9216486867
+    },
+    {
+      "rank": 4,
+      "nlocal": 40,
+      "nghost_estimate": 1565.0804560218826,
+      "neighbor_entries_estimate": 3257.4931112568383,
+      "force_pairs_estimate": 2981.0676511670686,
+      "communication": {
+        "forward_bytes": 27456.0,
+        "reverse_bytes": 27456.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 64064.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 54912.0,
+      "T1_steady_send_bytes": 54912.0,
+      "T1_rebuild_send_bytes": 91520.0,
+      "computation": {
+        "integrate_ops": 720.0,
+        "pair_ops_min": 160207.98919257277,
+        "pair_ops_max": 175113.32744840812,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 168380.65832049045,
+      "C1_steady_ops_min": 160927.98919257277,
+      "C1_steady_ops_max": 175833.32744840812,
+      "C1_steady_ops_midpoint": 168380.65832049045
+    },
+    {
+      "rank": 5,
+      "nlocal": 56,
+      "nghost_estimate": 2191.1126384306353,
+      "neighbor_entries_estimate": 4560.490355759574,
+      "force_pairs_estimate": 4173.494711633896,
+      "communication": {
+        "forward_bytes": 27936.0,
+        "reverse_bytes": 27936.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65184.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 55872.0,
+      "T1_steady_send_bytes": 55872.0,
+      "T1_rebuild_send_bytes": 93120.0,
+      "computation": {
+        "integrate_ops": 1008.0,
+        "pair_ops_min": 224291.18486960194,
+        "pair_ops_max": 245158.6584277714,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 235732.9216486867,
+      "C1_steady_ops_min": 225299.18486960194,
+      "C1_steady_ops_max": 246166.6584277714,
+      "C1_steady_ops_midpoint": 235732.9216486867
+    },
+    {
+      "rank": 6,
+      "nlocal": 40,
+      "nghost_estimate": 1565.0804560218826,
+      "neighbor_entries_estimate": 3257.4931112568383,
+      "force_pairs_estimate": 2981.0676511670686,
+      "communication": {
+        "forward_bytes": 27456.0,
+        "reverse_bytes": 27456.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 64064.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 54912.0,
+      "T1_steady_send_bytes": 54912.0,
+      "T1_rebuild_send_bytes": 91520.0,
+      "computation": {
+        "integrate_ops": 720.0,
+        "pair_ops_min": 160207.98919257277,
+        "pair_ops_max": 175113.32744840812,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 168380.65832049045,
+      "C1_steady_ops_min": 160927.98919257277,
+      "C1_steady_ops_max": 175833.32744840812,
+      "C1_steady_ops_midpoint": 168380.65832049045
+    },
+    {
+      "rank": 7,
+      "nlocal": 56,
+      "nghost_estimate": 2191.1126384306353,
+      "neighbor_entries_estimate": 4560.490355759574,
+      "force_pairs_estimate": 4173.494711633896,
+      "communication": {
+        "forward_bytes": 27936.0,
+        "reverse_bytes": 27936.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65184.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 55872.0,
+      "T1_steady_send_bytes": 55872.0,
+      "T1_rebuild_send_bytes": 93120.0,
+      "computation": {
+        "integrate_ops": 1008.0,
+        "pair_ops_min": 224291.18486960194,
+        "pair_ops_max": 245158.6584277714,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 235732.9216486867,
+      "C1_steady_ops_min": 225299.18486960194,
+      "C1_steady_ops_max": 246166.6584277714,
+      "C1_steady_ops_midpoint": 235732.9216486867
+    },
+    {
+      "rank": 8,
+      "nlocal": 48,
+      "nghost_estimate": 1878.096547226259,
+      "neighbor_entries_estimate": 3908.9917335082064,
+      "force_pairs_estimate": 3577.2811814004826,
+      "communication": {
+        "forward_bytes": 28032.0,
+        "reverse_bytes": 28032.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65408.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 56064.0,
+      "T1_steady_send_bytes": 56064.0,
+      "T1_rebuild_send_bytes": 93440.0,
+      "computation": {
+        "integrate_ops": 864.0,
+        "pair_ops_min": 192249.58703108737,
+        "pair_ops_max": 210135.9929380898,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 202056.78998458857,
+      "C1_steady_ops_min": 193113.58703108737,
+      "C1_steady_ops_max": 210999.9929380898,
+      "C1_steady_ops_midpoint": 202056.78998458857
+    },
+    {
+      "rank": 9,
+      "nlocal": 28,
+      "nghost_estimate": 1095.5563192153177,
+      "neighbor_entries_estimate": 2280.245177879787,
+      "force_pairs_estimate": 2086.747355816948,
+      "communication": {
+        "forward_bytes": 28224.0,
+        "reverse_bytes": 28224.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65856.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 56448.0,
+      "T1_steady_send_bytes": 56448.0,
+      "T1_rebuild_send_bytes": 94080.0,
+      "computation": {
+        "integrate_ops": 504.0,
+        "pair_ops_min": 112145.59243480097,
+        "pair_ops_max": 122579.3292138857,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 117866.46082434335,
+      "C1_steady_ops_min": 112649.59243480097,
+      "C1_steady_ops_max": 123083.3292138857,
+      "C1_steady_ops_midpoint": 117866.46082434335
+    },
+    {
+      "rank": 10,
+      "nlocal": 48,
+      "nghost_estimate": 1878.096547226259,
+      "neighbor_entries_estimate": 3908.9917335082064,
+      "force_pairs_estimate": 3577.2811814004826,
+      "communication": {
+        "forward_bytes": 28032.0,
+        "reverse_bytes": 28032.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65408.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 56064.0,
+      "T1_steady_send_bytes": 56064.0,
+      "T1_rebuild_send_bytes": 93440.0,
+      "computation": {
+        "integrate_ops": 864.0,
+        "pair_ops_min": 192249.58703108737,
+        "pair_ops_max": 210135.9929380898,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 202056.78998458857,
+      "C1_steady_ops_min": 193113.58703108737,
+      "C1_steady_ops_max": 210999.9929380898,
+      "C1_steady_ops_midpoint": 202056.78998458857
+    },
+    {
+      "rank": 11,
+      "nlocal": 28,
+      "nghost_estimate": 1095.5563192153177,
+      "neighbor_entries_estimate": 2280.245177879787,
+      "force_pairs_estimate": 2086.747355816948,
+      "communication": {
+        "forward_bytes": 28224.0,
+        "reverse_bytes": 28224.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65856.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 56448.0,
+      "T1_steady_send_bytes": 56448.0,
+      "T1_rebuild_send_bytes": 94080.0,
+      "computation": {
+        "integrate_ops": 504.0,
+        "pair_ops_min": 112145.59243480097,
+        "pair_ops_max": 122579.3292138857,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 117866.46082434335,
+      "C1_steady_ops_min": 112649.59243480097,
+      "C1_steady_ops_max": 123083.3292138857,
+      "C1_steady_ops_midpoint": 117866.46082434335
+    },
+    {
+      "rank": 12,
+      "nlocal": 48,
+      "nghost_estimate": 1878.096547226259,
+      "neighbor_entries_estimate": 3908.9917335082064,
+      "force_pairs_estimate": 3577.2811814004826,
+      "communication": {
+        "forward_bytes": 28032.0,
+        "reverse_bytes": 28032.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65408.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 56064.0,
+      "T1_steady_send_bytes": 56064.0,
+      "T1_rebuild_send_bytes": 93440.0,
+      "computation": {
+        "integrate_ops": 864.0,
+        "pair_ops_min": 192249.58703108737,
+        "pair_ops_max": 210135.9929380898,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 202056.78998458857,
+      "C1_steady_ops_min": 193113.58703108737,
+      "C1_steady_ops_max": 210999.9929380898,
+      "C1_steady_ops_midpoint": 202056.78998458857
+    },
+    {
+      "rank": 13,
+      "nlocal": 28,
+      "nghost_estimate": 1095.5563192153177,
+      "neighbor_entries_estimate": 2280.245177879787,
+      "force_pairs_estimate": 2086.747355816948,
+      "communication": {
+        "forward_bytes": 28224.0,
+        "reverse_bytes": 28224.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65856.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 56448.0,
+      "T1_steady_send_bytes": 56448.0,
+      "T1_rebuild_send_bytes": 94080.0,
+      "computation": {
+        "integrate_ops": 504.0,
+        "pair_ops_min": 112145.59243480097,
+        "pair_ops_max": 122579.3292138857,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 117866.46082434335,
+      "C1_steady_ops_min": 112649.59243480097,
+      "C1_steady_ops_max": 123083.3292138857,
+      "C1_steady_ops_midpoint": 117866.46082434335
+    },
+    {
+      "rank": 14,
+      "nlocal": 48,
+      "nghost_estimate": 1878.096547226259,
+      "neighbor_entries_estimate": 3908.9917335082064,
+      "force_pairs_estimate": 3577.2811814004826,
+      "communication": {
+        "forward_bytes": 28032.0,
+        "reverse_bytes": 28032.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65408.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 56064.0,
+      "T1_steady_send_bytes": 56064.0,
+      "T1_rebuild_send_bytes": 93440.0,
+      "computation": {
+        "integrate_ops": 864.0,
+        "pair_ops_min": 192249.58703108737,
+        "pair_ops_max": 210135.9929380898,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 202056.78998458857,
+      "C1_steady_ops_min": 193113.58703108737,
+      "C1_steady_ops_max": 210999.9929380898,
+      "C1_steady_ops_midpoint": 202056.78998458857
+    },
+    {
+      "rank": 15,
+      "nlocal": 28,
+      "nghost_estimate": 1095.5563192153177,
+      "neighbor_entries_estimate": 2280.245177879787,
+      "force_pairs_estimate": 2086.747355816948,
+      "communication": {
+        "forward_bytes": 28224.0,
+        "reverse_bytes": 28224.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65856.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 56448.0,
+      "T1_steady_send_bytes": 56448.0,
+      "T1_rebuild_send_bytes": 94080.0,
+      "computation": {
+        "integrate_ops": 504.0,
+        "pair_ops_min": 112145.59243480097,
+        "pair_ops_max": 122579.3292138857,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 117866.46082434335,
+      "C1_steady_ops_min": 112649.59243480097,
+      "C1_steady_ops_max": 123083.3292138857,
+      "C1_steady_ops_midpoint": 117866.46082434335
+    },
+    {
+      "rank": 16,
+      "nlocal": 32,
+      "nghost_estimate": 1252.064364817506,
+      "neighbor_entries_estimate": 2605.9944890054708,
+      "force_pairs_estimate": 2384.854120933655,
+      "communication": {
+        "forward_bytes": 28416.0,
+        "reverse_bytes": 28416.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 66304.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 56832.0,
+      "T1_steady_send_bytes": 56832.0,
+      "T1_rebuild_send_bytes": 94720.0,
+      "computation": {
+        "integrate_ops": 576.0,
+        "pair_ops_min": 128166.39135405823,
+        "pair_ops_max": 140090.66195872653,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 134704.52665639238,
+      "C1_steady_ops_min": 128742.39135405823,
+      "C1_steady_ops_max": 140666.66195872653,
+      "C1_steady_ops_midpoint": 134704.52665639238
+    },
+    {
+      "rank": 17,
+      "nlocal": 40,
+      "nghost_estimate": 1565.0804560218826,
+      "neighbor_entries_estimate": 3257.4931112568383,
+      "force_pairs_estimate": 2981.0676511670686,
+      "communication": {
+        "forward_bytes": 28992.0,
+        "reverse_bytes": 28992.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 67648.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 57984.0,
+      "T1_steady_send_bytes": 57984.0,
+      "T1_rebuild_send_bytes": 96640.0,
+      "computation": {
+        "integrate_ops": 720.0,
+        "pair_ops_min": 160207.98919257277,
+        "pair_ops_max": 175113.32744840812,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 168380.65832049045,
+      "C1_steady_ops_min": 160927.98919257277,
+      "C1_steady_ops_max": 175833.32744840812,
+      "C1_steady_ops_midpoint": 168380.65832049045
+    },
+    {
+      "rank": 18,
+      "nlocal": 32,
+      "nghost_estimate": 1252.064364817506,
+      "neighbor_entries_estimate": 2605.9944890054708,
+      "force_pairs_estimate": 2384.854120933655,
+      "communication": {
+        "forward_bytes": 28416.0,
+        "reverse_bytes": 28416.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 66304.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 56832.0,
+      "T1_steady_send_bytes": 56832.0,
+      "T1_rebuild_send_bytes": 94720.0,
+      "computation": {
+        "integrate_ops": 576.0,
+        "pair_ops_min": 128166.39135405823,
+        "pair_ops_max": 140090.66195872653,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 134704.52665639238,
+      "C1_steady_ops_min": 128742.39135405823,
+      "C1_steady_ops_max": 140666.66195872653,
+      "C1_steady_ops_midpoint": 134704.52665639238
+    },
+    {
+      "rank": 19,
+      "nlocal": 40,
+      "nghost_estimate": 1565.0804560218826,
+      "neighbor_entries_estimate": 3257.4931112568383,
+      "force_pairs_estimate": 2981.0676511670686,
+      "communication": {
+        "forward_bytes": 28992.0,
+        "reverse_bytes": 28992.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 67648.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 57984.0,
+      "T1_steady_send_bytes": 57984.0,
+      "T1_rebuild_send_bytes": 96640.0,
+      "computation": {
+        "integrate_ops": 720.0,
+        "pair_ops_min": 160207.98919257277,
+        "pair_ops_max": 175113.32744840812,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 168380.65832049045,
+      "C1_steady_ops_min": 160927.98919257277,
+      "C1_steady_ops_max": 175833.32744840812,
+      "C1_steady_ops_midpoint": 168380.65832049045
+    },
+    {
+      "rank": 20,
+      "nlocal": 32,
+      "nghost_estimate": 1252.064364817506,
+      "neighbor_entries_estimate": 2605.9944890054708,
+      "force_pairs_estimate": 2384.854120933655,
+      "communication": {
+        "forward_bytes": 28416.0,
+        "reverse_bytes": 28416.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 66304.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 56832.0,
+      "T1_steady_send_bytes": 56832.0,
+      "T1_rebuild_send_bytes": 94720.0,
+      "computation": {
+        "integrate_ops": 576.0,
+        "pair_ops_min": 128166.39135405823,
+        "pair_ops_max": 140090.66195872653,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 134704.52665639238,
+      "C1_steady_ops_min": 128742.39135405823,
+      "C1_steady_ops_max": 140666.66195872653,
+      "C1_steady_ops_midpoint": 134704.52665639238
+    },
+    {
+      "rank": 21,
+      "nlocal": 40,
+      "nghost_estimate": 1565.0804560218826,
+      "neighbor_entries_estimate": 3257.4931112568383,
+      "force_pairs_estimate": 2981.0676511670686,
+      "communication": {
+        "forward_bytes": 28992.0,
+        "reverse_bytes": 28992.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 67648.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 57984.0,
+      "T1_steady_send_bytes": 57984.0,
+      "T1_rebuild_send_bytes": 96640.0,
+      "computation": {
+        "integrate_ops": 720.0,
+        "pair_ops_min": 160207.98919257277,
+        "pair_ops_max": 175113.32744840812,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 168380.65832049045,
+      "C1_steady_ops_min": 160927.98919257277,
+      "C1_steady_ops_max": 175833.32744840812,
+      "C1_steady_ops_midpoint": 168380.65832049045
+    },
+    {
+      "rank": 22,
+      "nlocal": 32,
+      "nghost_estimate": 1252.064364817506,
+      "neighbor_entries_estimate": 2605.9944890054708,
+      "force_pairs_estimate": 2384.854120933655,
+      "communication": {
+        "forward_bytes": 28416.0,
+        "reverse_bytes": 28416.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 66304.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 56832.0,
+      "T1_steady_send_bytes": 56832.0,
+      "T1_rebuild_send_bytes": 94720.0,
+      "computation": {
+        "integrate_ops": 576.0,
+        "pair_ops_min": 128166.39135405823,
+        "pair_ops_max": 140090.66195872653,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 134704.52665639238,
+      "C1_steady_ops_min": 128742.39135405823,
+      "C1_steady_ops_max": 140666.66195872653,
+      "C1_steady_ops_midpoint": 134704.52665639238
+    },
+    {
+      "rank": 23,
+      "nlocal": 40,
+      "nghost_estimate": 1565.0804560218826,
+      "neighbor_entries_estimate": 3257.4931112568383,
+      "force_pairs_estimate": 2981.0676511670686,
+      "communication": {
+        "forward_bytes": 28992.0,
+        "reverse_bytes": 28992.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 67648.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 57984.0,
+      "T1_steady_send_bytes": 57984.0,
+      "T1_rebuild_send_bytes": 96640.0,
+      "computation": {
+        "integrate_ops": 720.0,
+        "pair_ops_min": 160207.98919257277,
+        "pair_ops_max": 175113.32744840812,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 168380.65832049045,
+      "C1_steady_ops_min": 160927.98919257277,
+      "C1_steady_ops_max": 175833.32744840812,
+      "C1_steady_ops_midpoint": 168380.65832049045
+    },
+    {
+      "rank": 24,
+      "nlocal": 44,
+      "nghost_estimate": 1721.588501624071,
+      "neighbor_entries_estimate": 3583.2424223825224,
+      "force_pairs_estimate": 3279.174416283776,
+      "communication": {
+        "forward_bytes": 27936.0,
+        "reverse_bytes": 27936.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65184.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 55872.0,
+      "T1_steady_send_bytes": 55872.0,
+      "T1_rebuild_send_bytes": 93120.0,
+      "computation": {
+        "integrate_ops": 792.0,
+        "pair_ops_min": 176228.7881118301,
+        "pair_ops_max": 192624.66019324897,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 185218.72415253954,
+      "C1_steady_ops_min": 177020.7881118301,
+      "C1_steady_ops_max": 193416.66019324897,
+      "C1_steady_ops_midpoint": 185218.72415253954
+    },
+    {
+      "rank": 25,
+      "nlocal": 48,
+      "nghost_estimate": 1878.096547226259,
+      "neighbor_entries_estimate": 3908.9917335082064,
+      "force_pairs_estimate": 3577.2811814004826,
+      "communication": {
+        "forward_bytes": 27552.0,
+        "reverse_bytes": 27552.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 64288.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 55104.0,
+      "T1_steady_send_bytes": 55104.0,
+      "T1_rebuild_send_bytes": 91840.0,
+      "computation": {
+        "integrate_ops": 864.0,
+        "pair_ops_min": 192249.58703108737,
+        "pair_ops_max": 210135.9929380898,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 202056.78998458857,
+      "C1_steady_ops_min": 193113.58703108737,
+      "C1_steady_ops_max": 210999.9929380898,
+      "C1_steady_ops_midpoint": 202056.78998458857
+    },
+    {
+      "rank": 26,
+      "nlocal": 44,
+      "nghost_estimate": 1721.588501624071,
+      "neighbor_entries_estimate": 3583.2424223825224,
+      "force_pairs_estimate": 3279.174416283776,
+      "communication": {
+        "forward_bytes": 27936.0,
+        "reverse_bytes": 27936.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65184.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 55872.0,
+      "T1_steady_send_bytes": 55872.0,
+      "T1_rebuild_send_bytes": 93120.0,
+      "computation": {
+        "integrate_ops": 792.0,
+        "pair_ops_min": 176228.7881118301,
+        "pair_ops_max": 192624.66019324897,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 185218.72415253954,
+      "C1_steady_ops_min": 177020.7881118301,
+      "C1_steady_ops_max": 193416.66019324897,
+      "C1_steady_ops_midpoint": 185218.72415253954
+    },
+    {
+      "rank": 27,
+      "nlocal": 48,
+      "nghost_estimate": 1878.096547226259,
+      "neighbor_entries_estimate": 3908.9917335082064,
+      "force_pairs_estimate": 3577.2811814004826,
+      "communication": {
+        "forward_bytes": 27552.0,
+        "reverse_bytes": 27552.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 64288.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 55104.0,
+      "T1_steady_send_bytes": 55104.0,
+      "T1_rebuild_send_bytes": 91840.0,
+      "computation": {
+        "integrate_ops": 864.0,
+        "pair_ops_min": 192249.58703108737,
+        "pair_ops_max": 210135.9929380898,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 202056.78998458857,
+      "C1_steady_ops_min": 193113.58703108737,
+      "C1_steady_ops_max": 210999.9929380898,
+      "C1_steady_ops_midpoint": 202056.78998458857
+    },
+    {
+      "rank": 28,
+      "nlocal": 44,
+      "nghost_estimate": 1721.588501624071,
+      "neighbor_entries_estimate": 3583.2424223825224,
+      "force_pairs_estimate": 3279.174416283776,
+      "communication": {
+        "forward_bytes": 27936.0,
+        "reverse_bytes": 27936.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65184.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 55872.0,
+      "T1_steady_send_bytes": 55872.0,
+      "T1_rebuild_send_bytes": 93120.0,
+      "computation": {
+        "integrate_ops": 792.0,
+        "pair_ops_min": 176228.7881118301,
+        "pair_ops_max": 192624.66019324897,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 185218.72415253954,
+      "C1_steady_ops_min": 177020.7881118301,
+      "C1_steady_ops_max": 193416.66019324897,
+      "C1_steady_ops_midpoint": 185218.72415253954
+    },
+    {
+      "rank": 29,
+      "nlocal": 48,
+      "nghost_estimate": 1878.096547226259,
+      "neighbor_entries_estimate": 3908.9917335082064,
+      "force_pairs_estimate": 3577.2811814004826,
+      "communication": {
+        "forward_bytes": 27552.0,
+        "reverse_bytes": 27552.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 64288.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 55104.0,
+      "T1_steady_send_bytes": 55104.0,
+      "T1_rebuild_send_bytes": 91840.0,
+      "computation": {
+        "integrate_ops": 864.0,
+        "pair_ops_min": 192249.58703108737,
+        "pair_ops_max": 210135.9929380898,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 202056.78998458857,
+      "C1_steady_ops_min": 193113.58703108737,
+      "C1_steady_ops_max": 210999.9929380898,
+      "C1_steady_ops_midpoint": 202056.78998458857
+    },
+    {
+      "rank": 30,
+      "nlocal": 44,
+      "nghost_estimate": 1721.588501624071,
+      "neighbor_entries_estimate": 3583.2424223825224,
+      "force_pairs_estimate": 3279.174416283776,
+      "communication": {
+        "forward_bytes": 27936.0,
+        "reverse_bytes": 27936.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65184.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 55872.0,
+      "T1_steady_send_bytes": 55872.0,
+      "T1_rebuild_send_bytes": 93120.0,
+      "computation": {
+        "integrate_ops": 792.0,
+        "pair_ops_min": 176228.7881118301,
+        "pair_ops_max": 192624.66019324897,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 185218.72415253954,
+      "C1_steady_ops_min": 177020.7881118301,
+      "C1_steady_ops_max": 193416.66019324897,
+      "C1_steady_ops_midpoint": 185218.72415253954
+    },
+    {
+      "rank": 31,
+      "nlocal": 48,
+      "nghost_estimate": 1878.096547226259,
+      "neighbor_entries_estimate": 3908.9917335082064,
+      "force_pairs_estimate": 3577.2811814004826,
+      "communication": {
+        "forward_bytes": 27552.0,
+        "reverse_bytes": 27552.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 64288.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 55104.0,
+      "T1_steady_send_bytes": 55104.0,
+      "T1_rebuild_send_bytes": 91840.0,
+      "computation": {
+        "integrate_ops": 864.0,
+        "pair_ops_min": 192249.58703108737,
+        "pair_ops_max": 210135.9929380898,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 202056.78998458857,
+      "C1_steady_ops_min": 193113.58703108737,
+      "C1_steady_ops_max": 210999.9929380898,
+      "C1_steady_ops_midpoint": 202056.78998458857
+    },
+    {
+      "rank": 32,
+      "nlocal": 40,
+      "nghost_estimate": 1565.0804560218826,
+      "neighbor_entries_estimate": 3257.4931112568383,
+      "force_pairs_estimate": 2981.0676511670686,
+      "communication": {
+        "forward_bytes": 27456.0,
+        "reverse_bytes": 27456.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 64064.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 54912.0,
+      "T1_steady_send_bytes": 54912.0,
+      "T1_rebuild_send_bytes": 91520.0,
+      "computation": {
+        "integrate_ops": 720.0,
+        "pair_ops_min": 160207.98919257277,
+        "pair_ops_max": 175113.32744840812,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 168380.65832049045,
+      "C1_steady_ops_min": 160927.98919257277,
+      "C1_steady_ops_max": 175833.32744840812,
+      "C1_steady_ops_midpoint": 168380.65832049045
+    },
+    {
+      "rank": 33,
+      "nlocal": 56,
+      "nghost_estimate": 2191.1126384306353,
+      "neighbor_entries_estimate": 4560.490355759574,
+      "force_pairs_estimate": 4173.494711633896,
+      "communication": {
+        "forward_bytes": 27936.0,
+        "reverse_bytes": 27936.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65184.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 55872.0,
+      "T1_steady_send_bytes": 55872.0,
+      "T1_rebuild_send_bytes": 93120.0,
+      "computation": {
+        "integrate_ops": 1008.0,
+        "pair_ops_min": 224291.18486960194,
+        "pair_ops_max": 245158.6584277714,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 235732.9216486867,
+      "C1_steady_ops_min": 225299.18486960194,
+      "C1_steady_ops_max": 246166.6584277714,
+      "C1_steady_ops_midpoint": 235732.9216486867
+    },
+    {
+      "rank": 34,
+      "nlocal": 40,
+      "nghost_estimate": 1565.0804560218826,
+      "neighbor_entries_estimate": 3257.4931112568383,
+      "force_pairs_estimate": 2981.0676511670686,
+      "communication": {
+        "forward_bytes": 27456.0,
+        "reverse_bytes": 27456.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 64064.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 54912.0,
+      "T1_steady_send_bytes": 54912.0,
+      "T1_rebuild_send_bytes": 91520.0,
+      "computation": {
+        "integrate_ops": 720.0,
+        "pair_ops_min": 160207.98919257277,
+        "pair_ops_max": 175113.32744840812,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 168380.65832049045,
+      "C1_steady_ops_min": 160927.98919257277,
+      "C1_steady_ops_max": 175833.32744840812,
+      "C1_steady_ops_midpoint": 168380.65832049045
+    },
+    {
+      "rank": 35,
+      "nlocal": 56,
+      "nghost_estimate": 2191.1126384306353,
+      "neighbor_entries_estimate": 4560.490355759574,
+      "force_pairs_estimate": 4173.494711633896,
+      "communication": {
+        "forward_bytes": 27936.0,
+        "reverse_bytes": 27936.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65184.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 55872.0,
+      "T1_steady_send_bytes": 55872.0,
+      "T1_rebuild_send_bytes": 93120.0,
+      "computation": {
+        "integrate_ops": 1008.0,
+        "pair_ops_min": 224291.18486960194,
+        "pair_ops_max": 245158.6584277714,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 235732.9216486867,
+      "C1_steady_ops_min": 225299.18486960194,
+      "C1_steady_ops_max": 246166.6584277714,
+      "C1_steady_ops_midpoint": 235732.9216486867
+    },
+    {
+      "rank": 36,
+      "nlocal": 40,
+      "nghost_estimate": 1565.0804560218826,
+      "neighbor_entries_estimate": 3257.4931112568383,
+      "force_pairs_estimate": 2981.0676511670686,
+      "communication": {
+        "forward_bytes": 27456.0,
+        "reverse_bytes": 27456.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 64064.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 54912.0,
+      "T1_steady_send_bytes": 54912.0,
+      "T1_rebuild_send_bytes": 91520.0,
+      "computation": {
+        "integrate_ops": 720.0,
+        "pair_ops_min": 160207.98919257277,
+        "pair_ops_max": 175113.32744840812,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 168380.65832049045,
+      "C1_steady_ops_min": 160927.98919257277,
+      "C1_steady_ops_max": 175833.32744840812,
+      "C1_steady_ops_midpoint": 168380.65832049045
+    },
+    {
+      "rank": 37,
+      "nlocal": 56,
+      "nghost_estimate": 2191.1126384306353,
+      "neighbor_entries_estimate": 4560.490355759574,
+      "force_pairs_estimate": 4173.494711633896,
+      "communication": {
+        "forward_bytes": 27936.0,
+        "reverse_bytes": 27936.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65184.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 55872.0,
+      "T1_steady_send_bytes": 55872.0,
+      "T1_rebuild_send_bytes": 93120.0,
+      "computation": {
+        "integrate_ops": 1008.0,
+        "pair_ops_min": 224291.18486960194,
+        "pair_ops_max": 245158.6584277714,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 235732.9216486867,
+      "C1_steady_ops_min": 225299.18486960194,
+      "C1_steady_ops_max": 246166.6584277714,
+      "C1_steady_ops_midpoint": 235732.9216486867
+    },
+    {
+      "rank": 38,
+      "nlocal": 40,
+      "nghost_estimate": 1565.0804560218826,
+      "neighbor_entries_estimate": 3257.4931112568383,
+      "force_pairs_estimate": 2981.0676511670686,
+      "communication": {
+        "forward_bytes": 27456.0,
+        "reverse_bytes": 27456.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 64064.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 54912.0,
+      "T1_steady_send_bytes": 54912.0,
+      "T1_rebuild_send_bytes": 91520.0,
+      "computation": {
+        "integrate_ops": 720.0,
+        "pair_ops_min": 160207.98919257277,
+        "pair_ops_max": 175113.32744840812,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 168380.65832049045,
+      "C1_steady_ops_min": 160927.98919257277,
+      "C1_steady_ops_max": 175833.32744840812,
+      "C1_steady_ops_midpoint": 168380.65832049045
+    },
+    {
+      "rank": 39,
+      "nlocal": 56,
+      "nghost_estimate": 2191.1126384306353,
+      "neighbor_entries_estimate": 4560.490355759574,
+      "force_pairs_estimate": 4173.494711633896,
+      "communication": {
+        "forward_bytes": 27936.0,
+        "reverse_bytes": 27936.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65184.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 55872.0,
+      "T1_steady_send_bytes": 55872.0,
+      "T1_rebuild_send_bytes": 93120.0,
+      "computation": {
+        "integrate_ops": 1008.0,
+        "pair_ops_min": 224291.18486960194,
+        "pair_ops_max": 245158.6584277714,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 235732.9216486867,
+      "C1_steady_ops_min": 225299.18486960194,
+      "C1_steady_ops_max": 246166.6584277714,
+      "C1_steady_ops_midpoint": 235732.9216486867
+    },
+    {
+      "rank": 40,
+      "nlocal": 48,
+      "nghost_estimate": 1878.096547226259,
+      "neighbor_entries_estimate": 3908.9917335082064,
+      "force_pairs_estimate": 3577.2811814004826,
+      "communication": {
+        "forward_bytes": 28032.0,
+        "reverse_bytes": 28032.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65408.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 56064.0,
+      "T1_steady_send_bytes": 56064.0,
+      "T1_rebuild_send_bytes": 93440.0,
+      "computation": {
+        "integrate_ops": 864.0,
+        "pair_ops_min": 192249.58703108737,
+        "pair_ops_max": 210135.9929380898,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 202056.78998458857,
+      "C1_steady_ops_min": 193113.58703108737,
+      "C1_steady_ops_max": 210999.9929380898,
+      "C1_steady_ops_midpoint": 202056.78998458857
+    },
+    {
+      "rank": 41,
+      "nlocal": 28,
+      "nghost_estimate": 1095.5563192153177,
+      "neighbor_entries_estimate": 2280.245177879787,
+      "force_pairs_estimate": 2086.747355816948,
+      "communication": {
+        "forward_bytes": 28224.0,
+        "reverse_bytes": 28224.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65856.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 56448.0,
+      "T1_steady_send_bytes": 56448.0,
+      "T1_rebuild_send_bytes": 94080.0,
+      "computation": {
+        "integrate_ops": 504.0,
+        "pair_ops_min": 112145.59243480097,
+        "pair_ops_max": 122579.3292138857,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 117866.46082434335,
+      "C1_steady_ops_min": 112649.59243480097,
+      "C1_steady_ops_max": 123083.3292138857,
+      "C1_steady_ops_midpoint": 117866.46082434335
+    },
+    {
+      "rank": 42,
+      "nlocal": 48,
+      "nghost_estimate": 1878.096547226259,
+      "neighbor_entries_estimate": 3908.9917335082064,
+      "force_pairs_estimate": 3577.2811814004826,
+      "communication": {
+        "forward_bytes": 28032.0,
+        "reverse_bytes": 28032.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65408.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 56064.0,
+      "T1_steady_send_bytes": 56064.0,
+      "T1_rebuild_send_bytes": 93440.0,
+      "computation": {
+        "integrate_ops": 864.0,
+        "pair_ops_min": 192249.58703108737,
+        "pair_ops_max": 210135.9929380898,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 202056.78998458857,
+      "C1_steady_ops_min": 193113.58703108737,
+      "C1_steady_ops_max": 210999.9929380898,
+      "C1_steady_ops_midpoint": 202056.78998458857
+    },
+    {
+      "rank": 43,
+      "nlocal": 28,
+      "nghost_estimate": 1095.5563192153177,
+      "neighbor_entries_estimate": 2280.245177879787,
+      "force_pairs_estimate": 2086.747355816948,
+      "communication": {
+        "forward_bytes": 28224.0,
+        "reverse_bytes": 28224.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65856.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 56448.0,
+      "T1_steady_send_bytes": 56448.0,
+      "T1_rebuild_send_bytes": 94080.0,
+      "computation": {
+        "integrate_ops": 504.0,
+        "pair_ops_min": 112145.59243480097,
+        "pair_ops_max": 122579.3292138857,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 117866.46082434335,
+      "C1_steady_ops_min": 112649.59243480097,
+      "C1_steady_ops_max": 123083.3292138857,
+      "C1_steady_ops_midpoint": 117866.46082434335
+    },
+    {
+      "rank": 44,
+      "nlocal": 48,
+      "nghost_estimate": 1878.096547226259,
+      "neighbor_entries_estimate": 3908.9917335082064,
+      "force_pairs_estimate": 3577.2811814004826,
+      "communication": {
+        "forward_bytes": 28032.0,
+        "reverse_bytes": 28032.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65408.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 56064.0,
+      "T1_steady_send_bytes": 56064.0,
+      "T1_rebuild_send_bytes": 93440.0,
+      "computation": {
+        "integrate_ops": 864.0,
+        "pair_ops_min": 192249.58703108737,
+        "pair_ops_max": 210135.9929380898,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 202056.78998458857,
+      "C1_steady_ops_min": 193113.58703108737,
+      "C1_steady_ops_max": 210999.9929380898,
+      "C1_steady_ops_midpoint": 202056.78998458857
+    },
+    {
+      "rank": 45,
+      "nlocal": 28,
+      "nghost_estimate": 1095.5563192153177,
+      "neighbor_entries_estimate": 2280.245177879787,
+      "force_pairs_estimate": 2086.747355816948,
+      "communication": {
+        "forward_bytes": 28224.0,
+        "reverse_bytes": 28224.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65856.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 56448.0,
+      "T1_steady_send_bytes": 56448.0,
+      "T1_rebuild_send_bytes": 94080.0,
+      "computation": {
+        "integrate_ops": 504.0,
+        "pair_ops_min": 112145.59243480097,
+        "pair_ops_max": 122579.3292138857,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 117866.46082434335,
+      "C1_steady_ops_min": 112649.59243480097,
+      "C1_steady_ops_max": 123083.3292138857,
+      "C1_steady_ops_midpoint": 117866.46082434335
+    },
+    {
+      "rank": 46,
+      "nlocal": 48,
+      "nghost_estimate": 1878.096547226259,
+      "neighbor_entries_estimate": 3908.9917335082064,
+      "force_pairs_estimate": 3577.2811814004826,
+      "communication": {
+        "forward_bytes": 28032.0,
+        "reverse_bytes": 28032.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65408.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 56064.0,
+      "T1_steady_send_bytes": 56064.0,
+      "T1_rebuild_send_bytes": 93440.0,
+      "computation": {
+        "integrate_ops": 864.0,
+        "pair_ops_min": 192249.58703108737,
+        "pair_ops_max": 210135.9929380898,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 202056.78998458857,
+      "C1_steady_ops_min": 193113.58703108737,
+      "C1_steady_ops_max": 210999.9929380898,
+      "C1_steady_ops_midpoint": 202056.78998458857
+    },
+    {
+      "rank": 47,
+      "nlocal": 28,
+      "nghost_estimate": 1095.5563192153177,
+      "neighbor_entries_estimate": 2280.245177879787,
+      "force_pairs_estimate": 2086.747355816948,
+      "communication": {
+        "forward_bytes": 28224.0,
+        "reverse_bytes": 28224.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65856.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 56448.0,
+      "T1_steady_send_bytes": 56448.0,
+      "T1_rebuild_send_bytes": 94080.0,
+      "computation": {
+        "integrate_ops": 504.0,
+        "pair_ops_min": 112145.59243480097,
+        "pair_ops_max": 122579.3292138857,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 117866.46082434335,
+      "C1_steady_ops_min": 112649.59243480097,
+      "C1_steady_ops_max": 123083.3292138857,
+      "C1_steady_ops_midpoint": 117866.46082434335
+    },
+    {
+      "rank": 48,
+      "nlocal": 32,
+      "nghost_estimate": 1252.064364817506,
+      "neighbor_entries_estimate": 2605.9944890054708,
+      "force_pairs_estimate": 2384.854120933655,
+      "communication": {
+        "forward_bytes": 28416.0,
+        "reverse_bytes": 28416.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 66304.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 56832.0,
+      "T1_steady_send_bytes": 56832.0,
+      "T1_rebuild_send_bytes": 94720.0,
+      "computation": {
+        "integrate_ops": 576.0,
+        "pair_ops_min": 128166.39135405823,
+        "pair_ops_max": 140090.66195872653,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 134704.52665639238,
+      "C1_steady_ops_min": 128742.39135405823,
+      "C1_steady_ops_max": 140666.66195872653,
+      "C1_steady_ops_midpoint": 134704.52665639238
+    },
+    {
+      "rank": 49,
+      "nlocal": 40,
+      "nghost_estimate": 1565.0804560218826,
+      "neighbor_entries_estimate": 3257.4931112568383,
+      "force_pairs_estimate": 2981.0676511670686,
+      "communication": {
+        "forward_bytes": 28992.0,
+        "reverse_bytes": 28992.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 67648.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 57984.0,
+      "T1_steady_send_bytes": 57984.0,
+      "T1_rebuild_send_bytes": 96640.0,
+      "computation": {
+        "integrate_ops": 720.0,
+        "pair_ops_min": 160207.98919257277,
+        "pair_ops_max": 175113.32744840812,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 168380.65832049045,
+      "C1_steady_ops_min": 160927.98919257277,
+      "C1_steady_ops_max": 175833.32744840812,
+      "C1_steady_ops_midpoint": 168380.65832049045
+    },
+    {
+      "rank": 50,
+      "nlocal": 32,
+      "nghost_estimate": 1252.064364817506,
+      "neighbor_entries_estimate": 2605.9944890054708,
+      "force_pairs_estimate": 2384.854120933655,
+      "communication": {
+        "forward_bytes": 28416.0,
+        "reverse_bytes": 28416.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 66304.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 56832.0,
+      "T1_steady_send_bytes": 56832.0,
+      "T1_rebuild_send_bytes": 94720.0,
+      "computation": {
+        "integrate_ops": 576.0,
+        "pair_ops_min": 128166.39135405823,
+        "pair_ops_max": 140090.66195872653,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 134704.52665639238,
+      "C1_steady_ops_min": 128742.39135405823,
+      "C1_steady_ops_max": 140666.66195872653,
+      "C1_steady_ops_midpoint": 134704.52665639238
+    },
+    {
+      "rank": 51,
+      "nlocal": 40,
+      "nghost_estimate": 1565.0804560218826,
+      "neighbor_entries_estimate": 3257.4931112568383,
+      "force_pairs_estimate": 2981.0676511670686,
+      "communication": {
+        "forward_bytes": 28992.0,
+        "reverse_bytes": 28992.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 67648.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 57984.0,
+      "T1_steady_send_bytes": 57984.0,
+      "T1_rebuild_send_bytes": 96640.0,
+      "computation": {
+        "integrate_ops": 720.0,
+        "pair_ops_min": 160207.98919257277,
+        "pair_ops_max": 175113.32744840812,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 168380.65832049045,
+      "C1_steady_ops_min": 160927.98919257277,
+      "C1_steady_ops_max": 175833.32744840812,
+      "C1_steady_ops_midpoint": 168380.65832049045
+    },
+    {
+      "rank": 52,
+      "nlocal": 32,
+      "nghost_estimate": 1252.064364817506,
+      "neighbor_entries_estimate": 2605.9944890054708,
+      "force_pairs_estimate": 2384.854120933655,
+      "communication": {
+        "forward_bytes": 28416.0,
+        "reverse_bytes": 28416.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 66304.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 56832.0,
+      "T1_steady_send_bytes": 56832.0,
+      "T1_rebuild_send_bytes": 94720.0,
+      "computation": {
+        "integrate_ops": 576.0,
+        "pair_ops_min": 128166.39135405823,
+        "pair_ops_max": 140090.66195872653,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 134704.52665639238,
+      "C1_steady_ops_min": 128742.39135405823,
+      "C1_steady_ops_max": 140666.66195872653,
+      "C1_steady_ops_midpoint": 134704.52665639238
+    },
+    {
+      "rank": 53,
+      "nlocal": 40,
+      "nghost_estimate": 1565.0804560218826,
+      "neighbor_entries_estimate": 3257.4931112568383,
+      "force_pairs_estimate": 2981.0676511670686,
+      "communication": {
+        "forward_bytes": 28992.0,
+        "reverse_bytes": 28992.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 67648.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 57984.0,
+      "T1_steady_send_bytes": 57984.0,
+      "T1_rebuild_send_bytes": 96640.0,
+      "computation": {
+        "integrate_ops": 720.0,
+        "pair_ops_min": 160207.98919257277,
+        "pair_ops_max": 175113.32744840812,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 168380.65832049045,
+      "C1_steady_ops_min": 160927.98919257277,
+      "C1_steady_ops_max": 175833.32744840812,
+      "C1_steady_ops_midpoint": 168380.65832049045
+    },
+    {
+      "rank": 54,
+      "nlocal": 32,
+      "nghost_estimate": 1252.064364817506,
+      "neighbor_entries_estimate": 2605.9944890054708,
+      "force_pairs_estimate": 2384.854120933655,
+      "communication": {
+        "forward_bytes": 28416.0,
+        "reverse_bytes": 28416.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 66304.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 56832.0,
+      "T1_steady_send_bytes": 56832.0,
+      "T1_rebuild_send_bytes": 94720.0,
+      "computation": {
+        "integrate_ops": 576.0,
+        "pair_ops_min": 128166.39135405823,
+        "pair_ops_max": 140090.66195872653,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 134704.52665639238,
+      "C1_steady_ops_min": 128742.39135405823,
+      "C1_steady_ops_max": 140666.66195872653,
+      "C1_steady_ops_midpoint": 134704.52665639238
+    },
+    {
+      "rank": 55,
+      "nlocal": 40,
+      "nghost_estimate": 1565.0804560218826,
+      "neighbor_entries_estimate": 3257.4931112568383,
+      "force_pairs_estimate": 2981.0676511670686,
+      "communication": {
+        "forward_bytes": 28992.0,
+        "reverse_bytes": 28992.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 67648.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 57984.0,
+      "T1_steady_send_bytes": 57984.0,
+      "T1_rebuild_send_bytes": 96640.0,
+      "computation": {
+        "integrate_ops": 720.0,
+        "pair_ops_min": 160207.98919257277,
+        "pair_ops_max": 175113.32744840812,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 168380.65832049045,
+      "C1_steady_ops_min": 160927.98919257277,
+      "C1_steady_ops_max": 175833.32744840812,
+      "C1_steady_ops_midpoint": 168380.65832049045
+    },
+    {
+      "rank": 56,
+      "nlocal": 44,
+      "nghost_estimate": 1721.588501624071,
+      "neighbor_entries_estimate": 3583.2424223825224,
+      "force_pairs_estimate": 3279.174416283776,
+      "communication": {
+        "forward_bytes": 27936.0,
+        "reverse_bytes": 27936.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65184.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 55872.0,
+      "T1_steady_send_bytes": 55872.0,
+      "T1_rebuild_send_bytes": 93120.0,
+      "computation": {
+        "integrate_ops": 792.0,
+        "pair_ops_min": 176228.7881118301,
+        "pair_ops_max": 192624.66019324897,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 185218.72415253954,
+      "C1_steady_ops_min": 177020.7881118301,
+      "C1_steady_ops_max": 193416.66019324897,
+      "C1_steady_ops_midpoint": 185218.72415253954
+    },
+    {
+      "rank": 57,
+      "nlocal": 48,
+      "nghost_estimate": 1878.096547226259,
+      "neighbor_entries_estimate": 3908.9917335082064,
+      "force_pairs_estimate": 3577.2811814004826,
+      "communication": {
+        "forward_bytes": 27552.0,
+        "reverse_bytes": 27552.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 64288.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 55104.0,
+      "T1_steady_send_bytes": 55104.0,
+      "T1_rebuild_send_bytes": 91840.0,
+      "computation": {
+        "integrate_ops": 864.0,
+        "pair_ops_min": 192249.58703108737,
+        "pair_ops_max": 210135.9929380898,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 202056.78998458857,
+      "C1_steady_ops_min": 193113.58703108737,
+      "C1_steady_ops_max": 210999.9929380898,
+      "C1_steady_ops_midpoint": 202056.78998458857
+    },
+    {
+      "rank": 58,
+      "nlocal": 44,
+      "nghost_estimate": 1721.588501624071,
+      "neighbor_entries_estimate": 3583.2424223825224,
+      "force_pairs_estimate": 3279.174416283776,
+      "communication": {
+        "forward_bytes": 27936.0,
+        "reverse_bytes": 27936.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65184.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 55872.0,
+      "T1_steady_send_bytes": 55872.0,
+      "T1_rebuild_send_bytes": 93120.0,
+      "computation": {
+        "integrate_ops": 792.0,
+        "pair_ops_min": 176228.7881118301,
+        "pair_ops_max": 192624.66019324897,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 185218.72415253954,
+      "C1_steady_ops_min": 177020.7881118301,
+      "C1_steady_ops_max": 193416.66019324897,
+      "C1_steady_ops_midpoint": 185218.72415253954
+    },
+    {
+      "rank": 59,
+      "nlocal": 48,
+      "nghost_estimate": 1878.096547226259,
+      "neighbor_entries_estimate": 3908.9917335082064,
+      "force_pairs_estimate": 3577.2811814004826,
+      "communication": {
+        "forward_bytes": 27552.0,
+        "reverse_bytes": 27552.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 64288.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 55104.0,
+      "T1_steady_send_bytes": 55104.0,
+      "T1_rebuild_send_bytes": 91840.0,
+      "computation": {
+        "integrate_ops": 864.0,
+        "pair_ops_min": 192249.58703108737,
+        "pair_ops_max": 210135.9929380898,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 202056.78998458857,
+      "C1_steady_ops_min": 193113.58703108737,
+      "C1_steady_ops_max": 210999.9929380898,
+      "C1_steady_ops_midpoint": 202056.78998458857
+    },
+    {
+      "rank": 60,
+      "nlocal": 44,
+      "nghost_estimate": 1721.588501624071,
+      "neighbor_entries_estimate": 3583.2424223825224,
+      "force_pairs_estimate": 3279.174416283776,
+      "communication": {
+        "forward_bytes": 27936.0,
+        "reverse_bytes": 27936.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65184.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 55872.0,
+      "T1_steady_send_bytes": 55872.0,
+      "T1_rebuild_send_bytes": 93120.0,
+      "computation": {
+        "integrate_ops": 792.0,
+        "pair_ops_min": 176228.7881118301,
+        "pair_ops_max": 192624.66019324897,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 185218.72415253954,
+      "C1_steady_ops_min": 177020.7881118301,
+      "C1_steady_ops_max": 193416.66019324897,
+      "C1_steady_ops_midpoint": 185218.72415253954
+    },
+    {
+      "rank": 61,
+      "nlocal": 48,
+      "nghost_estimate": 1878.096547226259,
+      "neighbor_entries_estimate": 3908.9917335082064,
+      "force_pairs_estimate": 3577.2811814004826,
+      "communication": {
+        "forward_bytes": 27552.0,
+        "reverse_bytes": 27552.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 64288.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 55104.0,
+      "T1_steady_send_bytes": 55104.0,
+      "T1_rebuild_send_bytes": 91840.0,
+      "computation": {
+        "integrate_ops": 864.0,
+        "pair_ops_min": 192249.58703108737,
+        "pair_ops_max": 210135.9929380898,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 202056.78998458857,
+      "C1_steady_ops_min": 193113.58703108737,
+      "C1_steady_ops_max": 210999.9929380898,
+      "C1_steady_ops_midpoint": 202056.78998458857
+    },
+    {
+      "rank": 62,
+      "nlocal": 44,
+      "nghost_estimate": 1721.588501624071,
+      "neighbor_entries_estimate": 3583.2424223825224,
+      "force_pairs_estimate": 3279.174416283776,
+      "communication": {
+        "forward_bytes": 27936.0,
+        "reverse_bytes": 27936.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 65184.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 55872.0,
+      "T1_steady_send_bytes": 55872.0,
+      "T1_rebuild_send_bytes": 93120.0,
+      "computation": {
+        "integrate_ops": 792.0,
+        "pair_ops_min": 176228.7881118301,
+        "pair_ops_max": 192624.66019324897,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 185218.72415253954,
+      "C1_steady_ops_min": 177020.7881118301,
+      "C1_steady_ops_max": 193416.66019324897,
+      "C1_steady_ops_midpoint": 185218.72415253954
+    },
+    {
+      "rank": 63,
+      "nlocal": 48,
+      "nghost_estimate": 1878.096547226259,
+      "neighbor_entries_estimate": 3908.9917335082064,
+      "force_pairs_estimate": 3577.2811814004826,
+      "communication": {
+        "forward_bytes": 27552.0,
+        "reverse_bytes": 27552.0,
+        "pair_forward_reverse_bytes": 0.0,
+        "borders_bytes": 64288.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 55104.0,
+      "T1_steady_send_bytes": 55104.0,
+      "T1_rebuild_send_bytes": 91840.0,
+      "computation": {
+        "integrate_ops": 864.0,
+        "pair_ops_min": 192249.58703108737,
+        "pair_ops_max": 210135.9929380898,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 202056.78998458857,
+      "C1_steady_ops_min": 193113.58703108737,
+      "C1_steady_ops_max": 210999.9929380898,
+      "C1_steady_ops_midpoint": 202056.78998458857
+    }
+  ],
+  "input_file": "/mlx_devbox/users/liuyicheng.1/playground/dpmd/cases/wse_short_64/in.lammps"
+}

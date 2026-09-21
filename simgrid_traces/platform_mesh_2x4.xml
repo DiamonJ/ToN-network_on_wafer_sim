@@ -1,0 +1,61 @@
+<?xml version='1.0'?>
+<!DOCTYPE platform SYSTEM "https://simgrid.org/simgrid.dtd">
+<platform version="4.1">
+  <zone id="mesh2x4" routing="Full">
+    <host id="host0" speed="1.42Gf"/>
+    <host id="host1" speed="1.42Gf"/>
+    <host id="host2" speed="1.42Gf"/>
+    <host id="host3" speed="1.42Gf"/>
+    <host id="host4" speed="1.42Gf"/>
+    <host id="host5" speed="1.42Gf"/>
+    <host id="host6" speed="1.42Gf"/>
+    <host id="host7" speed="1.42Gf"/>
+    <link id="loopback" bandwidth="100000MBps" latency="0.00000001s"/>
+    <link id="h0_1" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="v0_2" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="v1_3" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="h2_3" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="v2_4" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="v3_5" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="h4_5" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="v4_6" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="v5_7" bandwidth="6800MBps" latency="0.00000001s"/>
+    <link id="h6_7" bandwidth="6800MBps" latency="0.00000001s"/>
+    <route src="host0" dst="host0"><link_ctn id="loopback"/></route>
+    <route src="host0" dst="host1"><link_ctn id="h0_1"/></route>
+    <route src="host0" dst="host2"><link_ctn id="v0_2"/></route>
+    <route src="host0" dst="host3"><link_ctn id="h0_1"/><link_ctn id="v1_3"/></route>
+    <route src="host0" dst="host4"><link_ctn id="v0_2"/><link_ctn id="v2_4"/></route>
+    <route src="host0" dst="host5"><link_ctn id="h0_1"/><link_ctn id="v1_3"/><link_ctn id="v3_5"/></route>
+    <route src="host0" dst="host6"><link_ctn id="v0_2"/><link_ctn id="v2_4"/><link_ctn id="v4_6"/></route>
+    <route src="host0" dst="host7"><link_ctn id="h0_1"/><link_ctn id="v1_3"/><link_ctn id="v3_5"/><link_ctn id="v5_7"/></route>
+    <route src="host1" dst="host1"><link_ctn id="loopback"/></route>
+    <route src="host1" dst="host2"><link_ctn id="h0_1"/><link_ctn id="v0_2"/></route>
+    <route src="host1" dst="host3"><link_ctn id="v1_3"/></route>
+    <route src="host1" dst="host4"><link_ctn id="h0_1"/><link_ctn id="v0_2"/><link_ctn id="v2_4"/></route>
+    <route src="host1" dst="host5"><link_ctn id="v1_3"/><link_ctn id="v3_5"/></route>
+    <route src="host1" dst="host6"><link_ctn id="h0_1"/><link_ctn id="v0_2"/><link_ctn id="v2_4"/><link_ctn id="v4_6"/></route>
+    <route src="host1" dst="host7"><link_ctn id="v1_3"/><link_ctn id="v3_5"/><link_ctn id="v5_7"/></route>
+    <route src="host2" dst="host2"><link_ctn id="loopback"/></route>
+    <route src="host2" dst="host3"><link_ctn id="h2_3"/></route>
+    <route src="host2" dst="host4"><link_ctn id="v2_4"/></route>
+    <route src="host2" dst="host5"><link_ctn id="h2_3"/><link_ctn id="v3_5"/></route>
+    <route src="host2" dst="host6"><link_ctn id="v2_4"/><link_ctn id="v4_6"/></route>
+    <route src="host2" dst="host7"><link_ctn id="h2_3"/><link_ctn id="v3_5"/><link_ctn id="v5_7"/></route>
+    <route src="host3" dst="host3"><link_ctn id="loopback"/></route>
+    <route src="host3" dst="host4"><link_ctn id="h2_3"/><link_ctn id="v2_4"/></route>
+    <route src="host3" dst="host5"><link_ctn id="v3_5"/></route>
+    <route src="host3" dst="host6"><link_ctn id="h2_3"/><link_ctn id="v2_4"/><link_ctn id="v4_6"/></route>
+    <route src="host3" dst="host7"><link_ctn id="v3_5"/><link_ctn id="v5_7"/></route>
+    <route src="host4" dst="host4"><link_ctn id="loopback"/></route>
+    <route src="host4" dst="host5"><link_ctn id="h4_5"/></route>
+    <route src="host4" dst="host6"><link_ctn id="v4_6"/></route>
+    <route src="host4" dst="host7"><link_ctn id="h4_5"/><link_ctn id="v5_7"/></route>
+    <route src="host5" dst="host5"><link_ctn id="loopback"/></route>
+    <route src="host5" dst="host6"><link_ctn id="h4_5"/><link_ctn id="v4_6"/></route>
+    <route src="host5" dst="host7"><link_ctn id="v5_7"/></route>
+    <route src="host6" dst="host6"><link_ctn id="loopback"/></route>
+    <route src="host6" dst="host7"><link_ctn id="h6_7"/></route>
+    <route src="host7" dst="host7"><link_ctn id="loopback"/></route>
+  </zone>
+</platform>

@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "model": "static_uniform_density_v1",
+  "input": {
+    "atoms": 108,
+    "box": [
+      10.845,
+      10.845,
+      10.845
+    ],
+    "density": 0.08467107748473354,
+    "procgrid": [
+      2,
+      2,
+      1
+    ],
+    "num_ranks": 4,
+    "atom_style": "atomic",
+    "pair_style": "eam",
+    "force_cutoff": 4.949999999999989,
+    "neighbor_skin": 0.3,
+    "ghost_width": 5.2499999999999885,
+    "kspace_accuracy": null
+  },
+  "assumptions": {
+    "scope": "one steady Verlet timestep",
+    "communication_metric": "application send payload; collectives excluded",
+    "C1_metric": "modeled double-precision arithmetic-equivalent operations; validate against lane-weighted FP_ARITH_INST_RETIRED",
+    "newton_pair": true,
+    "uniform_density_for_neighbors_and_ghosts": true,
+    "pair_candidate_ops": 8,
+    "lj_coul_kernel_ops_range": [
+      45,
+      50
+    ],
+    "eam_pair_ops_range": [
+      62.0,
+      66.0
+    ],
+    "pppm_fft_remap": "160 bytes/grid-point \u00d7 (1-1/ranks), topology approximation",
+    "commbrick_copies": "coordinate-level replay of CommBrick borders swaps"
+  },
+  "swap_geometry": [
+    {
+      "dimension": 0,
+      "round": 0,
+      "volume": 617.4736312499987
+    },
+    {
+      "dimension": 1,
+      "round": 0,
+      "volume": 1234.9472624999974
+    }
+  ],
+  "pppm": null,
+  "summary": {
+    "T1_send_bytes": {
+      "sum": 42240.0,
+      "average": 10560.0,
+      "minimum": 10560.0,
+      "maximum": 10560.0
+    },
+    "T1_steady_send_bytes": {
+      "sum": 42240.0,
+      "average": 10560.0,
+      "minimum": 10560.0,
+      "maximum": 10560.0
+    },
+    "T1_rebuild_send_bytes": {
+      "sum": 58080.0,
+      "average": 14520.0,
+      "minimum": 14520.0,
+      "maximum": 14520.0
+    },
+    "C1_ops": {
+      "sum": 209437.36077953936,
+      "average": 52359.34019488484,
+      "minimum": 52359.34019488484,
+      "maximum": 52359.34019488484
+    },
+    "C1_steady_ops_min": {
+      "sum": 204791.53362552944,
+      "average": 51197.88340638236,
+      "minimum": 51197.88340638236,
+      "maximum": 51197.88340638236
+    },
+    "C1_steady_ops_max": {
+      "sum": 214083.18793354928,
+      "average": 53520.79698338732,
+      "minimum": 53520.79698338732,
+      "maximum": 53520.79698338732
+    },
+    "C1_steady_ops_midpoint": {
+      "sum": 209437.36077953936,
+      "average": 52359.34019488484,
+      "minimum": 52359.34019488484,
+      "maximum": 52359.34019488484
+    }
+  },
+  "ranks": [
+    {
+      "rank": 0,
+      "nlocal": 27,
+      "nghost_estimate": 431.198602952621,
+      "neighbor_entries_estimate": 692.8438629691375,
+      "force_pairs_estimate": 580.7283942512394,
+      "communication": {
+        "forward_bytes": 3960.0,
+        "reverse_bytes": 3960.0,
+        "pair_forward_reverse_bytes": 2640.0,
+        "borders_bytes": 7920.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 10560.0,
+      "T1_steady_send_bytes": 10560.0,
+      "T1_rebuild_send_bytes": 14520.0,
+      "computation": {
+        "integrate_ops": 486.0,
+        "pair_ops_min": 50711.88340638236,
+        "pair_ops_max": 53034.79698338732,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 52359.34019488484,
+      "C1_steady_ops_min": 51197.88340638236,
+      "C1_steady_ops_max": 53520.79698338732,
+      "C1_steady_ops_midpoint": 52359.34019488484
+    },
+    {
+      "rank": 1,
+      "nlocal": 27,
+      "nghost_estimate": 431.198602952621,
+      "neighbor_entries_estimate": 692.8438629691375,
+      "force_pairs_estimate": 580.7283942512394,
+      "communication": {
+        "forward_bytes": 3960.0,
+        "reverse_bytes": 3960.0,
+        "pair_forward_reverse_bytes": 2640.0,
+        "borders_bytes": 7920.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 10560.0,
+      "T1_steady_send_bytes": 10560.0,
+      "T1_rebuild_send_bytes": 14520.0,
+      "computation": {
+        "integrate_ops": 486.0,
+        "pair_ops_min": 50711.88340638236,
+        "pair_ops_max": 53034.79698338732,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 52359.34019488484,
+      "C1_steady_ops_min": 51197.88340638236,
+      "C1_steady_ops_max": 53520.79698338732,
+      "C1_steady_ops_midpoint": 52359.34019488484
+    },
+    {
+      "rank": 2,
+      "nlocal": 27,
+      "nghost_estimate": 431.198602952621,
+      "neighbor_entries_estimate": 692.8438629691375,
+      "force_pairs_estimate": 580.7283942512394,
+      "communication": {
+        "forward_bytes": 3960.0,
+        "reverse_bytes": 3960.0,
+        "pair_forward_reverse_bytes": 2640.0,
+        "borders_bytes": 7920.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 10560.0,
+      "T1_steady_send_bytes": 10560.0,
+      "T1_rebuild_send_bytes": 14520.0,
+      "computation": {
+        "integrate_ops": 486.0,
+        "pair_ops_min": 50711.88340638236,
+        "pair_ops_max": 53034.79698338732,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 52359.34019488484,
+      "C1_steady_ops_min": 51197.88340638236,
+      "C1_steady_ops_max": 53520.79698338732,
+      "C1_steady_ops_midpoint": 52359.34019488484
+    },
+    {
+      "rank": 3,
+      "nlocal": 27,
+      "nghost_estimate": 431.198602952621,
+      "neighbor_entries_estimate": 692.8438629691375,
+      "force_pairs_estimate": 580.7283942512394,
+      "communication": {
+        "forward_bytes": 3960.0,
+        "reverse_bytes": 3960.0,
+        "pair_forward_reverse_bytes": 2640.0,
+        "borders_bytes": 7920.0,
+        "grid_reverse_bytes": 0.0,
+        "grid_forward_bytes": 0.0,
+        "fft_remap_bytes": 0.0
+      },
+      "T1_send_bytes": 10560.0,
+      "T1_steady_send_bytes": 10560.0,
+      "T1_rebuild_send_bytes": 14520.0,
+      "computation": {
+        "integrate_ops": 486.0,
+        "pair_ops_min": 50711.88340638236,
+        "pair_ops_max": 53034.79698338732,
+        "pppm_ops": 0.0
+      },
+      "C1_ops": 52359.34019488484,
+      "C1_steady_ops_min": 51197.88340638236,
+      "C1_steady_ops_max": 53520.79698338732,
+      "C1_steady_ops_midpoint": 52359.34019488484
+    }
+  ],
+  "input_file": "/mlx_devbox/users/liuyicheng.1/playground/dpmd/cases/c1_validation_cu_108/in.lammps"
+}

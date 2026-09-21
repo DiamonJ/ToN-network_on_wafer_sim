@@ -1,0 +1,421 @@
+{
+  "schema_version": 1,
+  "method": "median of repeated perf [run(N)-run(0)]/N, Intel FP_ARITH_INST_RETIRED lane weighted",
+  "event_encoding": "intel_raw_c7",
+  "event_semantics": "Intel event 0xC7 double-precision arithmetic, weighted by SIMD lanes; raw umasks: 0x01 scalar, 0x04 128b, 0x10 256b, 0x40 512b",
+  "num_ranks": 4,
+  "steps": 100,
+  "repeats": 3,
+  "dp_ops_per_step": {
+    "sum": 893594.0,
+    "average": 223398.5,
+    "minimum": 222281.11,
+    "maximum": 224906.21
+  },
+  "ranks": [
+    {
+      "rank": 0,
+      "steps": 100,
+      "repeats": 3,
+      "aggregation": "per-rank median",
+      "dp_ops_per_step": 224906.21,
+      "cycles_per_step": 282036.19,
+      "instructions_per_step": 809855.22,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "dp_ops_per_step": 234584.38,
+          "cycles_per_step": 280819.31,
+          "instructions_per_step": 809855.22,
+          "baseline_events": {
+            "cycles": 34297322.0,
+            "instructions": 53760214.0,
+            "r01c7": 793104.0,
+            "r04c7": 0.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 62379253.0,
+            "instructions": 134745736.0,
+            "r01c7": 22084180.0,
+            "r04c7": 1083681.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 28081931.0,
+            "instructions": 80985522.0,
+            "r01c7": 21291076.0,
+            "r04c7": 1083681.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          }
+        },
+        {
+          "repeat": 1,
+          "dp_ops_per_step": 213335.86,
+          "cycles_per_step": 282036.19,
+          "instructions_per_step": 829430.59,
+          "baseline_events": {
+            "cycles": 31687500.0,
+            "instructions": 55788355.0,
+            "r01c7": 575319.0,
+            "r04c7": 21507.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 59891119.0,
+            "instructions": 138731414.0,
+            "r01c7": 19784099.0,
+            "r04c7": 1083910.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 28203619.0,
+            "instructions": 82943059.0,
+            "r01c7": 19208780.0,
+            "r04c7": 1062403.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          }
+        },
+        {
+          "repeat": 2,
+          "dp_ops_per_step": 224906.21,
+          "cycles_per_step": 312944.64,
+          "instructions_per_step": 741265.48,
+          "baseline_events": {
+            "cycles": 35681528.0,
+            "instructions": 53877817.0,
+            "r01c7": 555648.0,
+            "r04c7": 20874.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 66975992.0,
+            "instructions": 128004365.0,
+            "r01c7": 20809705.0,
+            "r04c7": 1139156.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 31294464.0,
+            "instructions": 74126548.0,
+            "r01c7": 20254057.0,
+            "r04c7": 1118282.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "rank": 1,
+      "steps": 100,
+      "repeats": 3,
+      "aggregation": "per-rank median",
+      "dp_ops_per_step": 222281.11,
+      "cycles_per_step": 307194.95,
+      "instructions_per_step": 782804.97,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "dp_ops_per_step": 222281.11,
+          "cycles_per_step": 335414.57,
+          "instructions_per_step": 668620.28,
+          "baseline_events": {
+            "cycles": 30524603.0,
+            "instructions": 65662439.0,
+            "r01c7": 820744.0,
+            "r04c7": 0.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 64066060.0,
+            "instructions": 132524467.0,
+            "r01c7": 20712899.0,
+            "r04c7": 1167978.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 33541457.0,
+            "instructions": 66862028.0,
+            "r01c7": 19892155.0,
+            "r04c7": 1167978.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          }
+        },
+        {
+          "repeat": 1,
+          "dp_ops_per_step": 220108.51,
+          "cycles_per_step": 307194.95,
+          "instructions_per_step": 782804.97,
+          "baseline_events": {
+            "cycles": 29832471.0,
+            "instructions": 60756594.0,
+            "r01c7": 578598.0,
+            "r04c7": 21231.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 60551966.0,
+            "instructions": 139037091.0,
+            "r01c7": 20471183.0,
+            "r04c7": 1080364.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 30719495.0,
+            "instructions": 78280497.0,
+            "r01c7": 19892585.0,
+            "r04c7": 1059133.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          }
+        },
+        {
+          "repeat": 2,
+          "dp_ops_per_step": 228133.32,
+          "cycles_per_step": 274162.49,
+          "instructions_per_step": 825429.09,
+          "baseline_events": {
+            "cycles": 33458093.0,
+            "instructions": 58617039.0,
+            "r01c7": 583003.0,
+            "r04c7": 21541.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 60874342.0,
+            "instructions": 141159948.0,
+            "r01c7": 20903901.0,
+            "r04c7": 1267758.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 27416249.0,
+            "instructions": 82542909.0,
+            "r01c7": 20320898.0,
+            "r04c7": 1246217.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "rank": 2,
+      "steps": 100,
+      "repeats": 3,
+      "aggregation": "per-rank median",
+      "dp_ops_per_step": 223500.51,
+      "cycles_per_step": 350919.16,
+      "instructions_per_step": 775809.47,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "dp_ops_per_step": 237611.89,
+          "cycles_per_step": 482252.92,
+          "instructions_per_step": 775809.47,
+          "baseline_events": {
+            "cycles": 23564465.0,
+            "instructions": 53214088.0,
+            "r01c7": 131.0,
+            "r04c7": 24.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 71789757.0,
+            "instructions": 130795035.0,
+            "r01c7": 21402594.0,
+            "r04c7": 1179387.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 48225292.0,
+            "instructions": 77580947.0,
+            "r01c7": 21402463.0,
+            "r04c7": 1179363.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          }
+        },
+        {
+          "repeat": 1,
+          "dp_ops_per_step": 217317.65,
+          "cycles_per_step": 247310.49,
+          "instructions_per_step": 860709.26,
+          "baseline_events": {
+            "cycles": 35655514.0,
+            "instructions": 56216571.0,
+            "r01c7": 591561.0,
+            "r04c7": 21651.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 60386563.0,
+            "instructions": 142287497.0,
+            "r01c7": 20175078.0,
+            "r04c7": 1095775.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 24731049.0,
+            "instructions": 86070926.0,
+            "r01c7": 19583517.0,
+            "r04c7": 1074124.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          }
+        },
+        {
+          "repeat": 2,
+          "dp_ops_per_step": 223500.51,
+          "cycles_per_step": 350919.16,
+          "instructions_per_step": 730289.47,
+          "baseline_events": {
+            "cycles": 28477052.0,
+            "instructions": 64736969.0,
+            "r01c7": 562862.0,
+            "r04c7": 21339.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 63568968.0,
+            "instructions": 137765916.0,
+            "r01c7": 20718507.0,
+            "r04c7": 1118542.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 35091916.0,
+            "instructions": 73028947.0,
+            "r01c7": 20155645.0,
+            "r04c7": 1097203.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "rank": 3,
+      "steps": 100,
+      "repeats": 3,
+      "aggregation": "per-rank median",
+      "dp_ops_per_step": 222906.17,
+      "cycles_per_step": 286134.05,
+      "instructions_per_step": 787782.4,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "dp_ops_per_step": 234626.95,
+          "cycles_per_step": 251719.77,
+          "instructions_per_step": 679332.34,
+          "baseline_events": {
+            "cycles": 35892592.0,
+            "instructions": 65864594.0,
+            "r01c7": 708685.0,
+            "r04c7": 0.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 61064569.0,
+            "instructions": 133797828.0,
+            "r01c7": 22016752.0,
+            "r04c7": 1077314.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 25171977.0,
+            "instructions": 67933234.0,
+            "r01c7": 21308067.0,
+            "r04c7": 1077314.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          }
+        },
+        {
+          "repeat": 1,
+          "dp_ops_per_step": 215559.92,
+          "cycles_per_step": 286134.05,
+          "instructions_per_step": 787782.4,
+          "baseline_events": {
+            "cycles": 31465317.0,
+            "instructions": 61304122.0,
+            "r01c7": 588429.0,
+            "r04c7": 18690.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 60078722.0,
+            "instructions": 140082362.0,
+            "r01c7": 20076909.0,
+            "r04c7": 1052446.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 28613405.0,
+            "instructions": 78778240.0,
+            "r01c7": 19488480.0,
+            "r04c7": 1033756.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          }
+        },
+        {
+          "repeat": 2,
+          "dp_ops_per_step": 222906.17,
+          "cycles_per_step": 303658.92,
+          "instructions_per_step": 799839.59,
+          "baseline_events": {
+            "cycles": 29732708.0,
+            "instructions": 61671821.0,
+            "r01c7": 487018.0,
+            "r04c7": 10.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 60098600.0,
+            "instructions": 141655780.0,
+            "r01c7": 20441757.0,
+            "r04c7": 1167949.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 30365892.0,
+            "instructions": 79983959.0,
+            "r01c7": 19954739.0,
+            "r04c7": 1167939.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          }
+        }
+      ]
+    }
+  ]
+}
