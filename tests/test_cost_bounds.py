@@ -55,6 +55,8 @@ class ComputeProfileTest(unittest.TestCase):
         )
         rank = result["ranks"][0]
         self.assertEqual(result["calibration"], "none")
+        self.assertIn("host_logical_cpus", result)
+        self.assertIn("oversubscribed", result)
         self.assertEqual(rank["retired_instructions_per_step"], 200)
         self.assertEqual(rank["hardware_cycles_per_step"], 100)
         self.assertAlmostEqual(rank["wall_seconds_per_step"], 0.0002)

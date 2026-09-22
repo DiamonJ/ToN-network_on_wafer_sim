@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import statistics
 from pathlib import Path
 from typing import Any
@@ -173,6 +174,8 @@ def summarize(
         "calibration": "none",
         "input_file": str(input_file.resolve()) if input_file else None,
         "num_ranks": ranks,
+        "host_logical_cpus": os.cpu_count(),
+        "oversubscribed": bool(os.cpu_count() and ranks > os.cpu_count()),
         "steps": steps,
         "repeats": repeats,
         "cpu_frequency": {
