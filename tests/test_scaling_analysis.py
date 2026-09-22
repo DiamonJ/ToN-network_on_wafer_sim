@@ -1,6 +1,6 @@
 import unittest
 
-from analyze_scaling import measured_compute, render_markdown
+from analyze_scaling import measured_compute, render_markdown, render_result_document
 
 
 class ScalingAnalysisTest(unittest.TestCase):
@@ -49,11 +49,24 @@ class ScalingAnalysisTest(unittest.TestCase):
             "expected_communication_cycles": 100,
             "booksim_measured_cycles": 301,
             "booksim_relative_error": 1 / 300,
+            "booksim_average_packet_queue_cycles": 1.5,
+            "booksim_average_flit_queue_cycles": 3.5,
+            "booksim_average_injection_rate": 0.2,
+            "booksim_injection_saturation_ratio": 0.25,
+            "booksim_saturated_injection_rate": 0.8,
+            "booksim_aggregate_communication_to_compute_ratio": 0.5,
         }
         table = render_markdown([row])
         self.assertIn("| 场景规模 | 计算通信比 | 预期 cycles |", table)
         self.assertIn("| 2688 atoms / 16 ranks (4x4) | 2.0000 | 300 |", table)
         self.assertIn("200/100", table)
+        report = render_result_document(
+            [row], {"compute_capability_ops_s": 2.5e10}
+        )
+        self.assertIn("平均 packet 排队", report)
+        self.assertIn("注入饱和占比", report)
+        self.assertIn("饱和时注入率", report)
+        self.assertIn("BookSim 通信/计算比", report)
 
 
 if __name__ == "__main__":

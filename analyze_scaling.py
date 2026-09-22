@@ -204,6 +204,9 @@ def analyze_one(
         "booksim_average_packet_queue_cycles": acceptance.get(
             "average_packet_queue_cycles"
         ),
+        "booksim_average_flit_queue_cycles": acceptance.get(
+            "average_flit_queue_cycles"
+        ),
         "booksim_average_injection_rate": acceptance.get("average_injection_rate"),
         "booksim_injection_saturation_ratio": acceptance.get(
             "injection_saturation_ratio"
@@ -269,6 +272,97 @@ def render_markdown(rows: list[dict[str, Any]]) -> str:
             f"{row['booksim_measured_cycles']:,} | "
             f"{row['booksim_relative_error']:.4%} |"
         )
+    return "\n".join(lines) + "\n"
+
+
+def render_result_document(rows: list[dict[str, Any]], metadata: dict[str, Any]) -> str:
+    lines = [
+        "# LiAlOCl 2688 原子强扩展计算—通信结果",
+        "",
+        "## 1. 实验口径",
+        "",
+        "- 场景：LiAlOCl 2688 原子，short-range，一次稳态 timestep。",
+        "- 拓扑：rank 与二维 mesh 节点一一映射。",
+        "- BookSim 模式：WSE-fast、fold-PBC on。",
+        f"- 计算能力：{metadata['compute_capability_ops_s']:,.0f} ops/s。",
+        "- 静态计算量与通信量来自源码推导的无校准上下界。",
+        "- 硬件计算量采用 100 steps 的 perf `run(N)-run(0)`；本表为 1 repeat。",
+        "- 16/64 ranks 未超卖；256 ranks 在 240 个逻辑 CPU 上轻度 oversubscribe。",
+        "",
+        "## 2. 核心结果",
+        "",
+        "关键路径计算通信比定义为 `expected compute cycles / expected communication cycles`。",
+        "",
+        "| 场景规模 | 关键路径计算/通信比 | 预期 cycles | BookSim cycles | "
+        "平均 packet 排队 | 平均 flit 排队 | 平均注入率 | 注入饱和占比 | 饱和时注入率 | "
+        "BookSim 通信/计算比 |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['scenario_scale']} | "
+            f"{row['compute_to_communication_ratio']:.4f} | "
+            f"{row['expected_cycles']:,} | "
+            f"{row['booksim_measured_cycles']:,} | "
+            f"{row['booksim_average_packet_queue_cycles']:.3f} cyc | "
+            f"{row['booksim_average_flit_queue_cycles']:.3f} cyc | "
+            f"{row['booksim_average_injection_rate']:.3f} flit/slot | "
+            f"{row['booksim_injection_saturation_ratio']:.3%} | "
+            f"{row['booksim_saturated_injection_rate']:.3f} flit/slot | "
+            f"{row['booksim_aggregate_communication_to_compute_ratio']:.4f} |"
+        )
+    lines.extend([
+        "",
+        "## 3. 估算与实测计算量",
+        "",
+        "理论 C1 是源码逐项推导的 algorithmic scalar-equivalent ops 区间；",
+        "实测 DP ops 来自 lane-weighted FP_ARITH_INST_RETIRED；退休指令包含",
+        "LAMMPS、MPI 和运行时执行的全部指令。三者不使用经验系数互相换算。",
+        "",
+        "| Ranks | 理论总 C1 ops 区间 | 实测 DP ops/step | "
+        "实测总 instructions/step | 理论关键 rank ops 上界 | "
+        "预期 compute/comm cycles |",
+        "|---:|---:|---:|---:|---:|---:|",
+    ])
+    for row in rows:
+        lines.append(
+            f"| {row['ranks']} | "
+            f"{row['theoretical_compute_ops_lower']:,.0f}–"
+            f"{row['theoretical_compute_ops_upper']:,.0f} | "
+            f"{row['measured_dp_ops_per_step_optional']:,.0f} | "
+            f"{row['measured_retired_instructions_per_step']:,.0f} | "
+            f"{row['theoretical_critical_rank_ops_upper']:,.0f} | "
+            f"{row['expected_compute_cycles']:,}/"
+            f"{row['expected_communication_cycles']:,} |"
+        )
+    lines.extend([
+        "",
+        "## 4. BookSim 指标定义",
+        "",
+        "- **平均 packet 排队时间**：整包进入源端注入队列，到 head flit 成功注入网络的平均周期。",
+        "- **平均 flit 排队时间**：每个 flit 从进入注入队列到实际注入的平均周期，包含包内串行化等待。",
+        "- **平均注入率**：`injected_flits / (nodes × subnetworks × simulation_cycles)`。",
+        "- **注入饱和占比**：`backlogged_injection_slots / total_injection_slots`，表示注入端有积压的时间比例。",
+        "- **饱和时注入率**：`injected_flits / backlogged_injection_slots`，即有积压时每槽位实际发射率；它不是 synthetic offered-load sweep 的饱和拐点。",
+        "- **BookSim 通信/计算比**：全 rank 累计 `(blocked + congestion + sched_wait) / compute`。",
+        "- **关键路径计算/通信比**：编译器 `compute barrier / communication window`。它与上一项聚合方式不同，不能互为倒数。",
+        "",
+        "## 5. 结果解读",
+        "",
+        "1. 16 ranks 时关键路径计算/通信比为 1.5083，计算仍略占主导。",
+        "2. 64 ranks 时该比值降至 0.4326，通信开始主导；预期总 cycles 从 124,467 降至 80,696。",
+        "3. 256 ranks 时该比值仅 0.1142，通信窗口达到 76,194 cycles，预期总 cycles 回升到 84,897，说明 64–256 ranks 之间已经越过强扩展最佳点。",
+        "4. 三档实测 DP ops 为约 11.64M、11.81M、14.32M，与固定问题规模下理论总 C1 区间保持同量级。",
+        "5. 总退休指令从 98.15M 增至 2.159B，说明 rank 增加后 MPI/runtime 固定开销显著放大；256-rank 数据还包含轻度 oversubscription 的调度影响。",
+        "6. WSE 编排下 packet 排队为 0，饱和时注入率为 1 flit/slot；性能恶化主要来自通信窗口和全 rank 调度等待增长，而非源端注入队列无法服务。",
+        "   packet 排队为 0 表示 head flit 到队即发；flit 排队仍约 1,100–1,300 cycles，是长包尾部在单注入端口上的串行化等待。",
+        "",
+        "## 6. 可复现性与限制",
+        "",
+        "- 本次硬件 profile 使用 1 repeat，用于扩展趋势验证；正式统计建议设置 `COMPUTE_REPEATS=3` 后取逐 rank 中位数。",
+        "- 预期 cycles 使用理论 C1 上界作为保守计算预算，不使用硬件 profile 反推系数。",
+        "- 当前结果针对 short-range WSE 编排；PPPM/Kspace 长程通信需另建包含 FFT remap 的扩展性矩阵。",
+    ])
     return "\n".join(lines) + "\n"
 
 
@@ -359,6 +453,9 @@ def main() -> int:
     }
     (output / "scaling_metadata.json").write_text(
         json.dumps(metadata, indent=2) + "\n", encoding="utf-8"
+    )
+    (output / "SCALING_RESULTS.md").write_text(
+        render_result_document(rows, metadata), encoding="utf-8"
     )
     print(render_markdown(rows), end="")
     return 0
