@@ -35,6 +35,7 @@ class ScalingAnalysisTest(unittest.TestCase):
     def test_summary_table_uses_critical_path_compute_to_communication_ratio(self):
         row = {
             "scenario_scale": "2688 atoms / 16 ranks (4x4)",
+            "atoms": 2688,
             "ranks": 16,
             "compute_to_communication_ratio": 2.0,
             "expected_cycles": 300,
@@ -67,6 +68,8 @@ class ScalingAnalysisTest(unittest.TestCase):
         self.assertIn("注入饱和占比", report)
         self.assertIn("饱和时注入率", report)
         self.assertIn("BookSim 通信/计算比", report)
+        self.assertIn("## 1. 计算量改造怎么实现", report)
+        self.assertIn("## 2. 实验结果", report)
 
 
 if __name__ == "__main__":
