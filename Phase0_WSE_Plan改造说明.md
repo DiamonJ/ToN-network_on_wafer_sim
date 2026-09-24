@@ -325,16 +325,3 @@ run_dir/
 上述实验的点对点消息数和逐方向字节数均与 trim-only CCDG 完全一致；
 PPPM energy/virial collective 也被 CCDG 覆盖。short 回归与 BookSim unresolved
 检查均通过。
-
-## 8. 当前边界
-
-当前实现针对现有 pipeline，不是所有 LAMMPS 通信的通用拦截层：
-
-- DUMPI/CCDG 暂未从主流程删除；
-- thermo、通用 Fix/Bond 和其他 Kspace style 尚未全部源码化；
-- atom migration 的非零 exchange/Irregular 特殊路径尚未单独完善；
-- `wse_plan.json` 尚未直接输入 `ccdg_demand.py` 或 BookSim；
-- CommBrick 和 Kspace 暂时维护两个 writer，后续可抽取统一 writer。
-
-因此，当前 Phase 0 的准确表述是：**现有 short 与 PPPM long 实验场景的源码级
-通信计划已经形成并通过 trace 对拍，下一步可在此格式上开发 Phase 1 编译器。**

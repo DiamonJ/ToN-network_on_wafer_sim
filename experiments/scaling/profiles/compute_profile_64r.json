@@ -1,0 +1,4505 @@
+{
+  "schema_version": 2,
+  "method": "median of repeated perf [run(N)-run(0)]/N; retired instructions are measured directly and wall-cycle bounds equal elapsed wall time times declared CPU frequency bounds",
+  "calibration": "none",
+  "input_file": "/mlx_devbox/users/liuyicheng.1/playground/dpmd/cases/wse_short_64/in.lammps",
+  "num_ranks": 64,
+  "host_logical_cpus": 240,
+  "oversubscribed": false,
+  "steps": 100,
+  "repeats": 1,
+  "cpu_frequency": {
+    "source": "sysfs_cpufreq",
+    "nominal_ghz": 2.6,
+    "minimum_ghz": 0.8,
+    "maximum_ghz": 4.0
+  },
+  "event_encoding": "core+intel_raw_c7",
+  "events": [
+    "cycles",
+    "instructions",
+    "duration_time",
+    "r01c7",
+    "r04c7",
+    "r10c7",
+    "r40c7"
+  ],
+  "metric_semantics": {
+    "retired_instructions_per_step": "hardware instructions event",
+    "hardware_cycles_per_step": "hardware unhalted core cycles event",
+    "wall_seconds_per_step": "perf duration_time after run(0) subtraction",
+    "wall_cycles": "wall_seconds multiplied by declared CPU frequency; no fit",
+    "dp_ops_per_step": "optional Intel FP_ARITH_INST_RETIRED lane-weighted diagnostic"
+  },
+  "ranks": [
+    {
+      "rank": 0,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 3803485.56,
+      "instructions_per_step": 3803485.56,
+      "hardware_cycles_per_step": 1098288.15,
+      "cycles_per_step": 1098288.15,
+      "wall_seconds_per_step": 0.0023975335500000007,
+      "wall_cycles_nominal_per_step": 6233587.230000002,
+      "wall_cycles_lower_per_step": 1918026.8400000008,
+      "wall_cycles_upper_per_step": 9590134.200000003,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 3803485.56,
+          "hardware_cycles_per_step": 1098288.15,
+          "wall_seconds_per_step": 0.0023975335500000007,
+          "wall_cycles_nominal_per_step": 6233587.230000002,
+          "wall_cycles_lower_per_step": 1918026.8400000008,
+          "wall_cycles_upper_per_step": 9590134.200000003,
+          "baseline_events": {
+            "cycles": 69076888.0,
+            "instructions": 160558783.0,
+            "duration_time": 0.472932565,
+            "r01c7": 305037.0,
+            "r04c7": 15557.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 178905703.0,
+            "instructions": 540907339.0,
+            "duration_time": 0.7126859200000001,
+            "r01c7": 17683874.0,
+            "r04c7": 1334655.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 109828815.0,
+            "instructions": 380348556.0,
+            "duration_time": 0.23975335500000006,
+            "r01c7": 17378837.0,
+            "r04c7": 1319098.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 200170.33
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 3803485.56,
+        "hardware_cycles_per_step": 1098288.15,
+        "wall_seconds_per_step": 0.0023975335500000007,
+        "wall_cycle_estimate_per_step": {
+          "lower": 1918026.8400000008,
+          "nominal": 6233587.230000002,
+          "upper": 9590134.200000003
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.3966039974706505,
+          "nominal": 0.6101599961086931,
+          "upper": 1.9830199873532524
+        }
+      },
+      "dp_ops_per_step": 200170.33
+    },
+    {
+      "rank": 1,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 4671815.89,
+      "instructions_per_step": 4671815.89,
+      "hardware_cycles_per_step": 1061345.09,
+      "cycles_per_step": 1061345.09,
+      "wall_seconds_per_step": 0.00235712027,
+      "wall_cycles_nominal_per_step": 6128512.7020000005,
+      "wall_cycles_lower_per_step": 1885696.216,
+      "wall_cycles_upper_per_step": 9428481.08,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 4671815.89,
+          "hardware_cycles_per_step": 1061345.09,
+          "wall_seconds_per_step": 0.00235712027,
+          "wall_cycles_nominal_per_step": 6128512.7020000005,
+          "wall_cycles_lower_per_step": 1885696.216,
+          "wall_cycles_upper_per_step": 9428481.08,
+          "baseline_events": {
+            "cycles": 64935652.0,
+            "instructions": 109846639.0,
+            "duration_time": 0.47351858100000005,
+            "r01c7": 37228.0,
+            "r04c7": 27227.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 171070161.0,
+            "instructions": 577028228.0,
+            "duration_time": 0.709230608,
+            "r01c7": 18687413.0,
+            "r04c7": 1477250.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 106134509.0,
+            "instructions": 467181589.0,
+            "duration_time": 0.235712027,
+            "r01c7": 18650185.0,
+            "r04c7": 1450023.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 215502.31
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 4671815.89,
+        "hardware_cycles_per_step": 1061345.09,
+        "wall_seconds_per_step": 0.00235712027,
+        "wall_cycle_estimate_per_step": {
+          "lower": 1885696.216,
+          "nominal": 6128512.7020000005,
+          "upper": 9428481.08
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.495500372791754,
+          "nominal": 0.7623082658334677,
+          "upper": 2.47750186395877
+        }
+      },
+      "dp_ops_per_step": 215502.31
+    },
+    {
+      "rank": 2,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 4112208.21,
+      "instructions_per_step": 4112208.21,
+      "hardware_cycles_per_step": 1117249.27,
+      "cycles_per_step": 1117249.27,
+      "wall_seconds_per_step": 0.0023709239899999996,
+      "wall_cycles_nominal_per_step": 6164402.373999999,
+      "wall_cycles_lower_per_step": 1896739.1919999998,
+      "wall_cycles_upper_per_step": 9483695.959999999,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 4112208.21,
+          "hardware_cycles_per_step": 1117249.27,
+          "wall_seconds_per_step": 0.0023709239899999996,
+          "wall_cycles_nominal_per_step": 6164402.373999999,
+          "wall_cycles_lower_per_step": 1896739.1919999998,
+          "wall_cycles_upper_per_step": 9483695.959999999,
+          "baseline_events": {
+            "cycles": 64710195.0,
+            "instructions": 153689206.0,
+            "duration_time": 0.47222412900000005,
+            "r01c7": 293648.0,
+            "r04c7": 20417.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 176435122.0,
+            "instructions": 564910027.0,
+            "duration_time": 0.709316528,
+            "r01c7": 18071437.0,
+            "r04c7": 1422504.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 111724927.0,
+            "instructions": 411220821.0,
+            "duration_time": 0.23709239899999995,
+            "r01c7": 17777789.0,
+            "r04c7": 1402087.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 205819.63
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 4112208.21,
+        "hardware_cycles_per_step": 1117249.27,
+        "wall_seconds_per_step": 0.0023709239899999996,
+        "wall_cycle_estimate_per_step": {
+          "lower": 1896739.1919999998,
+          "nominal": 6164402.373999999,
+          "upper": 9483695.959999999
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.4336081868655773,
+          "nominal": 0.6670895182547344,
+          "upper": 2.1680409343278866
+        }
+      },
+      "dp_ops_per_step": 205819.63
+    },
+    {
+      "rank": 3,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 1417400.16,
+      "instructions_per_step": 1417400.16,
+      "hardware_cycles_per_step": 1045983.45,
+      "cycles_per_step": 1045983.45,
+      "wall_seconds_per_step": 0.00237461603,
+      "wall_cycles_nominal_per_step": 6174001.678,
+      "wall_cycles_lower_per_step": 1899692.8239999998,
+      "wall_cycles_upper_per_step": 9498464.12,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 1417400.16,
+          "hardware_cycles_per_step": 1045983.45,
+          "wall_seconds_per_step": 0.00237461603,
+          "wall_cycles_nominal_per_step": 6174001.678,
+          "wall_cycles_lower_per_step": 1899692.8239999998,
+          "wall_cycles_upper_per_step": 9498464.12,
+          "baseline_events": {
+            "cycles": 66717545.0,
+            "instructions": 175997275.0,
+            "duration_time": 0.47245173100000004,
+            "r01c7": 420512.0,
+            "r04c7": 25487.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 171315890.0,
+            "instructions": 317737291.0,
+            "duration_time": 0.709913334,
+            "r01c7": 18878125.0,
+            "r04c7": 1494958.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 104598345.0,
+            "instructions": 141740016.0,
+            "duration_time": 0.23746160299999997,
+            "r01c7": 18457613.0,
+            "r04c7": 1469471.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 213965.55
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 1417400.16,
+        "hardware_cycles_per_step": 1045983.45,
+        "wall_seconds_per_step": 0.00237461603,
+        "wall_cycle_estimate_per_step": {
+          "lower": 1899692.8239999998,
+          "nominal": 6174001.678,
+          "upper": 9498464.12
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.14922414214478288,
+          "nominal": 0.22957560329966595,
+          "upper": 0.7461207107239144
+        }
+      },
+      "dp_ops_per_step": 213965.55
+    },
+    {
+      "rank": 4,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 2248935.15,
+      "instructions_per_step": 2248935.15,
+      "hardware_cycles_per_step": 1233953.05,
+      "cycles_per_step": 1233953.05,
+      "wall_seconds_per_step": 0.0018385076199999995,
+      "wall_cycles_nominal_per_step": 4780119.811999999,
+      "wall_cycles_lower_per_step": 1470806.0959999997,
+      "wall_cycles_upper_per_step": 7354030.479999999,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 2248935.15,
+          "hardware_cycles_per_step": 1233953.05,
+          "wall_seconds_per_step": 0.0018385076199999995,
+          "wall_cycles_nominal_per_step": 4780119.811999999,
+          "wall_cycles_lower_per_step": 1470806.0959999997,
+          "wall_cycles_upper_per_step": 7354030.479999999,
+          "baseline_events": {
+            "cycles": 59991313.0,
+            "instructions": 110267782.0,
+            "duration_time": 0.506552387,
+            "r01c7": 46299.0,
+            "r04c7": 19874.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 183386618.0,
+            "instructions": 335161297.0,
+            "duration_time": 0.690403149,
+            "r01c7": 17428349.0,
+            "r04c7": 1351548.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 123395305.0,
+            "instructions": 224893515.0,
+            "duration_time": 0.18385076199999995,
+            "r01c7": 17382050.0,
+            "r04c7": 1331674.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 200453.98
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 2248935.15,
+        "hardware_cycles_per_step": 1233953.05,
+        "wall_seconds_per_step": 0.0018385076199999995,
+        "wall_cycle_estimate_per_step": {
+          "lower": 1470806.0959999997,
+          "nominal": 4780119.811999999,
+          "upper": 7354030.479999999
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.30580987611027693,
+          "nominal": 0.4704767324773491,
+          "upper": 1.5290493805513847
+        }
+      },
+      "dp_ops_per_step": 200453.98
+    },
+    {
+      "rank": 5,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 4640354.44,
+      "instructions_per_step": 4640354.44,
+      "hardware_cycles_per_step": 1209131.42,
+      "cycles_per_step": 1209131.42,
+      "wall_seconds_per_step": 0.001996556970000001,
+      "wall_cycles_nominal_per_step": 5191048.122000002,
+      "wall_cycles_lower_per_step": 1597245.5760000008,
+      "wall_cycles_upper_per_step": 7986227.880000004,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 4640354.44,
+          "hardware_cycles_per_step": 1209131.42,
+          "wall_seconds_per_step": 0.001996556970000001,
+          "wall_cycles_nominal_per_step": 5191048.122000002,
+          "wall_cycles_lower_per_step": 1597245.5760000008,
+          "wall_cycles_upper_per_step": 7986227.880000004,
+          "baseline_events": {
+            "cycles": 63916391.0,
+            "instructions": 127164073.0,
+            "duration_time": 0.506078661,
+            "r01c7": 48533.0,
+            "r04c7": 28680.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 184829533.0,
+            "instructions": 591199517.0,
+            "duration_time": 0.7057343580000001,
+            "r01c7": 17386932.0,
+            "r04c7": 1505103.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 120913142.0,
+            "instructions": 464035444.0,
+            "duration_time": 0.19965569700000008,
+            "r01c7": 17338399.0,
+            "r04c7": 1476423.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 202912.45
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 4640354.44,
+        "hardware_cycles_per_step": 1209131.42,
+        "wall_seconds_per_step": 0.001996556970000001,
+        "wall_cycle_estimate_per_step": {
+          "lower": 1597245.5760000008,
+          "nominal": 5191048.122000002,
+          "upper": 7986227.880000004
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.5810445819635187,
+          "nominal": 0.8939147414823365,
+          "upper": 2.9052229098175935
+        }
+      },
+      "dp_ops_per_step": 202912.45
+    },
+    {
+      "rank": 6,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 5148023.94,
+      "instructions_per_step": 5148023.94,
+      "hardware_cycles_per_step": 1290225.07,
+      "cycles_per_step": 1290225.07,
+      "wall_seconds_per_step": 0.0022980546599999994,
+      "wall_cycles_nominal_per_step": 5974942.115999999,
+      "wall_cycles_lower_per_step": 1838443.7279999997,
+      "wall_cycles_upper_per_step": 9192218.639999997,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 5148023.94,
+          "hardware_cycles_per_step": 1290225.07,
+          "wall_seconds_per_step": 0.0022980546599999994,
+          "wall_cycles_nominal_per_step": 5974942.115999999,
+          "wall_cycles_lower_per_step": 1838443.7279999997,
+          "wall_cycles_upper_per_step": 9192218.639999997,
+          "baseline_events": {
+            "cycles": 62719333.0,
+            "instructions": 124452295.0,
+            "duration_time": 0.46829497900000006,
+            "r01c7": 291492.0,
+            "r04c7": 3373.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 191741840.0,
+            "instructions": 639254689.0,
+            "duration_time": 0.698100445,
+            "r01c7": 16575476.0,
+            "r04c7": 1432045.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 129022507.0,
+            "instructions": 514802394.0,
+            "duration_time": 0.22980546599999996,
+            "r01c7": 16283984.0,
+            "r04c7": 1428672.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 191413.28
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 5148023.94,
+        "hardware_cycles_per_step": 1290225.07,
+        "wall_seconds_per_step": 0.0022980546599999994,
+        "wall_cycle_estimate_per_step": {
+          "lower": 1838443.7279999997,
+          "nominal": 5974942.115999999,
+          "upper": 9192218.639999997
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.5600415026681743,
+          "nominal": 0.8616023117971912,
+          "upper": 2.8002075133408715
+        }
+      },
+      "dp_ops_per_step": 191413.28
+    },
+    {
+      "rank": 7,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 3264071.69,
+      "instructions_per_step": 3264071.69,
+      "hardware_cycles_per_step": 986479.34,
+      "cycles_per_step": 986479.34,
+      "wall_seconds_per_step": 0.00223225191,
+      "wall_cycles_nominal_per_step": 5803854.966,
+      "wall_cycles_lower_per_step": 1785801.5280000002,
+      "wall_cycles_upper_per_step": 8929007.64,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 3264071.69,
+          "hardware_cycles_per_step": 986479.34,
+          "wall_seconds_per_step": 0.00223225191,
+          "wall_cycles_nominal_per_step": 5803854.966,
+          "wall_cycles_lower_per_step": 1785801.5280000002,
+          "wall_cycles_upper_per_step": 8929007.64,
+          "baseline_events": {
+            "cycles": 64027235.0,
+            "instructions": 169596951.0,
+            "duration_time": 0.469302798,
+            "r01c7": 401274.0,
+            "r04c7": 28451.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 162675169.0,
+            "instructions": 496004120.0,
+            "duration_time": 0.692527989,
+            "r01c7": 18367695.0,
+            "r04c7": 1576664.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 98647934.0,
+            "instructions": 326407169.0,
+            "duration_time": 0.223225191,
+            "r01c7": 17966421.0,
+            "r04c7": 1548213.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 210628.47
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 3264071.69,
+        "hardware_cycles_per_step": 986479.34,
+        "wall_seconds_per_step": 0.00223225191,
+        "wall_cycle_estimate_per_step": {
+          "lower": 1785801.5280000002,
+          "nominal": 5803854.966,
+          "upper": 8929007.64
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.36555816968704036,
+          "nominal": 0.5623971841339083,
+          "upper": 1.8277908484352017
+        }
+      },
+      "dp_ops_per_step": 210628.47
+    },
+    {
+      "rank": 8,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 4260899.53,
+      "instructions_per_step": 4260899.53,
+      "hardware_cycles_per_step": 1044927.97,
+      "cycles_per_step": 1044927.97,
+      "wall_seconds_per_step": 0.0015055675799999996,
+      "wall_cycles_nominal_per_step": 3914475.7079999996,
+      "wall_cycles_lower_per_step": 1204454.0639999998,
+      "wall_cycles_upper_per_step": 6022270.319999998,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 4260899.53,
+          "hardware_cycles_per_step": 1044927.97,
+          "wall_seconds_per_step": 0.0015055675799999996,
+          "wall_cycles_nominal_per_step": 3914475.7079999996,
+          "wall_cycles_lower_per_step": 1204454.0639999998,
+          "wall_cycles_upper_per_step": 6022270.319999998,
+          "baseline_events": {
+            "cycles": 72510387.0,
+            "instructions": 168439628.0,
+            "duration_time": 0.46897268200000003,
+            "r01c7": 363584.0,
+            "r04c7": 3406.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 177003184.0,
+            "instructions": 594529581.0,
+            "duration_time": 0.61952944,
+            "r01c7": 18130482.0,
+            "r04c7": 1403915.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 104492797.0,
+            "instructions": 426089953.0,
+            "duration_time": 0.15055675799999996,
+            "r01c7": 17766898.0,
+            "r04c7": 1400509.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 205679.16
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 4260899.53,
+        "hardware_cycles_per_step": 1044927.97,
+        "wall_seconds_per_step": 0.0015055675799999996,
+        "wall_cycle_estimate_per_step": {
+          "lower": 1204454.0639999998,
+          "nominal": 3914475.7079999996,
+          "upper": 6022270.319999998
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.7075237914594311,
+          "nominal": 1.0884981407068168,
+          "upper": 3.537618957297155
+        }
+      },
+      "dp_ops_per_step": 205679.16
+    },
+    {
+      "rank": 9,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 3685055.38,
+      "instructions_per_step": 3685055.38,
+      "hardware_cycles_per_step": 930757.36,
+      "cycles_per_step": 930757.36,
+      "wall_seconds_per_step": 0.00221977079,
+      "wall_cycles_nominal_per_step": 5771404.0540000005,
+      "wall_cycles_lower_per_step": 1775816.6320000002,
+      "wall_cycles_upper_per_step": 8879083.16,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 3685055.38,
+          "hardware_cycles_per_step": 930757.36,
+          "wall_seconds_per_step": 0.00221977079,
+          "wall_cycles_nominal_per_step": 5771404.0540000005,
+          "wall_cycles_lower_per_step": 1775816.6320000002,
+          "wall_cycles_upper_per_step": 8879083.16,
+          "baseline_events": {
+            "cycles": 66755346.0,
+            "instructions": 169020693.0,
+            "duration_time": 0.46787273300000004,
+            "r01c7": 239429.0,
+            "r04c7": 15871.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 159831082.0,
+            "instructions": 537526231.0,
+            "duration_time": 0.6898498120000001,
+            "r01c7": 12845891.0,
+            "r04c7": 1123997.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 93075736.0,
+            "instructions": 368505538.0,
+            "duration_time": 0.22197707900000002,
+            "r01c7": 12606462.0,
+            "r04c7": 1108126.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 148227.14
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 3685055.38,
+        "hardware_cycles_per_step": 930757.36,
+        "wall_seconds_per_step": 0.00221977079,
+        "wall_cycle_estimate_per_step": {
+          "lower": 1775816.6320000002,
+          "nominal": 5771404.0540000005,
+          "upper": 8879083.16
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.4150265645220063,
+          "nominal": 0.6385024069569327,
+          "upper": 2.0751328226100316
+        }
+      },
+      "dp_ops_per_step": 148227.14
+    },
+    {
+      "rank": 10,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 2577291.15,
+      "instructions_per_step": 2577291.15,
+      "hardware_cycles_per_step": 1185875.02,
+      "cycles_per_step": 1185875.02,
+      "wall_seconds_per_step": 0.0013659913500000003,
+      "wall_cycles_nominal_per_step": 3551577.5100000007,
+      "wall_cycles_lower_per_step": 1092793.0800000003,
+      "wall_cycles_upper_per_step": 5463965.400000001,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 2577291.15,
+          "hardware_cycles_per_step": 1185875.02,
+          "wall_seconds_per_step": 0.0013659913500000003,
+          "wall_cycles_nominal_per_step": 3551577.5100000007,
+          "wall_cycles_lower_per_step": 1092793.0800000003,
+          "wall_cycles_upper_per_step": 5463965.400000001,
+          "baseline_events": {
+            "cycles": 72435700.0,
+            "instructions": 149903071.0,
+            "duration_time": 0.467044241,
+            "r01c7": 366320.0,
+            "r04c7": 25384.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 191023202.0,
+            "instructions": 407632186.0,
+            "duration_time": 0.6036433760000001,
+            "r01c7": 16102968.0,
+            "r04c7": 1430408.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 118587502.0,
+            "instructions": 257729115.0,
+            "duration_time": 0.13659913500000004,
+            "r01c7": 15736648.0,
+            "r04c7": 1405024.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 185466.96
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 2577291.15,
+        "hardware_cycles_per_step": 1185875.02,
+        "wall_seconds_per_step": 0.0013659913500000003,
+        "wall_cycle_estimate_per_step": {
+          "lower": 1092793.0800000003,
+          "nominal": 3551577.5100000007,
+          "upper": 5463965.400000001
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.47168877570125156,
+          "nominal": 0.725675039540387,
+          "upper": 2.358443878506258
+        }
+      },
+      "dp_ops_per_step": 185466.96
+    },
+    {
+      "rank": 11,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 3412938.26,
+      "instructions_per_step": 3412938.26,
+      "hardware_cycles_per_step": 819711.4,
+      "cycles_per_step": 819711.4,
+      "wall_seconds_per_step": 0.00146798645,
+      "wall_cycles_nominal_per_step": 3816764.77,
+      "wall_cycles_lower_per_step": 1174389.1600000001,
+      "wall_cycles_upper_per_step": 5871945.8,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 3412938.26,
+          "hardware_cycles_per_step": 819711.4,
+          "wall_seconds_per_step": 0.00146798645,
+          "wall_cycles_nominal_per_step": 3816764.77,
+          "wall_cycles_lower_per_step": 1174389.1600000001,
+          "wall_cycles_upper_per_step": 5871945.8,
+          "baseline_events": {
+            "cycles": 86738158.0,
+            "instructions": 236217042.0,
+            "duration_time": 0.466893064,
+            "r01c7": 258415.0,
+            "r04c7": 14829.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 168709298.0,
+            "instructions": 577510868.0,
+            "duration_time": 0.613691709,
+            "r01c7": 12846328.0,
+            "r04c7": 1108174.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 81971140.0,
+            "instructions": 341293826.0,
+            "duration_time": 0.146798645,
+            "r01c7": 12587913.0,
+            "r04c7": 1093345.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 147746.03
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 3412938.26,
+        "hardware_cycles_per_step": 819711.4,
+        "wall_seconds_per_step": 0.00146798645,
+        "wall_cycle_estimate_per_step": {
+          "lower": 1174389.1600000001,
+          "nominal": 3816764.77,
+          "upper": 5871945.8
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.5812278205973904,
+          "nominal": 0.8941966470729082,
+          "upper": 2.9061391029869514
+        }
+      },
+      "dp_ops_per_step": 147746.03
+    },
+    {
+      "rank": 12,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 2924611.65,
+      "instructions_per_step": 2924611.65,
+      "hardware_cycles_per_step": 1272247.98,
+      "cycles_per_step": 1272247.98,
+      "wall_seconds_per_step": 0.00134974916,
+      "wall_cycles_nominal_per_step": 3509347.816,
+      "wall_cycles_lower_per_step": 1079799.328,
+      "wall_cycles_upper_per_step": 5398996.64,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 2924611.65,
+          "hardware_cycles_per_step": 1272247.98,
+          "wall_seconds_per_step": 0.00134974916,
+          "wall_cycles_nominal_per_step": 3509347.816,
+          "wall_cycles_lower_per_step": 1079799.328,
+          "wall_cycles_upper_per_step": 5398996.64,
+          "baseline_events": {
+            "cycles": 59028547.0,
+            "instructions": 106854106.0,
+            "duration_time": 0.466750863,
+            "r01c7": 356500.0,
+            "r04c7": 26184.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 186253345.0,
+            "instructions": 399315271.0,
+            "duration_time": 0.601725779,
+            "r01c7": 16656306.0,
+            "r04c7": 1387438.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 127224798.0,
+            "instructions": 292461165.0,
+            "duration_time": 0.134974916,
+            "r01c7": 16299806.0,
+            "r04c7": 1361254.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 190223.14
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 2924611.65,
+        "hardware_cycles_per_step": 1272247.98,
+        "wall_seconds_per_step": 0.00134974916,
+        "wall_cycle_estimate_per_step": {
+          "lower": 1079799.328,
+          "nominal": 3509347.816,
+          "upper": 5398996.64
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.5416954010180677,
+          "nominal": 0.8333775400277964,
+          "upper": 2.708477005090338
+        }
+      },
+      "dp_ops_per_step": 190223.14
+    },
+    {
+      "rank": 13,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 4409461.14,
+      "instructions_per_step": 4409461.14,
+      "hardware_cycles_per_step": 1114964.76,
+      "cycles_per_step": 1114964.76,
+      "wall_seconds_per_step": 0.0015001267400000006,
+      "wall_cycles_nominal_per_step": 3900329.5240000016,
+      "wall_cycles_lower_per_step": 1200101.3920000005,
+      "wall_cycles_upper_per_step": 6000506.960000003,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 4409461.14,
+          "hardware_cycles_per_step": 1114964.76,
+          "wall_seconds_per_step": 0.0015001267400000006,
+          "wall_cycles_nominal_per_step": 3900329.5240000016,
+          "wall_cycles_lower_per_step": 1200101.3920000005,
+          "wall_cycles_upper_per_step": 6000506.960000003,
+          "baseline_events": {
+            "cycles": 75814093.0,
+            "instructions": 219685121.0,
+            "duration_time": 0.465351312,
+            "r01c7": 37370.0,
+            "r04c7": 16454.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 187310569.0,
+            "instructions": 660631235.0,
+            "duration_time": 0.6153639860000001,
+            "r01c7": 13062888.0,
+            "r04c7": 1093041.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 111496476.0,
+            "instructions": 440946114.0,
+            "duration_time": 0.15001267400000007,
+            "r01c7": 13025518.0,
+            "r04c7": 1076587.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 151786.92
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 4409461.14,
+        "hardware_cycles_per_step": 1114964.76,
+        "wall_seconds_per_step": 0.0015001267400000006,
+        "wall_cycle_estimate_per_step": {
+          "lower": 1200101.3920000005,
+          "nominal": 3900329.5240000016,
+          "upper": 6000506.960000003
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.7348481002345171,
+          "nominal": 1.1305355388223342,
+          "upper": 3.674240501172586
+        }
+      },
+      "dp_ops_per_step": 151786.92
+    },
+    {
+      "rank": 14,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 6080956.4,
+      "instructions_per_step": 6080956.4,
+      "hardware_cycles_per_step": 1247219.51,
+      "cycles_per_step": 1247219.51,
+      "wall_seconds_per_step": 0.0012693362100000005,
+      "wall_cycles_nominal_per_step": 3300274.146000001,
+      "wall_cycles_lower_per_step": 1015468.9680000006,
+      "wall_cycles_upper_per_step": 5077344.840000002,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 6080956.4,
+          "hardware_cycles_per_step": 1247219.51,
+          "wall_seconds_per_step": 0.0012693362100000005,
+          "wall_cycles_nominal_per_step": 3300274.146000001,
+          "wall_cycles_lower_per_step": 1015468.9680000006,
+          "wall_cycles_upper_per_step": 5077344.840000002,
+          "baseline_events": {
+            "cycles": 72250099.0,
+            "instructions": 109821372.0,
+            "duration_time": 0.466705119,
+            "r01c7": 355474.0,
+            "r04c7": 25327.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 196972050.0,
+            "instructions": 717917012.0,
+            "duration_time": 0.59363874,
+            "r01c7": 15769497.0,
+            "r04c7": 1343177.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 124721951.0,
+            "instructions": 608095640.0,
+            "duration_time": 0.12693362100000005,
+            "r01c7": 15414023.0,
+            "r04c7": 1317850.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 180497.23
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 6080956.4,
+        "hardware_cycles_per_step": 1247219.51,
+        "wall_seconds_per_step": 0.0012693362100000005,
+        "wall_cycle_estimate_per_step": {
+          "lower": 1015468.9680000006,
+          "nominal": 3300274.146000001,
+          "upper": 5077344.840000002
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 1.197664643948036,
+          "nominal": 1.8425609906892864,
+          "upper": 5.988323219740179
+        }
+      },
+      "dp_ops_per_step": 180497.23
+    },
+    {
+      "rank": 15,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 2689511.66,
+      "instructions_per_step": 2689511.66,
+      "hardware_cycles_per_step": 872115.79,
+      "cycles_per_step": 872115.79,
+      "wall_seconds_per_step": 0.0013097838,
+      "wall_cycles_nominal_per_step": 3405437.88,
+      "wall_cycles_lower_per_step": 1047827.0399999999,
+      "wall_cycles_upper_per_step": 5239135.2,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 2689511.66,
+          "hardware_cycles_per_step": 872115.79,
+          "wall_seconds_per_step": 0.0013097838,
+          "wall_cycles_nominal_per_step": 3405437.88,
+          "wall_cycles_lower_per_step": 1047827.0399999999,
+          "wall_cycles_upper_per_step": 5239135.2,
+          "baseline_events": {
+            "cycles": 77490506.0,
+            "instructions": 200211702.0,
+            "duration_time": 0.466292953,
+            "r01c7": 247334.0,
+            "r04c7": 17279.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 164702085.0,
+            "instructions": 469162868.0,
+            "duration_time": 0.597271333,
+            "r01c7": 13995793.0,
+            "r04c7": 1152877.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 87211579.0,
+            "instructions": 268951166.0,
+            "duration_time": 0.13097838,
+            "r01c7": 13748459.0,
+            "r04c7": 1135598.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 160196.55
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 2689511.66,
+        "hardware_cycles_per_step": 872115.79,
+        "wall_seconds_per_step": 0.0013097838,
+        "wall_cycle_estimate_per_step": {
+          "lower": 1047827.0399999999,
+          "nominal": 3405437.88,
+          "upper": 5239135.2
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.5133503063635387,
+          "nominal": 0.789769702097752,
+          "upper": 2.5667515318176943
+        }
+      },
+      "dp_ops_per_step": 160196.55
+    },
+    {
+      "rank": 16,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 1556985.58,
+      "instructions_per_step": 1556985.58,
+      "hardware_cycles_per_step": 1051232.0,
+      "cycles_per_step": 1051232.0,
+      "wall_seconds_per_step": 0.0006686806200000006,
+      "wall_cycles_nominal_per_step": 1738569.6120000016,
+      "wall_cycles_lower_per_step": 534944.4960000005,
+      "wall_cycles_upper_per_step": 2674722.4800000023,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 1556985.58,
+          "hardware_cycles_per_step": 1051232.0,
+          "wall_seconds_per_step": 0.0006686806200000006,
+          "wall_cycles_nominal_per_step": 1738569.6120000016,
+          "wall_cycles_lower_per_step": 534944.4960000005,
+          "wall_cycles_upper_per_step": 2674722.4800000023,
+          "baseline_events": {
+            "cycles": 68511121.0,
+            "instructions": 186443548.0,
+            "duration_time": 0.440100205,
+            "r01c7": 274505.0,
+            "r04c7": 14016.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 173634321.0,
+            "instructions": 342142106.0,
+            "duration_time": 0.5069682670000001,
+            "r01c7": 15380711.0,
+            "r04c7": 1245848.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 105123200.0,
+            "instructions": 155698558.0,
+            "duration_time": 0.06686806200000006,
+            "r01c7": 15106206.0,
+            "r04c7": 1231832.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 175698.7
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 1556985.58,
+        "hardware_cycles_per_step": 1051232.0,
+        "wall_seconds_per_step": 0.0006686806200000006,
+        "wall_cycle_estimate_per_step": {
+          "lower": 534944.4960000005,
+          "nominal": 1738569.6120000016,
+          "upper": 2674722.4800000023
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.582111075688121,
+          "nominal": 0.8955555010586477,
+          "upper": 2.9105553784406046
+        }
+      },
+      "dp_ops_per_step": 175698.7
+    },
+    {
+      "rank": 17,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 3854853.32,
+      "instructions_per_step": 3854853.32,
+      "hardware_cycles_per_step": 1006253.97,
+      "cycles_per_step": 1006253.97,
+      "wall_seconds_per_step": 0.0015665901300000002,
+      "wall_cycles_nominal_per_step": 4073134.3380000005,
+      "wall_cycles_lower_per_step": 1253272.1040000003,
+      "wall_cycles_upper_per_step": 6266360.5200000005,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 3854853.32,
+          "hardware_cycles_per_step": 1006253.97,
+          "wall_seconds_per_step": 0.0015665901300000002,
+          "wall_cycles_nominal_per_step": 4073134.3380000005,
+          "wall_cycles_lower_per_step": 1253272.1040000003,
+          "wall_cycles_upper_per_step": 6266360.5200000005,
+          "baseline_events": {
+            "cycles": 66567363.0,
+            "instructions": 168377655.0,
+            "duration_time": 0.441282125,
+            "r01c7": 314352.0,
+            "r04c7": 19897.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 167192760.0,
+            "instructions": 553862987.0,
+            "duration_time": 0.597941138,
+            "r01c7": 14521141.0,
+            "r04c7": 1243594.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 100625397.0,
+            "instructions": 385485332.0,
+            "duration_time": 0.156659013,
+            "r01c7": 14206789.0,
+            "r04c7": 1223697.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 166541.83
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 3854853.32,
+        "hardware_cycles_per_step": 1006253.97,
+        "wall_seconds_per_step": 0.0015665901300000002,
+        "wall_cycle_estimate_per_step": {
+          "lower": 1253272.1040000003,
+          "nominal": 4073134.3380000005,
+          "upper": 6266360.5200000005
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.6151662209182946,
+          "nominal": 0.9464095706435302,
+          "upper": 3.075831104591473
+        }
+      },
+      "dp_ops_per_step": 166541.83
+    },
+    {
+      "rank": 18,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 4923515.43,
+      "instructions_per_step": 4923515.43,
+      "hardware_cycles_per_step": 1294516.35,
+      "cycles_per_step": 1294516.35,
+      "wall_seconds_per_step": 0.00075564819,
+      "wall_cycles_nominal_per_step": 1964685.294,
+      "wall_cycles_lower_per_step": 604518.552,
+      "wall_cycles_upper_per_step": 3022592.7600000002,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 4923515.43,
+          "hardware_cycles_per_step": 1294516.35,
+          "wall_seconds_per_step": 0.00075564819,
+          "wall_cycles_nominal_per_step": 1964685.294,
+          "wall_cycles_lower_per_step": 604518.552,
+          "wall_cycles_upper_per_step": 3022592.7600000002,
+          "baseline_events": {
+            "cycles": 61134493.0,
+            "instructions": 168547353.0,
+            "duration_time": 0.44394382200000004,
+            "r01c7": 46243.0,
+            "r04c7": 18254.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 190586128.0,
+            "instructions": 660898896.0,
+            "duration_time": 0.519508641,
+            "r01c7": 15941630.0,
+            "r04c7": 1284484.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 129451635.0,
+            "instructions": 492351543.0,
+            "duration_time": 0.075564819,
+            "r01c7": 15895387.0,
+            "r04c7": 1266230.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 184278.47
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 4923515.43,
+        "hardware_cycles_per_step": 1294516.35,
+        "wall_seconds_per_step": 0.00075564819,
+        "wall_cycle_estimate_per_step": {
+          "lower": 604518.552,
+          "nominal": 1964685.294,
+          "upper": 3022592.7600000002
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 1.628904659323011,
+          "nominal": 2.5060071681892477,
+          "upper": 8.144523296615056
+        }
+      },
+      "dp_ops_per_step": 184278.47
+    },
+    {
+      "rank": 19,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 5217078.83,
+      "instructions_per_step": 5217078.83,
+      "hardware_cycles_per_step": 1345384.21,
+      "cycles_per_step": 1345384.21,
+      "wall_seconds_per_step": 0.0017294885600000003,
+      "wall_cycles_nominal_per_step": 4496670.256000001,
+      "wall_cycles_lower_per_step": 1383590.8480000005,
+      "wall_cycles_upper_per_step": 6917954.240000001,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 5217078.83,
+          "hardware_cycles_per_step": 1345384.21,
+          "wall_seconds_per_step": 0.0017294885600000003,
+          "wall_cycles_nominal_per_step": 4496670.256000001,
+          "wall_cycles_lower_per_step": 1383590.8480000005,
+          "wall_cycles_upper_per_step": 6917954.240000001,
+          "baseline_events": {
+            "cycles": 63461497.0,
+            "instructions": 173254886.0,
+            "duration_time": 0.44164185100000003,
+            "r01c7": 335459.0,
+            "r04c7": 17993.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 197999918.0,
+            "instructions": 694962769.0,
+            "duration_time": 0.6145907070000001,
+            "r01c7": 14751014.0,
+            "r04c7": 1204305.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 134538421.0,
+            "instructions": 521707883.0,
+            "duration_time": 0.17294885600000004,
+            "r01c7": 14415555.0,
+            "r04c7": 1186312.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 167881.79
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 5217078.83,
+        "hardware_cycles_per_step": 1345384.21,
+        "wall_seconds_per_step": 0.0017294885600000003,
+        "wall_cycle_estimate_per_step": {
+          "lower": 1383590.8480000005,
+          "nominal": 4496670.256000001,
+          "upper": 6917954.240000001
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.7541360710128084,
+          "nominal": 1.1602093400197053,
+          "upper": 3.7706803550640418
+        }
+      },
+      "dp_ops_per_step": 167881.79
+    },
+    {
+      "rank": 20,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 4164623.87,
+      "instructions_per_step": 4164623.87,
+      "hardware_cycles_per_step": 1000635.93,
+      "cycles_per_step": 1000635.93,
+      "wall_seconds_per_step": 0.0006871898100000007,
+      "wall_cycles_nominal_per_step": 1786693.506000002,
+      "wall_cycles_lower_per_step": 549751.8480000007,
+      "wall_cycles_upper_per_step": 2748759.240000003,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 4164623.87,
+          "hardware_cycles_per_step": 1000635.93,
+          "wall_seconds_per_step": 0.0006871898100000007,
+          "wall_cycles_nominal_per_step": 1786693.506000002,
+          "wall_cycles_lower_per_step": 549751.8480000007,
+          "wall_cycles_upper_per_step": 2748759.240000003,
+          "baseline_events": {
+            "cycles": 69854179.0,
+            "instructions": 140044912.0,
+            "duration_time": 0.437217183,
+            "r01c7": 271756.0,
+            "r04c7": 14506.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 169917772.0,
+            "instructions": 556507299.0,
+            "duration_time": 0.5059361640000001,
+            "r01c7": 16359515.0,
+            "r04c7": 1315710.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 100063593.0,
+            "instructions": 416462387.0,
+            "duration_time": 0.06871898100000007,
+            "r01c7": 16087759.0,
+            "r04c7": 1301204.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 186901.67
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 4164623.87,
+        "hardware_cycles_per_step": 1000635.93,
+        "wall_seconds_per_step": 0.0006871898100000007,
+        "wall_cycle_estimate_per_step": {
+          "lower": 549751.8480000007,
+          "nominal": 1786693.506000002,
+          "upper": 2748759.240000003
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 1.5150922675934309,
+          "nominal": 2.3309111809129703,
+          "upper": 7.575461337967153
+        }
+      },
+      "dp_ops_per_step": 186901.67
+    },
+    {
+      "rank": 21,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 4610232.21,
+      "instructions_per_step": 4610232.21,
+      "hardware_cycles_per_step": 1271449.79,
+      "cycles_per_step": 1271449.79,
+      "wall_seconds_per_step": 0.0005077459799999995,
+      "wall_cycles_nominal_per_step": 1320139.5479999988,
+      "wall_cycles_lower_per_step": 406196.78399999964,
+      "wall_cycles_upper_per_step": 2030983.919999998,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 4610232.21,
+          "hardware_cycles_per_step": 1271449.79,
+          "wall_seconds_per_step": 0.0005077459799999995,
+          "wall_cycles_nominal_per_step": 1320139.5479999988,
+          "wall_cycles_lower_per_step": 406196.78399999964,
+          "wall_cycles_upper_per_step": 2030983.919999998,
+          "baseline_events": {
+            "cycles": 59104181.0,
+            "instructions": 127883698.0,
+            "duration_time": 0.46924641600000006,
+            "r01c7": 295505.0,
+            "r04c7": 20383.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 186249160.0,
+            "instructions": 588906919.0,
+            "duration_time": 0.520021014,
+            "r01c7": 15202202.0,
+            "r04c7": 1240001.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 127144979.0,
+            "instructions": 461023221.0,
+            "duration_time": 0.05077459799999995,
+            "r01c7": 14906697.0,
+            "r04c7": 1219618.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 173459.33
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 4610232.21,
+        "hardware_cycles_per_step": 1271449.79,
+        "wall_seconds_per_step": 0.0005077459799999995,
+        "wall_cycle_estimate_per_step": {
+          "lower": 406196.78399999964,
+          "nominal": 1320139.5479999988,
+          "upper": 2030983.919999998
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 2.2699501284087,
+          "nominal": 3.492230966782615,
+          "upper": 11.349750642043498
+        }
+      },
+      "dp_ops_per_step": 173459.33
+    },
+    {
+      "rank": 22,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 1793667.37,
+      "instructions_per_step": 1793667.37,
+      "hardware_cycles_per_step": 1057308.28,
+      "cycles_per_step": 1057308.28,
+      "wall_seconds_per_step": 0.0007267636599999999,
+      "wall_cycles_nominal_per_step": 1889585.5159999998,
+      "wall_cycles_lower_per_step": 581410.928,
+      "wall_cycles_upper_per_step": 2907054.6399999997,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 1793667.37,
+          "hardware_cycles_per_step": 1057308.28,
+          "wall_seconds_per_step": 0.0007267636599999999,
+          "wall_cycles_nominal_per_step": 1889585.5159999998,
+          "wall_cycles_lower_per_step": 581410.928,
+          "wall_cycles_upper_per_step": 2907054.6399999997,
+          "baseline_events": {
+            "cycles": 61548329.0,
+            "instructions": 125324925.0,
+            "duration_time": 0.43978195800000003,
+            "r01c7": 269576.0,
+            "r04c7": 17860.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 167279157.0,
+            "instructions": 304691662.0,
+            "duration_time": 0.512458324,
+            "r01c7": 15779079.0,
+            "r04c7": 1311351.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 105730828.0,
+            "instructions": 179366737.0,
+            "duration_time": 0.07267636599999999,
+            "r01c7": 15509503.0,
+            "r04c7": 1293491.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 180964.85
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 1793667.37,
+        "hardware_cycles_per_step": 1057308.28,
+        "wall_seconds_per_step": 0.0007267636599999999,
+        "wall_cycle_estimate_per_step": {
+          "lower": 581410.928,
+          "nominal": 1889585.5159999998,
+          "upper": 2907054.6399999997
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.6170050419141762,
+          "nominal": 0.9492385260218095,
+          "upper": 3.0850252095708806
+        }
+      },
+      "dp_ops_per_step": 180964.85
+    },
+    {
+      "rank": 23,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 3538433.33,
+      "instructions_per_step": 3538433.33,
+      "hardware_cycles_per_step": 879204.87,
+      "cycles_per_step": 879204.87,
+      "wall_seconds_per_step": 0.0007652785199999995,
+      "wall_cycles_nominal_per_step": 1989724.151999999,
+      "wall_cycles_lower_per_step": 612222.8159999998,
+      "wall_cycles_upper_per_step": 3061114.079999998,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 3538433.33,
+          "hardware_cycles_per_step": 879204.87,
+          "wall_seconds_per_step": 0.0007652785199999995,
+          "wall_cycles_nominal_per_step": 1989724.151999999,
+          "wall_cycles_lower_per_step": 612222.8159999998,
+          "wall_cycles_upper_per_step": 3061114.079999998,
+          "baseline_events": {
+            "cycles": 73297805.0,
+            "instructions": 187557468.0,
+            "duration_time": 0.43846553400000005,
+            "r01c7": 313262.0,
+            "r04c7": 21437.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 161218292.0,
+            "instructions": 541400801.0,
+            "duration_time": 0.514993386,
+            "r01c7": 15838241.0,
+            "r04c7": 1193929.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 87920487.0,
+            "instructions": 353843333.0,
+            "duration_time": 0.07652785199999995,
+            "r01c7": 15524979.0,
+            "r04c7": 1172492.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 178699.63
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 3538433.33,
+        "hardware_cycles_per_step": 879204.87,
+        "wall_seconds_per_step": 0.0007652785199999995,
+        "wall_cycle_estimate_per_step": {
+          "lower": 612222.8159999998,
+          "nominal": 1989724.151999999,
+          "upper": 3061114.079999998
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 1.1559299122886666,
+          "nominal": 1.778353711213333,
+          "upper": 5.779649561443332
+        }
+      },
+      "dp_ops_per_step": 178699.63
+    },
+    {
+      "rank": 24,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 4224002.16,
+      "instructions_per_step": 4224002.16,
+      "hardware_cycles_per_step": 1065654.62,
+      "cycles_per_step": 1065654.62,
+      "wall_seconds_per_step": 0.0010115360800000007,
+      "wall_cycles_nominal_per_step": 2629993.808000002,
+      "wall_cycles_lower_per_step": 809228.8640000006,
+      "wall_cycles_upper_per_step": 4046144.3200000026,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 4224002.16,
+          "hardware_cycles_per_step": 1065654.62,
+          "wall_seconds_per_step": 0.0010115360800000007,
+          "wall_cycles_nominal_per_step": 2629993.808000002,
+          "wall_cycles_lower_per_step": 809228.8640000006,
+          "wall_cycles_upper_per_step": 4046144.3200000026,
+          "baseline_events": {
+            "cycles": 66432071.0,
+            "instructions": 123944492.0,
+            "duration_time": 0.431764598,
+            "r01c7": 333621.0,
+            "r04c7": 24446.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 172997533.0,
+            "instructions": 546344708.0,
+            "duration_time": 0.5329182060000001,
+            "r01c7": 16967686.0,
+            "r04c7": 1372610.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 106565462.0,
+            "instructions": 422400216.0,
+            "duration_time": 0.10115360800000006,
+            "r01c7": 16634065.0,
+            "r04c7": 1348164.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 193303.93
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 4224002.16,
+        "hardware_cycles_per_step": 1065654.62,
+        "wall_seconds_per_step": 0.0010115360800000007,
+        "wall_cycle_estimate_per_step": {
+          "lower": 809228.8640000006,
+          "nominal": 2629993.808000002,
+          "upper": 4046144.3200000026
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 1.0439573643285165,
+          "nominal": 1.606088252813102,
+          "upper": 5.219786821642582
+        }
+      },
+      "dp_ops_per_step": 193303.93
+    },
+    {
+      "rank": 25,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 3743972.47,
+      "instructions_per_step": 3743972.47,
+      "hardware_cycles_per_step": 919339.38,
+      "cycles_per_step": 919339.38,
+      "wall_seconds_per_step": 0.0007315863099999997,
+      "wall_cycles_nominal_per_step": 1902124.4059999993,
+      "wall_cycles_lower_per_step": 585269.0479999998,
+      "wall_cycles_upper_per_step": 2926345.239999999,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 3743972.47,
+          "hardware_cycles_per_step": 919339.38,
+          "wall_seconds_per_step": 0.0007315863099999997,
+          "wall_cycles_nominal_per_step": 1902124.4059999993,
+          "wall_cycles_lower_per_step": 585269.0479999998,
+          "wall_cycles_upper_per_step": 2926345.239999999,
+          "baseline_events": {
+            "cycles": 69253372.0,
+            "instructions": 141553220.0,
+            "duration_time": 0.432409111,
+            "r01c7": 339944.0,
+            "r04c7": 20273.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 161187310.0,
+            "instructions": 515950467.0,
+            "duration_time": 0.505567742,
+            "r01c7": 14810681.0,
+            "r04c7": 1249327.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 91933938.0,
+            "instructions": 374397247.0,
+            "duration_time": 0.07315863099999997,
+            "r01c7": 14470737.0,
+            "r04c7": 1229054.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 169288.45
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 3743972.47,
+        "hardware_cycles_per_step": 919339.38,
+        "wall_seconds_per_step": 0.0007315863099999997,
+        "wall_cycle_estimate_per_step": {
+          "lower": 585269.0479999998,
+          "nominal": 1902124.4059999993,
+          "upper": 2926345.239999999
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 1.279402176757518,
+          "nominal": 1.9683110411654123,
+          "upper": 6.39701088378759
+        }
+      },
+      "dp_ops_per_step": 169288.45
+    },
+    {
+      "rank": 26,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 1908969.99,
+      "instructions_per_step": 1908969.99,
+      "hardware_cycles_per_step": 1078900.8,
+      "cycles_per_step": 1078900.8,
+      "wall_seconds_per_step": 0.0010684964499999999,
+      "wall_cycles_nominal_per_step": 2778090.77,
+      "wall_cycles_lower_per_step": 854797.1599999999,
+      "wall_cycles_upper_per_step": 4273985.8,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 1908969.99,
+          "hardware_cycles_per_step": 1078900.8,
+          "wall_seconds_per_step": 0.0010684964499999999,
+          "wall_cycles_nominal_per_step": 2778090.77,
+          "wall_cycles_lower_per_step": 854797.1599999999,
+          "wall_cycles_upper_per_step": 4273985.8,
+          "baseline_events": {
+            "cycles": 65889915.0,
+            "instructions": 157356791.0,
+            "duration_time": 0.43163569900000004,
+            "r01c7": 322105.0,
+            "r04c7": 24456.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 173779995.0,
+            "instructions": 348253790.0,
+            "duration_time": 0.538485344,
+            "r01c7": 16552393.0,
+            "r04c7": 1357698.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 107890080.0,
+            "instructions": 190896999.0,
+            "duration_time": 0.106849645,
+            "r01c7": 16230288.0,
+            "r04c7": 1333242.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 188967.72
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 1908969.99,
+        "hardware_cycles_per_step": 1078900.8,
+        "wall_seconds_per_step": 0.0010684964499999999,
+        "wall_cycle_estimate_per_step": {
+          "lower": 854797.1599999999,
+          "nominal": 2778090.77,
+          "upper": 4273985.8
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.4466486505406733,
+          "nominal": 0.6871517700625743,
+          "upper": 2.2332432527033665
+        }
+      },
+      "dp_ops_per_step": 188967.72
+    },
+    {
+      "rank": 27,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 2356700.07,
+      "instructions_per_step": 2356700.07,
+      "hardware_cycles_per_step": 1022320.7,
+      "cycles_per_step": 1022320.7,
+      "wall_seconds_per_step": 0.00073408629,
+      "wall_cycles_nominal_per_step": 1908624.354,
+      "wall_cycles_lower_per_step": 587269.032,
+      "wall_cycles_upper_per_step": 2936345.16,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 2356700.07,
+          "hardware_cycles_per_step": 1022320.7,
+          "wall_seconds_per_step": 0.00073408629,
+          "wall_cycles_nominal_per_step": 1908624.354,
+          "wall_cycles_lower_per_step": 587269.032,
+          "wall_cycles_upper_per_step": 2936345.16,
+          "baseline_events": {
+            "cycles": 71493478.0,
+            "instructions": 132368128.0,
+            "duration_time": 0.43420357200000004,
+            "r01c7": 326076.0,
+            "r04c7": 3387.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 173725548.0,
+            "instructions": 368038135.0,
+            "duration_time": 0.507612201,
+            "r01c7": 15226342.0,
+            "r04c7": 1247659.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 102232070.0,
+            "instructions": 235670007.0,
+            "duration_time": 0.073408629,
+            "r01c7": 14900266.0,
+            "r04c7": 1244272.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 173888.1
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 2356700.07,
+        "hardware_cycles_per_step": 1022320.7,
+        "wall_seconds_per_step": 0.00073408629,
+        "wall_cycle_estimate_per_step": {
+          "lower": 587269.032,
+          "nominal": 1908624.354,
+          "upper": 2936345.16
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.8025964052536656,
+          "nominal": 1.234763700390255,
+          "upper": 4.012982026268328
+        }
+      },
+      "dp_ops_per_step": 173888.1
+    },
+    {
+      "rank": 28,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 2388710.6,
+      "instructions_per_step": 2388710.6,
+      "hardware_cycles_per_step": 1074609.26,
+      "cycles_per_step": 1074609.26,
+      "wall_seconds_per_step": 0.0009283422900000004,
+      "wall_cycles_nominal_per_step": 2413689.954000001,
+      "wall_cycles_lower_per_step": 742673.8320000004,
+      "wall_cycles_upper_per_step": 3713369.1600000015,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 2388710.6,
+          "hardware_cycles_per_step": 1074609.26,
+          "wall_seconds_per_step": 0.0009283422900000004,
+          "wall_cycles_nominal_per_step": 2413689.954000001,
+          "wall_cycles_lower_per_step": 742673.8320000004,
+          "wall_cycles_upper_per_step": 3713369.1600000015,
+          "baseline_events": {
+            "cycles": 64894274.0,
+            "instructions": 111362676.0,
+            "duration_time": 0.41645514100000003,
+            "r01c7": 336881.0,
+            "r04c7": 23495.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 172355200.0,
+            "instructions": 350233736.0,
+            "duration_time": 0.5092893700000001,
+            "r01c7": 15819626.0,
+            "r04c7": 1189019.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 107460926.0,
+            "instructions": 238871060.0,
+            "duration_time": 0.09283422900000005,
+            "r01c7": 15482745.0,
+            "r04c7": 1165524.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 178137.93
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 2388710.6,
+        "hardware_cycles_per_step": 1074609.26,
+        "wall_seconds_per_step": 0.0009283422900000004,
+        "wall_cycle_estimate_per_step": {
+          "lower": 742673.8320000004,
+          "nominal": 2413689.954000001,
+          "upper": 3713369.1600000015
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.6432731293540443,
+          "nominal": 0.9896509682369914,
+          "upper": 3.2163656467702215
+        }
+      },
+      "dp_ops_per_step": 178137.93
+    },
+    {
+      "rank": 29,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 5008745.07,
+      "instructions_per_step": 5008745.07,
+      "hardware_cycles_per_step": 1286469.03,
+      "cycles_per_step": 1286469.03,
+      "wall_seconds_per_step": 0.0008602901400000002,
+      "wall_cycles_nominal_per_step": 2236754.3640000005,
+      "wall_cycles_lower_per_step": 688232.1120000002,
+      "wall_cycles_upper_per_step": 3441160.560000001,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 5008745.07,
+          "hardware_cycles_per_step": 1286469.03,
+          "wall_seconds_per_step": 0.0008602901400000002,
+          "wall_cycles_nominal_per_step": 2236754.3640000005,
+          "wall_cycles_lower_per_step": 688232.1120000002,
+          "wall_cycles_upper_per_step": 3441160.560000001,
+          "baseline_events": {
+            "cycles": 64496505.0,
+            "instructions": 177168338.0,
+            "duration_time": 0.42670563300000003,
+            "r01c7": 340305.0,
+            "r04c7": 3521.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 193143408.0,
+            "instructions": 678042845.0,
+            "duration_time": 0.512734647,
+            "r01c7": 15373994.0,
+            "r04c7": 1308249.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 128646903.0,
+            "instructions": 500874507.0,
+            "duration_time": 0.08602901400000001,
+            "r01c7": 15033689.0,
+            "r04c7": 1304728.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 176431.45
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 5008745.07,
+        "hardware_cycles_per_step": 1286469.03,
+        "wall_seconds_per_step": 0.0008602901400000002,
+        "wall_cycle_estimate_per_step": {
+          "lower": 688232.1120000002,
+          "nominal": 2236754.3640000005,
+          "upper": 3441160.560000001
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 1.4555394852020502,
+          "nominal": 2.239291515695462,
+          "upper": 7.277697426010251
+        }
+      },
+      "dp_ops_per_step": 176431.45
+    },
+    {
+      "rank": 30,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 4211945.39,
+      "instructions_per_step": 4211945.39,
+      "hardware_cycles_per_step": 1128903.24,
+      "cycles_per_step": 1128903.24,
+      "wall_seconds_per_step": 0.0010373594999999996,
+      "wall_cycles_nominal_per_step": 2697134.699999999,
+      "wall_cycles_lower_per_step": 829887.5999999997,
+      "wall_cycles_upper_per_step": 4149437.999999998,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 4211945.39,
+          "hardware_cycles_per_step": 1128903.24,
+          "wall_seconds_per_step": 0.0010373594999999996,
+          "wall_cycles_nominal_per_step": 2697134.699999999,
+          "wall_cycles_lower_per_step": 829887.5999999997,
+          "wall_cycles_upper_per_step": 4149437.999999998,
+          "baseline_events": {
+            "cycles": 64442121.0,
+            "instructions": 171620258.0,
+            "duration_time": 0.429973941,
+            "r01c7": 340553.0,
+            "r04c7": 3315.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 177332445.0,
+            "instructions": 592814797.0,
+            "duration_time": 0.533709891,
+            "r01c7": 16030025.0,
+            "r04c7": 1265736.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 112890324.0,
+            "instructions": 421194539.0,
+            "duration_time": 0.10373594999999997,
+            "r01c7": 15689472.0,
+            "r04c7": 1262421.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 182143.14
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 4211945.39,
+        "hardware_cycles_per_step": 1128903.24,
+        "wall_seconds_per_step": 0.0010373594999999996,
+        "wall_cycle_estimate_per_step": {
+          "lower": 829887.5999999997,
+          "nominal": 2697134.699999999,
+          "upper": 4149437.999999998
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 1.0150640616873903,
+          "nominal": 1.5616370179806005,
+          "upper": 5.075320308436951
+        }
+      },
+      "dp_ops_per_step": 182143.14
+    },
+    {
+      "rank": 31,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 4294202.95,
+      "instructions_per_step": 4294202.95,
+      "hardware_cycles_per_step": 1071277.83,
+      "cycles_per_step": 1071277.83,
+      "wall_seconds_per_step": 0.0007480832900000001,
+      "wall_cycles_nominal_per_step": 1945016.5540000002,
+      "wall_cycles_lower_per_step": 598466.6320000001,
+      "wall_cycles_upper_per_step": 2992333.1600000006,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 4294202.95,
+          "hardware_cycles_per_step": 1071277.83,
+          "wall_seconds_per_step": 0.0007480832900000001,
+          "wall_cycles_nominal_per_step": 1945016.5540000002,
+          "wall_cycles_lower_per_step": 598466.6320000001,
+          "wall_cycles_upper_per_step": 2992333.1600000006,
+          "baseline_events": {
+            "cycles": 64219391.0,
+            "instructions": 165955822.0,
+            "duration_time": 0.42888421600000004,
+            "r01c7": 343882.0,
+            "r04c7": 23018.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 171347174.0,
+            "instructions": 595376117.0,
+            "duration_time": 0.503692545,
+            "r01c7": 15261098.0,
+            "r04c7": 1258759.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 107127783.0,
+            "instructions": 429420295.0,
+            "duration_time": 0.074808329,
+            "r01c7": 14917216.0,
+            "r04c7": 1235741.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 173886.98
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 4294202.95,
+        "hardware_cycles_per_step": 1071277.83,
+        "wall_seconds_per_step": 0.0007480832900000001,
+        "wall_cycle_estimate_per_step": {
+          "lower": 598466.6320000001,
+          "nominal": 1945016.5540000002,
+          "upper": 2992333.1600000006
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 1.435068463432728,
+          "nominal": 2.207797636050351,
+          "upper": 7.17534231716364
+        }
+      },
+      "dp_ops_per_step": 173886.98
+    },
+    {
+      "rank": 32,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 1487568.73,
+      "instructions_per_step": 1487568.73,
+      "hardware_cycles_per_step": 836591.59,
+      "cycles_per_step": 836591.59,
+      "wall_seconds_per_step": 0.0007804880399999997,
+      "wall_cycles_nominal_per_step": 2029268.9039999994,
+      "wall_cycles_lower_per_step": 624390.4319999998,
+      "wall_cycles_upper_per_step": 3121952.1599999988,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 1487568.73,
+          "hardware_cycles_per_step": 836591.59,
+          "wall_seconds_per_step": 0.0007804880399999997,
+          "wall_cycles_nominal_per_step": 2029268.9039999994,
+          "wall_cycles_lower_per_step": 624390.4319999998,
+          "wall_cycles_upper_per_step": 3121952.1599999988,
+          "baseline_events": {
+            "cycles": 75214071.0,
+            "instructions": 158820669.0,
+            "duration_time": 0.45294663900000004,
+            "r01c7": 299982.0,
+            "r04c7": 15717.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 158873230.0,
+            "instructions": 307577542.0,
+            "duration_time": 0.530995443,
+            "r01c7": 17244222.0,
+            "r04c7": 1392973.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 83659159.0,
+            "instructions": 148756873.0,
+            "duration_time": 0.07804880399999997,
+            "r01c7": 16944240.0,
+            "r04c7": 1377256.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 196987.52
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 1487568.73,
+        "hardware_cycles_per_step": 836591.59,
+        "wall_seconds_per_step": 0.0007804880399999997,
+        "wall_cycle_estimate_per_step": {
+          "lower": 624390.4319999998,
+          "nominal": 2029268.9039999994,
+          "upper": 3121952.1599999988
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.4764867152865022,
+          "nominal": 0.7330564850561572,
+          "upper": 2.382433576432511
+        }
+      },
+      "dp_ops_per_step": 196987.52
+    },
+    {
+      "rank": 33,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 1799053.96,
+      "instructions_per_step": 1799053.96,
+      "hardware_cycles_per_step": 1100911.44,
+      "cycles_per_step": 1100911.44,
+      "wall_seconds_per_step": 0.0012036415699999998,
+      "wall_cycles_nominal_per_step": 3129468.0819999995,
+      "wall_cycles_lower_per_step": 962913.2559999998,
+      "wall_cycles_upper_per_step": 4814566.279999999,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 1799053.96,
+          "hardware_cycles_per_step": 1100911.44,
+          "wall_seconds_per_step": 0.0012036415699999998,
+          "wall_cycles_nominal_per_step": 3129468.0819999995,
+          "wall_cycles_lower_per_step": 962913.2559999998,
+          "wall_cycles_upper_per_step": 4814566.279999999,
+          "baseline_events": {
+            "cycles": 66983679.0,
+            "instructions": 179123133.0,
+            "duration_time": 0.418698418,
+            "r01c7": 392669.0,
+            "r04c7": 25029.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 177074823.0,
+            "instructions": 359028529.0,
+            "duration_time": 0.539062575,
+            "r01c7": 16841048.0,
+            "r04c7": 1486832.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 110091144.0,
+            "instructions": 179905396.0,
+            "duration_time": 0.12036415699999997,
+            "r01c7": 16448379.0,
+            "r04c7": 1461803.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 193719.85
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 1799053.96,
+        "hardware_cycles_per_step": 1100911.44,
+        "wall_seconds_per_step": 0.0012036415699999998,
+        "wall_cycle_estimate_per_step": {
+          "lower": 962913.2559999998,
+          "nominal": 3129468.0819999995,
+          "upper": 4814566.279999999
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.373668956947042,
+          "nominal": 0.5748753183800647,
+          "upper": 1.8683447847352102
+        }
+      },
+      "dp_ops_per_step": 193719.85
+    },
+    {
+      "rank": 34,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 2238804.26,
+      "instructions_per_step": 2238804.26,
+      "hardware_cycles_per_step": 1202107.3,
+      "cycles_per_step": 1202107.3,
+      "wall_seconds_per_step": 0.0010967506400000005,
+      "wall_cycles_nominal_per_step": 2851551.6640000017,
+      "wall_cycles_lower_per_step": 877400.5120000006,
+      "wall_cycles_upper_per_step": 4387002.560000002,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 2238804.26,
+          "hardware_cycles_per_step": 1202107.3,
+          "wall_seconds_per_step": 0.0010967506400000005,
+          "wall_cycles_nominal_per_step": 2851551.6640000017,
+          "wall_cycles_lower_per_step": 877400.5120000006,
+          "wall_cycles_upper_per_step": 4387002.560000002,
+          "baseline_events": {
+            "cycles": 67245907.0,
+            "instructions": 174788945.0,
+            "duration_time": 0.424260552,
+            "r01c7": 299719.0,
+            "r04c7": 20677.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 187456637.0,
+            "instructions": 398669371.0,
+            "duration_time": 0.5339356160000001,
+            "r01c7": 17755797.0,
+            "r04c7": 1499774.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 120210730.0,
+            "instructions": 223880426.0,
+            "duration_time": 0.10967506400000004,
+            "r01c7": 17456078.0,
+            "r04c7": 1479097.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 204142.72
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 2238804.26,
+        "hardware_cycles_per_step": 1202107.3,
+        "wall_seconds_per_step": 0.0010967506400000005,
+        "wall_cycle_estimate_per_step": {
+          "lower": 877400.5120000006,
+          "nominal": 2851551.6640000017,
+          "upper": 4387002.560000002
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.5103266363263755,
+          "nominal": 0.7851179020405777,
+          "upper": 2.5516331816318774
+        }
+      },
+      "dp_ops_per_step": 204142.72
+    },
+    {
+      "rank": 35,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 3476869.53,
+      "instructions_per_step": 3476869.53,
+      "hardware_cycles_per_step": 1014447.86,
+      "cycles_per_step": 1014447.86,
+      "wall_seconds_per_step": 0.0010541114400000001,
+      "wall_cycles_nominal_per_step": 2740689.7440000004,
+      "wall_cycles_lower_per_step": 843289.1520000001,
+      "wall_cycles_upper_per_step": 4216445.760000001,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 3476869.53,
+          "hardware_cycles_per_step": 1014447.86,
+          "wall_seconds_per_step": 0.0010541114400000001,
+          "wall_cycles_nominal_per_step": 2740689.7440000004,
+          "wall_cycles_lower_per_step": 843289.1520000001,
+          "wall_cycles_upper_per_step": 4216445.760000001,
+          "baseline_events": {
+            "cycles": 61700034.0,
+            "instructions": 182428849.0,
+            "duration_time": 0.423460961,
+            "r01c7": 50012.0,
+            "r04c7": 29123.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 163144820.0,
+            "instructions": 530115802.0,
+            "duration_time": 0.528872105,
+            "r01c7": 17669128.0,
+            "r04c7": 1623327.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 101444786.0,
+            "instructions": 347686953.0,
+            "duration_time": 0.10541114400000001,
+            "r01c7": 17619116.0,
+            "r04c7": 1594204.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 208075.24
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 3476869.53,
+        "hardware_cycles_per_step": 1014447.86,
+        "wall_seconds_per_step": 0.0010541114400000001,
+        "wall_cycle_estimate_per_step": {
+          "lower": 843289.1520000001,
+          "nominal": 2740689.7440000004,
+          "upper": 4216445.760000001
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.824597238504498,
+          "nominal": 1.2686111361607662,
+          "upper": 4.1229861925224895
+        }
+      },
+      "dp_ops_per_step": 208075.24
+    },
+    {
+      "rank": 36,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 4150223.17,
+      "instructions_per_step": 4150223.17,
+      "hardware_cycles_per_step": 990790.54,
+      "cycles_per_step": 990790.54,
+      "wall_seconds_per_step": 0.00043787993000000025,
+      "wall_cycles_nominal_per_step": 1138487.8180000007,
+      "wall_cycles_lower_per_step": 350303.94400000025,
+      "wall_cycles_upper_per_step": 1751519.720000001,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 4150223.17,
+          "hardware_cycles_per_step": 990790.54,
+          "wall_seconds_per_step": 0.00043787993000000025,
+          "wall_cycles_nominal_per_step": 1138487.8180000007,
+          "wall_cycles_lower_per_step": 350303.94400000025,
+          "wall_cycles_upper_per_step": 1751519.720000001,
+          "baseline_events": {
+            "cycles": 62654360.0,
+            "instructions": 115166099.0,
+            "duration_time": 0.413338792,
+            "r01c7": 289037.0,
+            "r04c7": 20582.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 161733414.0,
+            "instructions": 530188416.0,
+            "duration_time": 0.45712678500000004,
+            "r01c7": 16742900.0,
+            "r04c7": 1311652.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 99079054.0,
+            "instructions": 415022317.0,
+            "duration_time": 0.043787993000000025,
+            "r01c7": 16453863.0,
+            "r04c7": 1291070.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 190360.03
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 4150223.17,
+        "hardware_cycles_per_step": 990790.54,
+        "wall_seconds_per_step": 0.00043787993000000025,
+        "wall_cycle_estimate_per_step": {
+          "lower": 350303.94400000025,
+          "nominal": 1138487.8180000007,
+          "upper": 1751519.720000001
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 2.3694983976543513,
+          "nominal": 3.645382150237463,
+          "upper": 11.847491988271754
+        }
+      },
+      "dp_ops_per_step": 190360.03
+    },
+    {
+      "rank": 37,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 4491744.14,
+      "instructions_per_step": 4491744.14,
+      "hardware_cycles_per_step": 1081099.18,
+      "cycles_per_step": 1081099.18,
+      "wall_seconds_per_step": 0.0008153922500000005,
+      "wall_cycles_nominal_per_step": 2120019.8500000015,
+      "wall_cycles_lower_per_step": 652313.8000000004,
+      "wall_cycles_upper_per_step": 3261569.000000002,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 4491744.14,
+          "hardware_cycles_per_step": 1081099.18,
+          "wall_seconds_per_step": 0.0008153922500000005,
+          "wall_cycles_nominal_per_step": 2120019.8500000015,
+          "wall_cycles_lower_per_step": 652313.8000000004,
+          "wall_cycles_upper_per_step": 3261569.000000002,
+          "baseline_events": {
+            "cycles": 63603685.0,
+            "instructions": 112899223.0,
+            "duration_time": 0.44987091900000004,
+            "r01c7": 421901.0,
+            "r04c7": 27966.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 171713603.0,
+            "instructions": 562073637.0,
+            "duration_time": 0.5314101440000001,
+            "r01c7": 17672733.0,
+            "r04c7": 1444683.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 108109918.0,
+            "instructions": 449174414.0,
+            "duration_time": 0.08153922500000005,
+            "r01c7": 17250832.0,
+            "r04c7": 1416717.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 200842.66
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 4491744.14,
+        "hardware_cycles_per_step": 1081099.18,
+        "wall_seconds_per_step": 0.0008153922500000005,
+        "wall_cycle_estimate_per_step": {
+          "lower": 652313.8000000004,
+          "nominal": 2120019.8500000015,
+          "upper": 3261569.000000002
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 1.3771728085470512,
+          "nominal": 2.118727397764694,
+          "upper": 6.885864042735256
+        }
+      },
+      "dp_ops_per_step": 200842.66
+    },
+    {
+      "rank": 38,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 4439308.16,
+      "instructions_per_step": 4439308.16,
+      "hardware_cycles_per_step": 1125037.06,
+      "cycles_per_step": 1125037.06,
+      "wall_seconds_per_step": 0.0011867222800000005,
+      "wall_cycles_nominal_per_step": 3085477.9280000012,
+      "wall_cycles_lower_per_step": 949377.8240000005,
+      "wall_cycles_upper_per_step": 4746889.120000002,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 4439308.16,
+          "hardware_cycles_per_step": 1125037.06,
+          "wall_seconds_per_step": 0.0011867222800000005,
+          "wall_cycles_nominal_per_step": 3085477.9280000012,
+          "wall_cycles_lower_per_step": 949377.8240000005,
+          "wall_cycles_upper_per_step": 4746889.120000002,
+          "baseline_events": {
+            "cycles": 59162278.0,
+            "instructions": 123142906.0,
+            "duration_time": 0.414826042,
+            "r01c7": 317975.0,
+            "r04c7": 18418.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 171665984.0,
+            "instructions": 567073722.0,
+            "duration_time": 0.53349827,
+            "r01c7": 17500715.0,
+            "r04c7": 1481387.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 112503706.0,
+            "instructions": 443930816.0,
+            "duration_time": 0.11867222800000005,
+            "r01c7": 17182740.0,
+            "r04c7": 1462969.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 201086.78
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 4439308.16,
+        "hardware_cycles_per_step": 1125037.06,
+        "wall_seconds_per_step": 0.0011867222800000005,
+        "wall_cycle_estimate_per_step": {
+          "lower": 949377.8240000005,
+          "nominal": 3085477.9280000012,
+          "upper": 4746889.120000002
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.9352036771400294,
+          "nominal": 1.4387748879077376,
+          "upper": 4.6760183857001465
+        }
+      },
+      "dp_ops_per_step": 201086.78
+    },
+    {
+      "rank": 39,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 2618702.59,
+      "instructions_per_step": 2618702.59,
+      "hardware_cycles_per_step": 810262.6,
+      "cycles_per_step": 810262.6,
+      "wall_seconds_per_step": 0.0011387667800000002,
+      "wall_cycles_nominal_per_step": 2960793.6280000005,
+      "wall_cycles_lower_per_step": 911013.4240000001,
+      "wall_cycles_upper_per_step": 4555067.120000001,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 2618702.59,
+          "hardware_cycles_per_step": 810262.6,
+          "wall_seconds_per_step": 0.0011387667800000002,
+          "wall_cycles_nominal_per_step": 2960793.6280000005,
+          "wall_cycles_lower_per_step": 911013.4240000001,
+          "wall_cycles_upper_per_step": 4555067.120000001,
+          "baseline_events": {
+            "cycles": 87129976.0,
+            "instructions": 255598840.0,
+            "duration_time": 0.42119497100000003,
+            "r01c7": 395620.0,
+            "r04c7": 3445.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 168156236.0,
+            "instructions": 517469099.0,
+            "duration_time": 0.535071649,
+            "r01c7": 17983027.0,
+            "r04c7": 1489061.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 81026260.0,
+            "instructions": 261870259.0,
+            "duration_time": 0.11387667800000001,
+            "r01c7": 17587407.0,
+            "r04c7": 1485616.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 205586.39
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 2618702.59,
+        "hardware_cycles_per_step": 810262.6,
+        "wall_seconds_per_step": 0.0011387667800000002,
+        "wall_cycle_estimate_per_step": {
+          "lower": 911013.4240000001,
+          "nominal": 2960793.6280000005,
+          "upper": 4555067.120000001
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.5748987931488481,
+          "nominal": 0.8844596817674587,
+          "upper": 2.8744939657442408
+        }
+      },
+      "dp_ops_per_step": 205586.39
+    },
+    {
+      "rank": 40,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 4174854.05,
+      "instructions_per_step": 4174854.05,
+      "hardware_cycles_per_step": 1074934.99,
+      "cycles_per_step": 1074934.99,
+      "wall_seconds_per_step": 0.0010757458400000002,
+      "wall_cycles_nominal_per_step": 2796939.1840000004,
+      "wall_cycles_lower_per_step": 860596.6720000003,
+      "wall_cycles_upper_per_step": 4302983.360000001,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 4174854.05,
+          "hardware_cycles_per_step": 1074934.99,
+          "wall_seconds_per_step": 0.0010757458400000002,
+          "wall_cycles_nominal_per_step": 2796939.1840000004,
+          "wall_cycles_lower_per_step": 860596.6720000003,
+          "wall_cycles_upper_per_step": 4302983.360000001,
+          "baseline_events": {
+            "cycles": 69230567.0,
+            "instructions": 168137172.0,
+            "duration_time": 0.41904337500000005,
+            "r01c7": 349619.0,
+            "r04c7": 25496.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 176724066.0,
+            "instructions": 585622577.0,
+            "duration_time": 0.5266179590000001,
+            "r01c7": 19473802.0,
+            "r04c7": 1464004.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 107493499.0,
+            "instructions": 417485405.0,
+            "duration_time": 0.10757458400000003,
+            "r01c7": 19124183.0,
+            "r04c7": 1438508.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 220011.99
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 4174854.05,
+        "hardware_cycles_per_step": 1074934.99,
+        "wall_seconds_per_step": 0.0010757458400000002,
+        "wall_cycle_estimate_per_step": {
+          "lower": 860596.6720000003,
+          "nominal": 2796939.1840000004,
+          "upper": 4302983.360000001
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.9702231453667528,
+          "nominal": 1.4926509928719276,
+          "upper": 4.851115726833764
+        }
+      },
+      "dp_ops_per_step": 220011.99
+    },
+    {
+      "rank": 41,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 5072838.33,
+      "instructions_per_step": 5072838.33,
+      "hardware_cycles_per_step": 1196207.85,
+      "cycles_per_step": 1196207.85,
+      "wall_seconds_per_step": 0.0008237233099999997,
+      "wall_cycles_nominal_per_step": 2141680.605999999,
+      "wall_cycles_lower_per_step": 658978.6479999997,
+      "wall_cycles_upper_per_step": 3294893.239999999,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 5072838.33,
+          "hardware_cycles_per_step": 1196207.85,
+          "wall_seconds_per_step": 0.0008237233099999997,
+          "wall_cycles_nominal_per_step": 2141680.605999999,
+          "wall_cycles_lower_per_step": 658978.6479999997,
+          "wall_cycles_upper_per_step": 3294893.239999999,
+          "baseline_events": {
+            "cycles": 57590301.0,
+            "instructions": 124472376.0,
+            "duration_time": 0.446703041,
+            "r01c7": 47882.0,
+            "r04c7": 15571.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 177211086.0,
+            "instructions": 631756209.0,
+            "duration_time": 0.529075372,
+            "r01c7": 13614938.0,
+            "r04c7": 1055165.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 119620785.0,
+            "instructions": 507283833.0,
+            "duration_time": 0.08237233099999997,
+            "r01c7": 13567056.0,
+            "r04c7": 1039594.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 156462.44
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 5072838.33,
+        "hardware_cycles_per_step": 1196207.85,
+        "wall_seconds_per_step": 0.0008237233099999997,
+        "wall_cycle_estimate_per_step": {
+          "lower": 658978.6479999997,
+          "nominal": 2141680.605999999,
+          "upper": 3294893.239999999
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 1.5396062817501188,
+          "nominal": 2.3686250488463365,
+          "upper": 7.6980314087505946
+        }
+      },
+      "dp_ops_per_step": 156462.44
+    },
+    {
+      "rank": 42,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 1305115.46,
+      "instructions_per_step": 1305115.46,
+      "hardware_cycles_per_step": 883110.91,
+      "cycles_per_step": 883110.91,
+      "wall_seconds_per_step": 0.0012344466199999998,
+      "wall_cycles_nominal_per_step": 3209561.212,
+      "wall_cycles_lower_per_step": 987557.296,
+      "wall_cycles_upper_per_step": 4937786.4799999995,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 1305115.46,
+          "hardware_cycles_per_step": 883110.91,
+          "wall_seconds_per_step": 0.0012344466199999998,
+          "wall_cycles_nominal_per_step": 3209561.212,
+          "wall_cycles_lower_per_step": 987557.296,
+          "wall_cycles_upper_per_step": 4937786.4799999995,
+          "baseline_events": {
+            "cycles": 65458307.0,
+            "instructions": 183999945.0,
+            "duration_time": 0.41103768700000004,
+            "r01c7": 348711.0,
+            "r04c7": 26807.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 153769398.0,
+            "instructions": 314511491.0,
+            "duration_time": 0.534482349,
+            "r01c7": 17342190.0,
+            "r04c7": 1345548.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 88311091.0,
+            "instructions": 130511546.0,
+            "duration_time": 0.12344466199999998,
+            "r01c7": 16993479.0,
+            "r04c7": 1318741.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 196309.61
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 1305115.46,
+        "hardware_cycles_per_step": 883110.91,
+        "wall_seconds_per_step": 0.0012344466199999998,
+        "wall_cycle_estimate_per_step": {
+          "lower": 987557.296,
+          "nominal": 3209561.212,
+          "upper": 4937786.4799999995
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.2643118460642713,
+          "nominal": 0.40663360932964815,
+          "upper": 1.3215592303213564
+        }
+      },
+      "dp_ops_per_step": 196309.61
+    },
+    {
+      "rank": 43,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 4402275.82,
+      "instructions_per_step": 4402275.82,
+      "hardware_cycles_per_step": 1165748.19,
+      "cycles_per_step": 1165748.19,
+      "wall_seconds_per_step": 0.0004902234899999997,
+      "wall_cycles_nominal_per_step": 1274581.073999999,
+      "wall_cycles_lower_per_step": 392178.7919999998,
+      "wall_cycles_upper_per_step": 1960893.9599999988,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 4402275.82,
+          "hardware_cycles_per_step": 1165748.19,
+          "wall_seconds_per_step": 0.0004902234899999997,
+          "wall_cycles_nominal_per_step": 1274581.073999999,
+          "wall_cycles_lower_per_step": 392178.7919999998,
+          "wall_cycles_upper_per_step": 1960893.9599999988,
+          "baseline_events": {
+            "cycles": 54699873.0,
+            "instructions": 155879547.0,
+            "duration_time": 0.40897498200000004,
+            "r01c7": 243219.0,
+            "r04c7": 17107.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 171274692.0,
+            "instructions": 596107129.0,
+            "duration_time": 0.457997331,
+            "r01c7": 14441908.0,
+            "r04c7": 1127123.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 116574819.0,
+            "instructions": 440227582.0,
+            "duration_time": 0.049022348999999965,
+            "r01c7": 14198689.0,
+            "r04c7": 1110016.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 164187.21
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 4402275.82,
+        "hardware_cycles_per_step": 1165748.19,
+        "wall_seconds_per_step": 0.0004902234899999997,
+        "wall_cycle_estimate_per_step": {
+          "lower": 392178.7919999998,
+          "nominal": 1274581.073999999,
+          "upper": 1960893.9599999988
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 2.2450351267337285,
+          "nominal": 3.4539001949749673,
+          "upper": 11.225175633668643
+        }
+      },
+      "dp_ops_per_step": 164187.21
+    },
+    {
+      "rank": 44,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 4442337.61,
+      "instructions_per_step": 4442337.61,
+      "hardware_cycles_per_step": 1065887.79,
+      "cycles_per_step": 1065887.79,
+      "wall_seconds_per_step": 0.00019927832000000035,
+      "wall_cycles_nominal_per_step": 518123.6320000009,
+      "wall_cycles_lower_per_step": 159422.6560000003,
+      "wall_cycles_upper_per_step": 797113.2800000014,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 4442337.61,
+          "hardware_cycles_per_step": 1065887.79,
+          "wall_seconds_per_step": 0.00019927832000000035,
+          "wall_cycles_nominal_per_step": 518123.6320000009,
+          "wall_cycles_lower_per_step": 159422.6560000003,
+          "wall_cycles_upper_per_step": 797113.2800000014,
+          "baseline_events": {
+            "cycles": 67135212.0,
+            "instructions": 116043788.0,
+            "duration_time": 0.438000549,
+            "r01c7": 367607.0,
+            "r04c7": 22127.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 173723991.0,
+            "instructions": 560277549.0,
+            "duration_time": 0.45792838100000005,
+            "r01c7": 16917382.0,
+            "r04c7": 1312049.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 106588779.0,
+            "instructions": 444233761.0,
+            "duration_time": 0.019927832000000034,
+            "r01c7": 16549775.0,
+            "r04c7": 1289922.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 191296.19
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 4442337.61,
+        "hardware_cycles_per_step": 1065887.79,
+        "wall_seconds_per_step": 0.00019927832000000035,
+        "wall_cycle_estimate_per_step": {
+          "lower": 159422.6560000003,
+          "nominal": 518123.6320000009,
+          "upper": 797113.2800000014
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 5.573031740231442,
+          "nominal": 8.57389498497145,
+          "upper": 27.865158701157203
+        }
+      },
+      "dp_ops_per_step": 191296.19
+    },
+    {
+      "rank": 45,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 4610579.43,
+      "instructions_per_step": 4610579.43,
+      "hardware_cycles_per_step": 1094708.9,
+      "cycles_per_step": 1094708.9,
+      "wall_seconds_per_step": 0.00124300694,
+      "wall_cycles_nominal_per_step": 3231818.044,
+      "wall_cycles_lower_per_step": 994405.552,
+      "wall_cycles_upper_per_step": 4972027.76,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 4610579.43,
+          "hardware_cycles_per_step": 1094708.9,
+          "wall_seconds_per_step": 0.00124300694,
+          "wall_cycles_nominal_per_step": 3231818.044,
+          "wall_cycles_lower_per_step": 994405.552,
+          "wall_cycles_upper_per_step": 4972027.76,
+          "baseline_events": {
+            "cycles": 61876986.0,
+            "instructions": 124211330.0,
+            "duration_time": 0.406647796,
+            "r01c7": 244332.0,
+            "r04c7": 12861.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 171347876.0,
+            "instructions": 585269273.0,
+            "duration_time": 0.53094849,
+            "r01c7": 14676576.0,
+            "r04c7": 1096609.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 109470890.0,
+            "instructions": 461057943.0,
+            "duration_time": 0.12430069399999999,
+            "r01c7": 14432244.0,
+            "r04c7": 1083748.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 165997.4
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 4610579.43,
+        "hardware_cycles_per_step": 1094708.9,
+        "wall_seconds_per_step": 0.00124300694,
+        "wall_cycle_estimate_per_step": {
+          "lower": 994405.552,
+          "nominal": 3231818.044,
+          "upper": 4972027.76
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.9273036379829062,
+          "nominal": 1.426620981512163,
+          "upper": 4.636518189914531
+        }
+      },
+      "dp_ops_per_step": 165997.4
+    },
+    {
+      "rank": 46,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 5547462.46,
+      "instructions_per_step": 5547462.46,
+      "hardware_cycles_per_step": 1177719.04,
+      "cycles_per_step": 1177719.04,
+      "wall_seconds_per_step": 0.0008922706399999996,
+      "wall_cycles_nominal_per_step": 2319903.663999999,
+      "wall_cycles_lower_per_step": 713816.5119999998,
+      "wall_cycles_upper_per_step": 3569082.5599999987,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 5547462.46,
+          "hardware_cycles_per_step": 1177719.04,
+          "wall_seconds_per_step": 0.0008922706399999996,
+          "wall_cycles_nominal_per_step": 2319903.663999999,
+          "wall_cycles_lower_per_step": 713816.5119999998,
+          "wall_cycles_upper_per_step": 3569082.5599999987,
+          "baseline_events": {
+            "cycles": 67074432.0,
+            "instructions": 127010669.0,
+            "duration_time": 0.43944355900000004,
+            "r01c7": 357945.0,
+            "r04c7": 22334.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 184846336.0,
+            "instructions": 681756915.0,
+            "duration_time": 0.528670623,
+            "r01c7": 16268362.0,
+            "r04c7": 1457619.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 117771904.0,
+            "instructions": 554746246.0,
+            "duration_time": 0.08922706399999997,
+            "r01c7": 15910417.0,
+            "r04c7": 1435285.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 187809.87
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 5547462.46,
+        "hardware_cycles_per_step": 1177719.04,
+        "wall_seconds_per_step": 0.0008922706399999996,
+        "wall_cycle_estimate_per_step": {
+          "lower": 713816.5119999998,
+          "nominal": 2319903.663999999,
+          "upper": 3569082.5599999987
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 1.5543104892479713,
+          "nominal": 2.3912469065353408,
+          "upper": 7.771552446239856
+        }
+      },
+      "dp_ops_per_step": 187809.87
+    },
+    {
+      "rank": 47,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 1652656.83,
+      "instructions_per_step": 1652656.83,
+      "hardware_cycles_per_step": 1045545.44,
+      "cycles_per_step": 1045545.44,
+      "wall_seconds_per_step": 0.00113908974,
+      "wall_cycles_nominal_per_step": 2961633.324,
+      "wall_cycles_lower_per_step": 911271.7919999999,
+      "wall_cycles_upper_per_step": 4556358.96,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 1652656.83,
+          "hardware_cycles_per_step": 1045545.44,
+          "wall_seconds_per_step": 0.00113908974,
+          "wall_cycles_nominal_per_step": 2961633.324,
+          "wall_cycles_lower_per_step": 911271.7919999999,
+          "wall_cycles_upper_per_step": 4556358.96,
+          "baseline_events": {
+            "cycles": 64061761.0,
+            "instructions": 182724392.0,
+            "duration_time": 0.41923646800000003,
+            "r01c7": 246232.0,
+            "r04c7": 16625.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 168616305.0,
+            "instructions": 347990075.0,
+            "duration_time": 0.533145442,
+            "r01c7": 13976310.0,
+            "r04c7": 1145990.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 104554544.0,
+            "instructions": 165265683.0,
+            "duration_time": 0.113908974,
+            "r01c7": 13730078.0,
+            "r04c7": 1129365.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 159888.08
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 1652656.83,
+        "hardware_cycles_per_step": 1045545.44,
+        "wall_seconds_per_step": 0.00113908974,
+        "wall_cycle_estimate_per_step": {
+          "lower": 911271.7919999999,
+          "nominal": 2961633.324,
+          "upper": 4556358.96
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.3627143612934307,
+          "nominal": 0.5580220942975856,
+          "upper": 1.8135718064671535
+        }
+      },
+      "dp_ops_per_step": 159888.08
+    },
+    {
+      "rank": 48,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 5256720.15,
+      "instructions_per_step": 5256720.15,
+      "hardware_cycles_per_step": 1224474.39,
+      "cycles_per_step": 1224474.39,
+      "wall_seconds_per_step": 0.00045592418999999997,
+      "wall_cycles_nominal_per_step": 1185402.894,
+      "wall_cycles_lower_per_step": 364739.352,
+      "wall_cycles_upper_per_step": 1823696.7599999998,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 5256720.15,
+          "hardware_cycles_per_step": 1224474.39,
+          "wall_seconds_per_step": 0.00045592418999999997,
+          "wall_cycles_nominal_per_step": 1185402.894,
+          "wall_cycles_lower_per_step": 364739.352,
+          "wall_cycles_upper_per_step": 1823696.7599999998,
+          "baseline_events": {
+            "cycles": 62838714.0,
+            "instructions": 159536234.0,
+            "duration_time": 0.41191901200000003,
+            "r01c7": 245157.0,
+            "r04c7": 16831.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 185286153.0,
+            "instructions": 685208249.0,
+            "duration_time": 0.457511431,
+            "r01c7": 15864248.0,
+            "r04c7": 1224922.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 122447439.0,
+            "instructions": 525672015.0,
+            "duration_time": 0.045592418999999995,
+            "r01c7": 15619091.0,
+            "r04c7": 1208091.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 180352.73
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 5256720.15,
+        "hardware_cycles_per_step": 1224474.39,
+        "wall_seconds_per_step": 0.00045592418999999997,
+        "wall_cycle_estimate_per_step": {
+          "lower": 364739.352,
+          "nominal": 1185402.894,
+          "upper": 1823696.7599999998
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 2.8824529742543388,
+          "nominal": 4.434543037314366,
+          "upper": 14.412264871271692
+        }
+      },
+      "dp_ops_per_step": 180352.73
+    },
+    {
+      "rank": 49,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 1749098.92,
+      "instructions_per_step": 1749098.92,
+      "hardware_cycles_per_step": 1122565.33,
+      "cycles_per_step": 1122565.33,
+      "wall_seconds_per_step": 0.0009301565900000003,
+      "wall_cycles_nominal_per_step": 2418407.134000001,
+      "wall_cycles_lower_per_step": 744125.2720000002,
+      "wall_cycles_upper_per_step": 3720626.3600000013,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 1749098.92,
+          "hardware_cycles_per_step": 1122565.33,
+          "wall_seconds_per_step": 0.0009301565900000003,
+          "wall_cycles_nominal_per_step": 2418407.134000001,
+          "wall_cycles_lower_per_step": 744125.2720000002,
+          "wall_cycles_upper_per_step": 3720626.3600000013,
+          "baseline_events": {
+            "cycles": 59198176.0,
+            "instructions": 123291958.0,
+            "duration_time": 0.437000058,
+            "r01c7": 48841.0,
+            "r04c7": 19967.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 171454709.0,
+            "instructions": 298201850.0,
+            "duration_time": 0.530015717,
+            "r01c7": 14686704.0,
+            "r04c7": 1230493.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 112256533.0,
+            "instructions": 174909892.0,
+            "duration_time": 0.09301565900000003,
+            "r01c7": 14637863.0,
+            "r04c7": 1210526.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 170589.15
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 1749098.92,
+        "hardware_cycles_per_step": 1122565.33,
+        "wall_seconds_per_step": 0.0009301565900000003,
+        "wall_cycle_estimate_per_step": {
+          "lower": 744125.2720000002,
+          "nominal": 2418407.134000001,
+          "upper": 3720626.3600000013
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.4701087265317336,
+          "nominal": 0.7232441946642054,
+          "upper": 2.350543632658668
+        }
+      },
+      "dp_ops_per_step": 170589.15
+    },
+    {
+      "rank": 50,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 4605766.63,
+      "instructions_per_step": 4605766.63,
+      "hardware_cycles_per_step": 1171307.71,
+      "cycles_per_step": 1171307.71,
+      "wall_seconds_per_step": 0.0005248552899999998,
+      "wall_cycles_nominal_per_step": 1364623.7539999995,
+      "wall_cycles_lower_per_step": 419884.23199999984,
+      "wall_cycles_upper_per_step": 2099421.159999999,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 4605766.63,
+          "hardware_cycles_per_step": 1171307.71,
+          "wall_seconds_per_step": 0.0005248552899999998,
+          "wall_cycles_nominal_per_step": 1364623.7539999995,
+          "wall_cycles_lower_per_step": 419884.23199999984,
+          "wall_cycles_upper_per_step": 2099421.159999999,
+          "baseline_events": {
+            "cycles": 57134931.0,
+            "instructions": 177362943.0,
+            "duration_time": 0.40557640500000003,
+            "r01c7": 263533.0,
+            "r04c7": 18183.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 174265702.0,
+            "instructions": 637939606.0,
+            "duration_time": 0.458061934,
+            "r01c7": 16330812.0,
+            "r04c7": 1350577.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 117130771.0,
+            "instructions": 460576663.0,
+            "duration_time": 0.052485528999999975,
+            "r01c7": 16067279.0,
+            "r04c7": 1332394.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 187320.67
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 4605766.63,
+        "hardware_cycles_per_step": 1171307.71,
+        "wall_seconds_per_step": 0.0005248552899999998,
+        "wall_cycle_estimate_per_step": {
+          "lower": 419884.23199999984,
+          "nominal": 1364623.7539999995,
+          "upper": 2099421.159999999
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 2.1938269070318417,
+          "nominal": 3.375118318510526,
+          "upper": 10.96913453515921
+        }
+      },
+      "dp_ops_per_step": 187320.67
+    },
+    {
+      "rank": 51,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 4018990.68,
+      "instructions_per_step": 4018990.68,
+      "hardware_cycles_per_step": 1052335.56,
+      "cycles_per_step": 1052335.56,
+      "wall_seconds_per_step": 0.00016040936000000005,
+      "wall_cycles_nominal_per_step": 417064.3360000001,
+      "wall_cycles_lower_per_step": 128327.48800000006,
+      "wall_cycles_upper_per_step": 641637.4400000002,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 4018990.68,
+          "hardware_cycles_per_step": 1052335.56,
+          "wall_seconds_per_step": 0.00016040936000000005,
+          "wall_cycles_nominal_per_step": 417064.3360000001,
+          "wall_cycles_lower_per_step": 128327.48800000006,
+          "wall_cycles_upper_per_step": 641637.4400000002,
+          "baseline_events": {
+            "cycles": 62226149.0,
+            "instructions": 114181623.0,
+            "duration_time": 0.44171388300000003,
+            "r01c7": 312389.0,
+            "r04c7": 20501.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 167459705.0,
+            "instructions": 516080691.0,
+            "duration_time": 0.45775481900000003,
+            "r01c7": 14794519.0,
+            "r04c7": 1189965.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 105233556.0,
+            "instructions": 401899068.0,
+            "duration_time": 0.016040936000000006,
+            "r01c7": 14482130.0,
+            "r04c7": 1169464.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 168210.58
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 4018990.68,
+        "hardware_cycles_per_step": 1052335.56,
+        "wall_seconds_per_step": 0.00016040936000000005,
+        "wall_cycle_estimate_per_step": {
+          "lower": 128327.48800000006,
+          "nominal": 417064.3360000001,
+          "upper": 641637.4400000002
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 6.263647395638258,
+          "nominal": 9.636380608674243,
+          "upper": 31.318236978191287
+        }
+      },
+      "dp_ops_per_step": 168210.58
+    },
+    {
+      "rank": 52,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 3528048.31,
+      "instructions_per_step": 3528048.31,
+      "hardware_cycles_per_step": 998076.04,
+      "cycles_per_step": 998076.04,
+      "wall_seconds_per_step": 0.0002716322800000004,
+      "wall_cycles_nominal_per_step": 706243.9280000011,
+      "wall_cycles_lower_per_step": 217305.82400000034,
+      "wall_cycles_upper_per_step": 1086529.1200000015,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 3528048.31,
+          "hardware_cycles_per_step": 998076.04,
+          "wall_seconds_per_step": 0.0002716322800000004,
+          "wall_cycles_nominal_per_step": 706243.9280000011,
+          "wall_cycles_lower_per_step": 217305.82400000034,
+          "wall_cycles_upper_per_step": 1086529.1200000015,
+          "baseline_events": {
+            "cycles": 75110850.0,
+            "instructions": 243550935.0,
+            "duration_time": 0.4299061,
+            "r01c7": 256058.0,
+            "r04c7": 14109.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 174918454.0,
+            "instructions": 596355766.0,
+            "duration_time": 0.45706932800000005,
+            "r01c7": 16232813.0,
+            "r04c7": 1330425.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 99807604.0,
+            "instructions": 352804831.0,
+            "duration_time": 0.02716322800000004,
+            "r01c7": 15976755.0,
+            "r04c7": 1316316.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 186093.87
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 3528048.31,
+        "hardware_cycles_per_step": 998076.04,
+        "wall_seconds_per_step": 0.0002716322800000004,
+        "wall_cycle_estimate_per_step": {
+          "lower": 217305.82400000034,
+          "nominal": 706243.9280000011,
+          "upper": 1086529.1200000015
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 3.2470812287111044,
+          "nominal": 4.995509582632468,
+          "upper": 16.23540614355552
+        }
+      },
+      "dp_ops_per_step": 186093.87
+    },
+    {
+      "rank": 53,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 4286982.49,
+      "instructions_per_step": 4286982.49,
+      "hardware_cycles_per_step": 1134852.3,
+      "cycles_per_step": 1134852.3,
+      "wall_seconds_per_step": 0.0009977723499999995,
+      "wall_cycles_nominal_per_step": 2594208.109999999,
+      "wall_cycles_lower_per_step": 798217.8799999997,
+      "wall_cycles_upper_per_step": 3991089.399999998,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 4286982.49,
+          "hardware_cycles_per_step": 1134852.3,
+          "wall_seconds_per_step": 0.0009977723499999995,
+          "wall_cycles_nominal_per_step": 2594208.109999999,
+          "wall_cycles_lower_per_step": 798217.8799999997,
+          "wall_cycles_upper_per_step": 3991089.399999998,
+          "baseline_events": {
+            "cycles": 64405433.0,
+            "instructions": 172825204.0,
+            "duration_time": 0.42664544200000004,
+            "r01c7": 337249.0,
+            "r04c7": 17777.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 177890663.0,
+            "instructions": 601523453.0,
+            "duration_time": 0.526422677,
+            "r01c7": 14923505.0,
+            "r04c7": 1198008.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 113485230.0,
+            "instructions": 428698249.0,
+            "duration_time": 0.09977723499999996,
+            "r01c7": 14586256.0,
+            "r04c7": 1180231.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 169467.18
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 4286982.49,
+        "hardware_cycles_per_step": 1134852.3,
+        "wall_seconds_per_step": 0.0009977723499999995,
+        "wall_cycle_estimate_per_step": {
+          "lower": 798217.8799999997,
+          "nominal": 2594208.109999999,
+          "upper": 3991089.399999998
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 1.0741384269668333,
+          "nominal": 1.652520656872051,
+          "upper": 5.370692134834166
+        }
+      },
+      "dp_ops_per_step": 169467.18
+    },
+    {
+      "rank": 54,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 1960304.95,
+      "instructions_per_step": 1960304.95,
+      "hardware_cycles_per_step": 1010961.81,
+      "cycles_per_step": 1010961.81,
+      "wall_seconds_per_step": 0.0009729081900000003,
+      "wall_cycles_nominal_per_step": 2529561.294000001,
+      "wall_cycles_lower_per_step": 778326.5520000003,
+      "wall_cycles_upper_per_step": 3891632.760000001,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 1960304.95,
+          "hardware_cycles_per_step": 1010961.81,
+          "wall_seconds_per_step": 0.0009729081900000003,
+          "wall_cycles_nominal_per_step": 2529561.294000001,
+          "wall_cycles_lower_per_step": 778326.5520000003,
+          "wall_cycles_upper_per_step": 3891632.760000001,
+          "baseline_events": {
+            "cycles": 65446450.0,
+            "instructions": 120498645.0,
+            "duration_time": 0.427311679,
+            "r01c7": 271393.0,
+            "r04c7": 18637.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 166542631.0,
+            "instructions": 316529140.0,
+            "duration_time": 0.524602498,
+            "r01c7": 14834648.0,
+            "r04c7": 1262337.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 101096181.0,
+            "instructions": 196030495.0,
+            "duration_time": 0.09729081900000003,
+            "r01c7": 14563255.0,
+            "r04c7": 1243700.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 170506.55
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 1960304.95,
+        "hardware_cycles_per_step": 1010961.81,
+        "wall_seconds_per_step": 0.0009729081900000003,
+        "wall_cycle_estimate_per_step": {
+          "lower": 778326.5520000003,
+          "nominal": 2529561.294000001,
+          "upper": 3891632.760000001
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.5037230054564551,
+          "nominal": 0.7749584699330077,
+          "upper": 2.518615027282275
+        }
+      },
+      "dp_ops_per_step": 170506.55
+    },
+    {
+      "rank": 55,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 3753963.79,
+      "instructions_per_step": 3753963.79,
+      "hardware_cycles_per_step": 1190523.47,
+      "cycles_per_step": 1190523.47,
+      "wall_seconds_per_step": 0.0009407866599999997,
+      "wall_cycles_nominal_per_step": 2446045.3159999996,
+      "wall_cycles_lower_per_step": 752629.3279999999,
+      "wall_cycles_upper_per_step": 3763146.6399999987,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 3753963.79,
+          "hardware_cycles_per_step": 1190523.47,
+          "wall_seconds_per_step": 0.0009407866599999997,
+          "wall_cycles_nominal_per_step": 2446045.3159999996,
+          "wall_cycles_lower_per_step": 752629.3279999999,
+          "wall_cycles_upper_per_step": 3763146.6399999987,
+          "baseline_events": {
+            "cycles": 57861154.0,
+            "instructions": 179599746.0,
+            "duration_time": 0.42863096500000003,
+            "r01c7": 308494.0,
+            "r04c7": 20840.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 176913501.0,
+            "instructions": 554996125.0,
+            "duration_time": 0.522709631,
+            "r01c7": 14935757.0,
+            "r04c7": 1219116.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 119052347.0,
+            "instructions": 375396379.0,
+            "duration_time": 0.09407866599999998,
+            "r01c7": 14627263.0,
+            "r04c7": 1198276.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 170238.15
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 3753963.79,
+        "hardware_cycles_per_step": 1190523.47,
+        "wall_seconds_per_step": 0.0009407866599999997,
+        "wall_cycle_estimate_per_step": {
+          "lower": 752629.3279999999,
+          "nominal": 2446045.3159999996,
+          "upper": 3763146.6399999987
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.9975597947998118,
+          "nominal": 1.5347073766150947,
+          "upper": 4.987798973999058
+        }
+      },
+      "dp_ops_per_step": 170238.15
+    },
+    {
+      "rank": 56,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 1981882.15,
+      "instructions_per_step": 1981882.15,
+      "hardware_cycles_per_step": 1194476.28,
+      "cycles_per_step": 1194476.28,
+      "wall_seconds_per_step": 0.0017235714300000004,
+      "wall_cycles_nominal_per_step": 4481285.718000001,
+      "wall_cycles_lower_per_step": 1378857.1440000003,
+      "wall_cycles_upper_per_step": 6894285.720000002,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 1981882.15,
+          "hardware_cycles_per_step": 1194476.28,
+          "wall_seconds_per_step": 0.0017235714300000004,
+          "wall_cycles_nominal_per_step": 4481285.718000001,
+          "wall_cycles_lower_per_step": 1378857.1440000003,
+          "wall_cycles_upper_per_step": 6894285.720000002,
+          "baseline_events": {
+            "cycles": 66121697.0,
+            "instructions": 174916170.0,
+            "duration_time": 0.352348631,
+            "r01c7": 352048.0,
+            "r04c7": 24171.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 185569325.0,
+            "instructions": 373104385.0,
+            "duration_time": 0.5247057740000001,
+            "r01c7": 16071595.0,
+            "r04c7": 1328578.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 119447628.0,
+            "instructions": 198188215.0,
+            "duration_time": 0.17235714300000005,
+            "r01c7": 15719547.0,
+            "r04c7": 1304407.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 183283.61
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 1981882.15,
+        "hardware_cycles_per_step": 1194476.28,
+        "wall_seconds_per_step": 0.0017235714300000004,
+        "wall_cycle_estimate_per_step": {
+          "lower": 1378857.1440000003,
+          "nominal": 4481285.718000001,
+          "upper": 6894285.720000002
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.2874673650746229,
+          "nominal": 0.44225748473018905,
+          "upper": 1.4373368253731145
+        }
+      },
+      "dp_ops_per_step": 183283.61
+    },
+    {
+      "rank": 57,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 4882845.04,
+      "instructions_per_step": 4882845.04,
+      "hardware_cycles_per_step": 1104029.37,
+      "cycles_per_step": 1104029.37,
+      "wall_seconds_per_step": 0.0003335079099999999,
+      "wall_cycles_nominal_per_step": 867120.5659999998,
+      "wall_cycles_lower_per_step": 266806.328,
+      "wall_cycles_upper_per_step": 1334031.6399999997,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 4882845.04,
+          "hardware_cycles_per_step": 1104029.37,
+          "wall_seconds_per_step": 0.0003335079099999999,
+          "wall_cycles_nominal_per_step": 867120.5659999998,
+          "wall_cycles_lower_per_step": 266806.328,
+          "wall_cycles_upper_per_step": 1334031.6399999997,
+          "baseline_events": {
+            "cycles": 69238373.0,
+            "instructions": 139756252.0,
+            "duration_time": 0.424601918,
+            "r01c7": 53367.0,
+            "r04c7": 23175.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 179641310.0,
+            "instructions": 628040756.0,
+            "duration_time": 0.457952709,
+            "r01c7": 15189865.0,
+            "r04c7": 1226066.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 110402937.0,
+            "instructions": 488284504.0,
+            "duration_time": 0.03335079099999999,
+            "r01c7": 15136498.0,
+            "r04c7": 1202891.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 175422.8
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 4882845.04,
+        "hardware_cycles_per_step": 1104029.37,
+        "wall_seconds_per_step": 0.0003335079099999999,
+        "wall_cycle_estimate_per_step": {
+          "lower": 266806.328,
+          "nominal": 867120.5659999998,
+          "upper": 1334031.6399999997
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 3.6602168146476655,
+          "nominal": 5.631102791765639,
+          "upper": 18.301084073238325
+        }
+      },
+      "dp_ops_per_step": 175422.8
+    },
+    {
+      "rank": 58,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 5048419.78,
+      "instructions_per_step": 5048419.78,
+      "hardware_cycles_per_step": 1181822.61,
+      "cycles_per_step": 1181822.61,
+      "wall_seconds_per_step": 0.00033955082000000023,
+      "wall_cycles_nominal_per_step": 882832.1320000006,
+      "wall_cycles_lower_per_step": 271640.6560000002,
+      "wall_cycles_upper_per_step": 1358203.280000001,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 5048419.78,
+          "hardware_cycles_per_step": 1181822.61,
+          "wall_seconds_per_step": 0.00033955082000000023,
+          "wall_cycles_nominal_per_step": 882832.1320000006,
+          "wall_cycles_lower_per_step": 271640.6560000002,
+          "wall_cycles_upper_per_step": 1358203.280000001,
+          "baseline_events": {
+            "cycles": 60748496.0,
+            "instructions": 106845746.0,
+            "duration_time": 0.424122686,
+            "r01c7": 346485.0,
+            "r04c7": 22685.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 178930757.0,
+            "instructions": 611687724.0,
+            "duration_time": 0.45807776800000005,
+            "r01c7": 16904948.0,
+            "r04c7": 1414090.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 118182261.0,
+            "instructions": 504841978.0,
+            "duration_time": 0.033955082000000025,
+            "r01c7": 16558463.0,
+            "r04c7": 1391405.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 193412.73
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 5048419.78,
+        "hardware_cycles_per_step": 1181822.61,
+        "wall_seconds_per_step": 0.00033955082000000023,
+        "wall_cycle_estimate_per_step": {
+          "lower": 271640.6560000002,
+          "nominal": 882832.1320000006,
+          "upper": 1358203.280000001
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 3.7169839407249823,
+          "nominal": 5.718436831884588,
+          "upper": 18.584919703624912
+        }
+      },
+      "dp_ops_per_step": 193412.73
+    },
+    {
+      "rank": 59,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 5317950.36,
+      "instructions_per_step": 5317950.36,
+      "hardware_cycles_per_step": 1298789.03,
+      "cycles_per_step": 1298789.03,
+      "wall_seconds_per_step": 0.0003334979599999999,
+      "wall_cycles_nominal_per_step": 867094.6959999998,
+      "wall_cycles_lower_per_step": 266798.36799999996,
+      "wall_cycles_upper_per_step": 1333991.8399999996,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 5317950.36,
+          "hardware_cycles_per_step": 1298789.03,
+          "wall_seconds_per_step": 0.0003334979599999999,
+          "wall_cycles_nominal_per_step": 867094.6959999998,
+          "wall_cycles_lower_per_step": 266798.36799999996,
+          "wall_cycles_upper_per_step": 1333991.8399999996,
+          "baseline_events": {
+            "cycles": 57028939.0,
+            "instructions": 122928721.0,
+            "duration_time": 0.42454277900000004,
+            "r01c7": 365751.0,
+            "r04c7": 3361.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 186907842.0,
+            "instructions": 654723757.0,
+            "duration_time": 0.457892575,
+            "r01c7": 17101660.0,
+            "r04c7": 1226254.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 129878903.0,
+            "instructions": 531795036.0,
+            "duration_time": 0.03334979599999999,
+            "r01c7": 16735909.0,
+            "r04c7": 1222893.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 191816.95
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 5317950.36,
+        "hardware_cycles_per_step": 1298789.03,
+        "wall_seconds_per_step": 0.0003334979599999999,
+        "wall_cycle_estimate_per_step": {
+          "lower": 266798.36799999996,
+          "nominal": 867094.6959999998,
+          "upper": 1333991.8399999996
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 3.986493920382603,
+          "nominal": 6.133067569819389,
+          "upper": 19.932469601913013
+        }
+      },
+      "dp_ops_per_step": 191816.95
+    },
+    {
+      "rank": 60,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 4957755.7,
+      "instructions_per_step": 4957755.7,
+      "hardware_cycles_per_step": 1214074.57,
+      "cycles_per_step": 1214074.57,
+      "wall_seconds_per_step": 0.0010079617299999998,
+      "wall_cycles_nominal_per_step": 2620700.4979999997,
+      "wall_cycles_lower_per_step": 806369.384,
+      "wall_cycles_upper_per_step": 4031846.9199999995,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 4957755.7,
+          "hardware_cycles_per_step": 1214074.57,
+          "wall_seconds_per_step": 0.0010079617299999998,
+          "wall_cycles_nominal_per_step": 2620700.4979999997,
+          "wall_cycles_lower_per_step": 806369.384,
+          "wall_cycles_upper_per_step": 4031846.9199999995,
+          "baseline_events": {
+            "cycles": 63166142.0,
+            "instructions": 160590278.0,
+            "duration_time": 0.422505813,
+            "r01c7": 319626.0,
+            "r04c7": 25238.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 184573599.0,
+            "instructions": 656365848.0,
+            "duration_time": 0.523301986,
+            "r01c7": 16424994.0,
+            "r04c7": 1341126.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 121407457.0,
+            "instructions": 495775570.0,
+            "duration_time": 0.10079617299999999,
+            "r01c7": 16105368.0,
+            "r04c7": 1315888.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 187371.44
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 4957755.7,
+        "hardware_cycles_per_step": 1214074.57,
+        "wall_seconds_per_step": 0.0010079617299999998,
+        "wall_cycle_estimate_per_step": {
+          "lower": 806369.384,
+          "nominal": 2620700.4979999997,
+          "upper": 4031846.9199999995
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 1.2296487933128177,
+          "nominal": 1.891767374327412,
+          "upper": 6.148243966564088
+        }
+      },
+      "dp_ops_per_step": 187371.44
+    },
+    {
+      "rank": 61,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 3697320.75,
+      "instructions_per_step": 3697320.75,
+      "hardware_cycles_per_step": 950270.24,
+      "cycles_per_step": 950270.24,
+      "wall_seconds_per_step": 0.0003269659400000002,
+      "wall_cycles_nominal_per_step": 850111.4440000006,
+      "wall_cycles_lower_per_step": 261572.7520000002,
+      "wall_cycles_upper_per_step": 1307863.760000001,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 3697320.75,
+          "hardware_cycles_per_step": 950270.24,
+          "wall_seconds_per_step": 0.0003269659400000002,
+          "wall_cycles_nominal_per_step": 850111.4440000006,
+          "wall_cycles_lower_per_step": 261572.7520000002,
+          "wall_cycles_upper_per_step": 1307863.760000001,
+          "baseline_events": {
+            "cycles": 63071418.0,
+            "instructions": 108571623.0,
+            "duration_time": 0.424030611,
+            "r01c7": 340288.0,
+            "r04c7": 23198.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 158098442.0,
+            "instructions": 478303698.0,
+            "duration_time": 0.456727205,
+            "r01c7": 15930418.0,
+            "r04c7": 1267762.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 95027024.0,
+            "instructions": 369732075.0,
+            "duration_time": 0.03269659400000002,
+            "r01c7": 15590130.0,
+            "r04c7": 1244564.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 180792.58
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 3697320.75,
+        "hardware_cycles_per_step": 950270.24,
+        "wall_seconds_per_step": 0.0003269659400000002,
+        "wall_cycle_estimate_per_step": {
+          "lower": 261572.7520000002,
+          "nominal": 850111.4440000006,
+          "upper": 1307863.760000001
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 2.8269922778501004,
+          "nominal": 4.349218889000155,
+          "upper": 14.134961389250503
+        }
+      },
+      "dp_ops_per_step": 180792.58
+    },
+    {
+      "rank": 62,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 2776726.59,
+      "instructions_per_step": 2776726.59,
+      "hardware_cycles_per_step": 1135001.42,
+      "cycles_per_step": 1135001.42,
+      "wall_seconds_per_step": 0.00106869302,
+      "wall_cycles_nominal_per_step": 2778601.8520000004,
+      "wall_cycles_lower_per_step": 854954.4160000001,
+      "wall_cycles_upper_per_step": 4274772.08,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 2776726.59,
+          "hardware_cycles_per_step": 1135001.42,
+          "wall_seconds_per_step": 0.00106869302,
+          "wall_cycles_nominal_per_step": 2778601.8520000004,
+          "wall_cycles_lower_per_step": 854954.4160000001,
+          "wall_cycles_upper_per_step": 4274772.08,
+          "baseline_events": {
+            "cycles": 64986771.0,
+            "instructions": 116872807.0,
+            "duration_time": 0.352113204,
+            "r01c7": 331503.0,
+            "r04c7": 21825.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 178486913.0,
+            "instructions": 394545466.0,
+            "duration_time": 0.458982506,
+            "r01c7": 17267489.0,
+            "r04c7": 1482877.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 113500142.0,
+            "instructions": 277672659.0,
+            "duration_time": 0.106869302,
+            "r01c7": 16935986.0,
+            "r04c7": 1461052.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 198580.9
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 2776726.59,
+        "hardware_cycles_per_step": 1135001.42,
+        "wall_seconds_per_step": 0.00106869302,
+        "wall_cycle_estimate_per_step": {
+          "lower": 854954.4160000001,
+          "nominal": 2778601.8520000004,
+          "upper": 4274772.08
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 0.6495613188341026,
+          "nominal": 0.9993251058986192,
+          "upper": 3.2478065941705125
+        }
+      },
+      "dp_ops_per_step": 198580.9
+    },
+    {
+      "rank": 63,
+      "steps": 100,
+      "repeats": 1,
+      "aggregation": "per-rank median of baseline-subtracted repeats",
+      "retired_instructions_per_step": 4358237.12,
+      "instructions_per_step": 4358237.12,
+      "hardware_cycles_per_step": 1129283.12,
+      "cycles_per_step": 1129283.12,
+      "wall_seconds_per_step": 0.00030501895,
+      "wall_cycles_nominal_per_step": 793049.27,
+      "wall_cycles_lower_per_step": 244015.16,
+      "wall_cycles_upper_per_step": 1220075.8,
+      "repeat_records": [
+        {
+          "repeat": 0,
+          "retired_instructions_per_step": 4358237.12,
+          "hardware_cycles_per_step": 1129283.12,
+          "wall_seconds_per_step": 0.00030501895,
+          "wall_cycles_nominal_per_step": 793049.27,
+          "wall_cycles_lower_per_step": 244015.16,
+          "wall_cycles_upper_per_step": 1220075.8,
+          "baseline_events": {
+            "cycles": 63938804.0,
+            "instructions": 131595251.0,
+            "duration_time": 0.426150819,
+            "r01c7": 50824.0,
+            "r04c7": 23899.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "run_events": {
+            "cycles": 176867116.0,
+            "instructions": 567418963.0,
+            "duration_time": 0.456652714,
+            "r01c7": 16378715.0,
+            "r04c7": 1247329.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "delta_events": {
+            "cycles": 112928312.0,
+            "instructions": 435823712.0,
+            "duration_time": 0.030501895,
+            "r01c7": 16327891.0,
+            "r04c7": 1223430.0,
+            "r10c7": 0.0,
+            "r40c7": 0.0
+          },
+          "dp_ops_per_step": 187747.51
+        }
+      ],
+      "C1_measured": {
+        "retired_instructions_per_step": 4358237.12,
+        "hardware_cycles_per_step": 1129283.12,
+        "wall_seconds_per_step": 0.00030501895,
+        "wall_cycle_estimate_per_step": {
+          "lower": 244015.16,
+          "nominal": 793049.27,
+          "upper": 1220075.8
+        },
+        "instructions_per_wall_cycle": {
+          "lower": 3.572103569302825,
+          "nominal": 5.495543952773577,
+          "upper": 17.860517846514128
+        }
+      },
+      "dp_ops_per_step": 187747.51
+    }
+  ],
+  "retired_instructions_per_step": {
+    "sum": 235235066.79000002,
+    "average": 3675547.9185937503,
+    "minimum": 1305115.46,
+    "maximum": 6080956.4
+  },
+  "hardware_cycles_per_step": {
+    "sum": 70061888.82,
+    "average": 1094717.0128125,
+    "minimum": 810262.6,
+    "maximum": 1345384.21
+  },
+  "wall_seconds_per_step": {
+    "sum": 0.06988579340000001,
+    "average": 0.0010919655218750001,
+    "minimum": 0.00016040936000000005,
+    "maximum": 0.0023975335500000007
+  },
+  "wall_cycles_nominal_per_step": {
+    "sum": 181703062.84000006,
+    "average": 2839110.356875001,
+    "minimum": 417064.3360000001,
+    "maximum": 6233587.230000002
+  },
+  "wall_cycles_lower_per_step": {
+    "sum": 55908634.72000003,
+    "average": 873572.4175000004,
+    "minimum": 128327.48800000006,
+    "maximum": 1918026.8400000008
+  },
+  "wall_cycles_upper_per_step": {
+    "sum": 279543173.59999996,
+    "average": 4367862.087499999,
+    "minimum": 641637.4400000002,
+    "maximum": 9590134.200000003
+  },
+  "dp_ops_per_step": {
+    "sum": 11805134.479999999,
+    "average": 184455.22624999998,
+    "minimum": 147746.03,
+    "maximum": 220011.99
+  },
+  "C1_measured": {
+    "definition": "total retired instruction work plus critical-rank wall-cycle estimate; CPU frequency is declared/measured, never fitted",
+    "total_retired_instructions_per_step": 235235066.79000002,
+    "aggregate_hardware_cycles_per_step": 70061888.82,
+    "critical_rank_wall_seconds_per_step": 0.0023975335500000007,
+    "critical_rank_wall_cycle_estimate_per_step": {
+      "lower": 1918026.8400000008,
+      "nominal": 6233587.230000002,
+      "upper": 9590134.200000003
+    }
+  }
+}

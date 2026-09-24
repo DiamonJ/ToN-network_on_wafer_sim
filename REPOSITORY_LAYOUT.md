@@ -14,11 +14,12 @@ artifacts stay outside Git history.
   upstream LAMMPS source tree is a local dependency and is not vendored here.
 - Compact experiment summaries (`csv`, report `json`, and selected figures).
 
-## Separate dependency repositories
+## Vendored dependencies
 
-`booksim2/` is an independent Git checkout based on BookSim 2.0. Its CCDG and
-WSE extensions are committed in that repository so upstream history remains
-available. The main repository intentionally ignores the nested checkout.
+`booksim2/` is vendored in this repository from BookSim 2.0 upstream commit
+`28f43299f1706a3160ffac721ca461d74eb6e618`. Its CCDG and WSE extensions are
+tracked directly by the main repository so one clone contains the complete
+simulator implementation. Build products and simulation outputs remain ignored.
 
 `lammps-src/` and `sst-dumpi/` are upstream source trees used to build the
 pipeline. Keep a known-compatible checkout locally, then apply or copy the

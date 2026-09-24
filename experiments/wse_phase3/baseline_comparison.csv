@@ -1,0 +1,7 @@
+ranks,name,cycles,steps_per_sec,source,wse_cycles,wse_vs_baseline_gain_pct
+16,cerebras,153178,13057.0,/mlx_devbox/users/liuyicheng.1/playground/dpmd/runs/pipeline/short_lialocl_2688a_16r_20260910_093912/evaluation.json,107553,29.785608899450313
+16,free,166848,11987.0,/mlx_devbox/users/liuyicheng.1/playground/dpmd/runs/pipeline/short_lialocl_2688a_16r_20260910_093912/evaluation.json,107553,35.53833429228999
+16,free_fold,166778,11992.0,/mlx_devbox/users/liuyicheng.1/playground/dpmd/runs/pipeline/short_lialocl_2688a_16r_20260910_093912/evaluation.json,107553,35.511278465984724
+16,hb,151859,13170.0,/mlx_devbox/users/liuyicheng.1/playground/dpmd/runs/pipeline/short_lialocl_2688a_16r_20260910_093912/evaluation.json,107553,29.175748556226498
+16,ilv,153188,13056.0,/mlx_devbox/users/liuyicheng.1/playground/dpmd/runs/pipeline/short_lialocl_2688a_16r_20260910_093912/evaluation.json,107553,29.790192443272318
+256,free_historical,159449,12543.0,/mlx_devbox/users/liuyicheng.1/playground/dpmd/booksim2/results/ccdg_mesh_results.csv,82937,47.985249201939176

@@ -1,0 +1,430 @@
+[
+  {
+    "ccdg": "trace_4ranks_global.ccdg",
+    "phase_trace": "phase_trace.csv",
+    "num_ranks": 4,
+    "num_kspace_windows": 263,
+    "missing_wall_time_nodes": 0,
+    "total_comm": {
+      "events": 93812,
+      "bytes": 2960993616,
+      "wall_sec": 1.1054156190000275
+    },
+    "phase_breakdown": {
+      "Kspace": {
+        "events": 61899,
+        "bytes": 2666933248,
+        "wall_sec": 0.9878380660000298,
+        "pct_of_comm_wall": 89.36349812875271
+      },
+      "Comm": {
+        "events": 19005,
+        "bytes": 191296552,
+        "wall_sec": 0.07503975099999978,
+        "pct_of_comm_wall": 6.78837440960728
+      },
+      "Pair": {
+        "events": 10916,
+        "bytes": 83225296,
+        "wall_sec": 0.03092190299999999,
+        "pct_of_comm_wall": 2.7973101219586822
+      },
+      "Modify": {
+        "events": 934,
+        "bytes": 11023600,
+        "wall_sec": 0.008291679999999997,
+        "pct_of_comm_wall": 0.7500961500345683
+      },
+      "Neigh": {
+        "events": 664,
+        "bytes": 8497256,
+        "wall_sec": 0.002048166000000002,
+        "pct_of_comm_wall": 0.18528469878621742
+      },
+      "outside": {
+        "events": 212,
+        "bytes": 7808,
+        "wall_sec": 0.0007460200000000001,
+        "pct_of_comm_wall": 0.06748773829293808
+      },
+      "Output": {
+        "events": 182,
+        "bytes": 9856,
+        "wall_sec": 0.0005300329999999998,
+        "pct_of_comm_wall": 0.0479487525677875
+      }
+    },
+    "kspace_subphase_breakdown": {
+      "KSPACE_FFT": {
+        "events": 35256,
+        "bytes": 2105298432,
+        "wall_sec": 0.5277099800000061,
+        "pct_of_kspace_wall": 53.42069699103802
+      },
+      "KSPACE_GRID_REVERSE": {
+        "events": 12259,
+        "bytes": 126915272,
+        "wall_sec": 0.34029702000001194,
+        "pct_of_kspace_wall": 34.448664382609614
+      },
+      "KSPACE_GRID_FORWARD": {
+        "events": 12415,
+        "bytes": 414093912,
+        "wall_sec": 0.08744313699999996,
+        "pct_of_kspace_wall": 8.851970784450144
+      },
+      "KSPACE_REDUCE": {
+        "events": 805,
+        "bytes": 1462912,
+        "wall_sec": 0.022701694000000005,
+        "pct_of_kspace_wall": 2.2981189712524523
+      },
+      "KSPACE_PRE": {
+        "events": 326,
+        "bytes": 5538616,
+        "wall_sec": 0.0058980779999999984,
+        "pct_of_kspace_wall": 0.5970693176344777
+      },
+      "KSPACE_FORCE": {
+        "events": 838,
+        "bytes": 13624104,
+        "wall_sec": 0.0037881570000000003,
+        "pct_of_kspace_wall": 0.38347955301409553
+      }
+    },
+    "summary": {
+      "kspace_pct_of_comm_wall": 89.36349812875271,
+      "kspace_global_wall_sec": 0.5504116740000061,
+      "kspace_local_wall_sec": 0.4277401570000119,
+      "kspace_global_events": 36061,
+      "kspace_local_events": 24674,
+      "kspace_global_bytes": 2106761344,
+      "kspace_local_bytes": 541009184,
+      "global_pct_of_kspace_wall": 55.71881596229048,
+      "global_pct_of_comm_wall": 49.79228305982461,
+      "local_pct_of_kspace_wall": 43.30063516705976,
+      "nonkspace_pct_of_comm_wall": 10.636501871247289
+    }
+  },
+  {
+    "ccdg": "trace_8ranks_global.ccdg",
+    "phase_trace": "phase_trace.csv",
+    "num_ranks": 8,
+    "num_kspace_windows": 261,
+    "missing_wall_time_nodes": 0,
+    "total_comm": {
+      "events": 271376,
+      "bytes": 3811944032,
+      "wall_sec": 2.3695772860000335
+    },
+    "phase_breakdown": {
+      "Kspace": {
+        "events": 204040,
+        "bytes": 3338274568,
+        "wall_sec": 1.7352874530000344,
+        "pct_of_comm_wall": 73.23194154723214
+      },
+      "Pair": {
+        "events": 24369,
+        "bytes": 162139424,
+        "wall_sec": 0.4389912299999983,
+        "pct_of_comm_wall": 18.526141037629447
+      },
+      "Comm": {
+        "events": 38335,
+        "bytes": 282967576,
+        "wall_sec": 0.17080033999999844,
+        "pct_of_comm_wall": 7.208051031258747
+      },
+      "Modify": {
+        "events": 2370,
+        "bytes": 14405120,
+        "wall_sec": 0.01573860699999997,
+        "pct_of_comm_wall": 0.6641947107185323
+      },
+      "Neigh": {
+        "events": 1455,
+        "bytes": 14085152,
+        "wall_sec": 0.004945409999999991,
+        "pct_of_comm_wall": 0.208704313179339
+      },
+      "outside": {
+        "events": 424,
+        "bytes": 31232,
+        "wall_sec": 0.0020312370000000004,
+        "pct_of_comm_wall": 0.08572149184586553
+      },
+      "Output": {
+        "events": 383,
+        "bytes": 40960,
+        "wall_sec": 0.0017830089999999988,
+        "pct_of_comm_wall": 0.075245868135823
+      }
+    },
+    "kspace_subphase_breakdown": {
+      "KSPACE_FFT": {
+        "events": 151528,
+        "bytes": 2543220864,
+        "wall_sec": 1.2905655900000503,
+        "pct_of_kspace_wall": 74.37186200873342
+      },
+      "KSPACE_GRID_REVERSE": {
+        "events": 21442,
+        "bytes": 161862720,
+        "wall_sec": 0.19690873000000386,
+        "pct_of_kspace_wall": 11.347326326804252
+      },
+      "KSPACE_GRID_FORWARD": {
+        "events": 25618,
+        "bytes": 593621376,
+        "wall_sec": 0.1720917279999977,
+        "pct_of_kspace_wall": 9.917188515509556
+      },
+      "KSPACE_FORCE": {
+        "events": 2209,
+        "bytes": 14298448,
+        "wall_sec": 0.05766760600000003,
+        "pct_of_kspace_wall": 3.3232307362277047
+      },
+      "KSPACE_PRE": {
+        "events": 2089,
+        "bytes": 17141272,
+        "wall_sec": 0.009570307999999993,
+        "pct_of_kspace_wall": 0.5515113927352187
+      },
+      "KSPACE_REDUCE": {
+        "events": 1154,
+        "bytes": 8129888,
+        "wall_sec": 0.00848349099999999,
+        "pct_of_kspace_wall": 0.4888810199908604
+      }
+    },
+    "summary": {
+      "kspace_pct_of_comm_wall": 73.23194154723214,
+      "kspace_global_wall_sec": 1.2990490810000503,
+      "kspace_local_wall_sec": 0.3690004580000016,
+      "kspace_global_events": 152682,
+      "kspace_local_events": 47060,
+      "kspace_global_bytes": 2551350752,
+      "kspace_local_bytes": 755484096,
+      "global_pct_of_kspace_wall": 74.86074302872427,
+      "global_pct_of_comm_wall": 54.821975576619025,
+      "local_pct_of_kspace_wall": 21.264514842313808,
+      "nonkspace_pct_of_comm_wall": 26.768058452767853
+    }
+  },
+  {
+    "ccdg": "trace_16ranks_global.ccdg",
+    "phase_trace": "phase_trace.csv",
+    "num_ranks": 16,
+    "num_kspace_windows": 263,
+    "missing_wall_time_nodes": 0,
+    "total_comm": {
+      "events": 775624,
+      "bytes": 5243198848,
+      "wall_sec": 4.041498198000133
+    },
+    "phase_breakdown": {
+      "Kspace": {
+        "events": 589909,
+        "bytes": 4301276816,
+        "wall_sec": 3.286690317000144,
+        "pct_of_comm_wall": 81.32356259929811
+      },
+      "Comm": {
+        "events": 110352,
+        "bytes": 583651976,
+        "wall_sec": 0.3510113980000076,
+        "pct_of_comm_wall": 8.685180118939545
+      },
+      "Pair": {
+        "events": 64584,
+        "bytes": 312996888,
+        "wall_sec": 0.35014121099999823,
+        "pct_of_comm_wall": 8.66364882145091
+      },
+      "Modify": {
+        "events": 5680,
+        "bytes": 19863344,
+        "wall_sec": 0.03421599299999996,
+        "pct_of_comm_wall": 0.8466165595949334
+      },
+      "Neigh": {
+        "events": 3498,
+        "bytes": 25122592,
+        "wall_sec": 0.009500666999999964,
+        "pct_of_comm_wall": 0.23507784822720465
+      },
+      "outside": {
+        "events": 846,
+        "bytes": 124928,
+        "wall_sec": 0.005352131,
+        "pct_of_comm_wall": 0.13242937984355432
+      },
+      "Output": {
+        "events": 755,
+        "bytes": 162304,
+        "wall_sec": 0.004586481000000004,
+        "pct_of_comm_wall": 0.11348467264613768
+      }
+    },
+    "kspace_subphase_breakdown": {
+      "KSPACE_FFT": {
+        "events": 422289,
+        "bytes": 2824454016,
+        "wall_sec": 2.267546662999916,
+        "pct_of_kspace_wall": 68.991795523637
+      },
+      "KSPACE_GRID_REVERSE": {
+        "events": 73700,
+        "bytes": 302101976,
+        "wall_sec": 0.4589490020000182,
+        "pct_of_kspace_wall": 13.96386509632931
+      },
+      "KSPACE_GRID_FORWARD": {
+        "events": 79042,
+        "bytes": 1093166184,
+        "wall_sec": 0.40744953100001796,
+        "pct_of_kspace_wall": 12.396955347223244
+      },
+      "KSPACE_REDUCE": {
+        "events": 3362,
+        "bytes": 17274680,
+        "wall_sec": 0.05396709500000008,
+        "pct_of_kspace_wall": 1.6419890465755043
+      },
+      "KSPACE_FORCE": {
+        "events": 6482,
+        "bytes": 38248328,
+        "wall_sec": 0.051649085,
+        "pct_of_kspace_wall": 1.5714618664511597
+      },
+      "KSPACE_PRE": {
+        "events": 5034,
+        "bytes": 26031632,
+        "wall_sec": 0.047128941000000174,
+        "pct_of_kspace_wall": 1.4339331197779566
+      }
+    },
+    "summary": {
+      "kspace_pct_of_comm_wall": 81.32356259929811,
+      "kspace_global_wall_sec": 2.321513757999916,
+      "kspace_local_wall_sec": 0.8663985330000361,
+      "kspace_global_events": 425651,
+      "kspace_local_events": 152742,
+      "kspace_global_bytes": 2841728696,
+      "kspace_local_bytes": 1395268160,
+      "global_pct_of_kspace_wall": 70.6337845702125,
+      "global_pct_of_comm_wall": 57.44191001121014,
+      "local_pct_of_kspace_wall": 26.36082044355255,
+      "nonkspace_pct_of_comm_wall": 18.676437400701882
+    }
+  },
+  {
+    "ccdg": "trace_32ranks_global.ccdg",
+    "phase_trace": "phase_trace.csv",
+    "num_ranks": 32,
+    "num_kspace_windows": 261,
+    "missing_wall_time_nodes": 0,
+    "total_comm": {
+      "events": 2194536,
+      "bytes": 6426353696,
+      "wall_sec": 9.397018530999663
+    },
+    "phase_breakdown": {
+      "Kspace": {
+        "events": 1803263,
+        "bytes": 4981598680,
+        "wall_sec": 7.3536127880003805,
+        "pct_of_comm_wall": 78.25474392480629
+      },
+      "Comm": {
+        "events": 226560,
+        "bytes": 855083528,
+        "wall_sec": 1.1958271590000902,
+        "pct_of_comm_wall": 12.72560179651872
+      },
+      "Pair": {
+        "events": 139243,
+        "bytes": 523602432,
+        "wall_sec": 0.72122882800004,
+        "pct_of_comm_wall": 7.675081469944861
+      },
+      "Modify": {
+        "events": 14365,
+        "bytes": 25715064,
+        "wall_sec": 0.080005385,
+        "pct_of_comm_wall": 0.8513911591859865
+      },
+      "Neigh": {
+        "events": 7906,
+        "bytes": 39192584,
+        "wall_sec": 0.023765871999999973,
+        "pct_of_comm_wall": 0.2529086424763253
+      },
+      "outside": {
+        "events": 1696,
+        "bytes": 499712,
+        "wall_sec": 0.011986640999999987,
+        "pct_of_comm_wall": 0.1275579159544856
+      },
+      "Output": {
+        "events": 1503,
+        "bytes": 661696,
+        "wall_sec": 0.010591858,
+        "pct_of_comm_wall": 0.11271509112234589
+      }
+    },
+    "kspace_subphase_breakdown": {
+      "KSPACE_FFT": {
+        "events": 1481477,
+        "bytes": 3116462208,
+        "wall_sec": 5.45565796799946,
+        "pct_of_kspace_wall": 74.19017189621403
+      },
+      "KSPACE_GRID_FORWARD": {
+        "events": 151818,
+        "bytes": 1383448080,
+        "wall_sec": 0.7946704310001084,
+        "pct_of_kspace_wall": 10.806530802068488
+      },
+      "KSPACE_GRID_REVERSE": {
+        "events": 143186,
+        "bytes": 343551440,
+        "wall_sec": 0.7581622740000197,
+        "pct_of_kspace_wall": 10.310065213621096
+      },
+      "KSPACE_FORCE": {
+        "events": 11013,
+        "bytes": 58589304,
+        "wall_sec": 0.1624232049999973,
+        "pct_of_kspace_wall": 2.20875384226158
+      },
+      "KSPACE_PRE": {
+        "events": 9604,
+        "bytes": 43465016,
+        "wall_sec": 0.11725691100000013,
+        "pct_of_kspace_wall": 1.594548344880762
+      },
+      "KSPACE_REDUCE": {
+        "events": 6165,
+        "bytes": 36082632,
+        "wall_sec": 0.06544199899999995,
+        "pct_of_kspace_wall": 0.8899299009432227
+      }
+    },
+    "summary": {
+      "kspace_pct_of_comm_wall": 78.25474392480629,
+      "kspace_global_wall_sec": 5.52109996699946,
+      "kspace_local_wall_sec": 1.552832705000128,
+      "kspace_global_events": 1487642,
+      "kspace_local_events": 295004,
+      "kspace_global_bytes": 3152544840,
+      "kspace_local_bytes": 1726999520,
+      "global_pct_of_kspace_wall": 75.08010179715727,
+      "global_pct_of_comm_wall": 58.753741399849304,
+      "local_pct_of_kspace_wall": 21.116596015689584,
+      "nonkspace_pct_of_comm_wall": 21.745256075193705
+    }
+  }
+]

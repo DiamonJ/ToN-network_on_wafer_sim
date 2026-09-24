@@ -1,0 +1,5 @@
+ranks,comm_wall_sec,kspace_pct_of_comm,kspace_global_pct_of_kspace,kspace_local_pct_of_kspace,global_pct_of_comm,kspace_global_wall_sec,kspace_local_wall_sec,kspace_global_events,kspace_local_events
+4,1.105416,89.36,55.72,43.3,49.79,0.550412,0.42774,36061,24674
+8,2.369577,73.23,74.86,21.26,54.82,1.299049,0.369,152682,47060
+16,4.041498,81.32,70.63,26.36,57.44,2.321514,0.866399,425651,152742
+32,9.397019,78.25,75.08,21.12,58.75,5.5211,1.552833,1487642,295004

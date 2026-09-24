@@ -1,0 +1,21 @@
+# wavefront_id earliest_start_cycle
+t1.forward.H.0.q0.d-1 57923
+t1.forward.H.0.q0.d+1 59414
+t1.forward.H.0.q1.d-1 61004
+t1.forward.H.0.q1.d+1 62495
+t1.forward.H.0.q2.d-1 64085
+t1.forward.H.0.q2.d+1 65576
+t1.forward.V.1.q0.d-1 67166
+t1.forward.V.1.q0.d+1 70073
+t1.forward.V.1.q1.d-1 73295
+t1.forward.V.1.q1.d+1 76274
+t1.reverse.H.2.q0.d-1 79592
+t1.reverse.H.2.q0.d+1 81083
+t1.reverse.H.2.q1.d-1 82673
+t1.reverse.H.2.q1.d+1 84164
+t1.reverse.H.2.q2.d-1 85754
+t1.reverse.H.2.q2.d+1 87245
+t1.reverse.V.3.q0.d-1 88835
+t1.reverse.V.3.q0.d+1 91742
+t1.reverse.V.3.q1.d-1 94964
+t1.reverse.V.3.q1.d+1 97943
