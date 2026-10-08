@@ -66,3 +66,21 @@ wse_plan.rank*.jsonl
 /*.tar.gz
 /*.tgz
 /*.zip
+
+# Local working docs — experiment logs, methodology notes, agent instructions
+/AGENTS.md
+/CCDG实验报告.md
+/CCDG_v3_实验交接记录_20260826.md
+/CCDG_vrf_tasklist.md
+/tasklist.md
+/Kspace_FFT实验手册.md
+/Kspace_profile.md
+/WSE_Phase1_实现与验收记录.md
+/WSE_Phase2_v1_实现与验收记录.md
+/WSE_compiler_design.md
+/Phase0_WSE_Plan改造说明.md
+/LAMMPS计算与通信理论模型.md
+/代码归属与实验实践指南.md
+/任务拆解-阶段1.md
+/实验平台重构方案.md
+/静态T1_C1估算器说明.md
