@@ -127,7 +127,57 @@ cd $PKG
 
 产物在 `runs/pipeline/<mode>_<体系>_<原子数>a_<rank数>r_<时间戳>/`：
 `evaluation.txt / evaluation.json`（评估）、`quality_gate.txt`（质量闸门证据）、
-`trace|compact|trimonly_*ranks_global.ccdg`、`booksim_*/`（各档）。
+`trace|compact|trimonly_*ranks_global.ccdg`、`booksim_*/`（各档）、
+`wse_plan.json`（Plan 发射）、`static_cost_estimate.json`（T1/C1 估算）、
+`wse_phase1.program.json / .replay.ccdg / .replay.est / .report.json / .acceptance.json`
+（WSE 编译产物，仅 short 模式默认生成）。
+
+以下子步骤中，**前三项已内置在流水线中**，后两项为独立脚本：
+
+**① WSE Plan 发射**（流水线内置，`WSE_PLAN_CAPTURE=1` 默认启用）
+
+```bash
+# 流水线自动执行：mpirun 捕获时 LAMMPS_WSE_PLAN 已设 → merge → validate
+# 如需独立运行：
+LAMMPS_WSE_PLAN=./wse_plan mpirun -np 16 lmp -in in.lammps   # 每 rank 写 wse_plan.rank<N>.jsonl
+python3 merge_wse_plan.py ./wse_plan --expected-ranks 16 -o wse_plan.json
+python3 validate_wse_plan.py wse_plan.json trimonly_16ranks_global.ccdg --threshold 0.02
+```
+
+**② 静态 T1/C1 估算 + PMU 验证**（估算始终执行，PMU 默认关闭需 `COMPUTE_CAPTURE=1`）
+
+```bash
+# 静态估算：流水线自动执行
+python3 estimate_lammps_cost.py in.lammps -o static_cost_estimate.json
+# PMU 捕捉 + 对拍：流水线中通过环境变量开启
+COMPUTE_CAPTURE=1 ./run_noc_pipeline.sh short 16 lialocl 2688 both
+# 或独立运行：
+bash profile_lammps_flops.sh 16 in.lammps 100 lmp              # 100 = 测量步数（扣除 run 0 基线）
+python3 validate_static_cost.py static_cost_estimate.json wse_plan.json compute_profile.json
+```
+
+**③ WSE 编译**（流水线内置，`WSE_COMPILE=1` 默认启用，仅 short 模式）
+
+```bash
+# 流水线自动执行：compile → BookSim 验收
+# 如需独立运行（需先生成 wse_plan.json 和 static_cost_estimate.json）：
+python3 wse_compiler.py wse_plan.json static_cost_estimate.json ccdg_lammps_4x4.cfg \
+  --wse-fast-profile --compute-capability 2.5e10 -o wse_phase1
+bash booksim2/run_wse_program.sh wse_phase1.program.json       # BookSim 验收（cycles≤1%，counts 守恒）
+```
+
+**④ 多原子规模批量实验**（独立脚本，不在流水线内）
+
+```bash
+python3 run_wse_phase3.py --all
+# 产物：experiments/wse_phase3/ → per_stage.csv, link_utilization.csv, 热力图 PNG/SVG
+```
+
+**⑤ 注入率扫图**（独立脚本，不在流水线内）
+
+```bash
+cd booksim2 && make -C src && python3 sweep_queue_time.py       # → sweep_results/inj_vs_queue_time.png
+```
 
 ## 6. 验收标准与参考数字
 
