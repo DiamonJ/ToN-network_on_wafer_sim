@@ -21,3 +21,24 @@
 2. 测模拟原子的端到端时延
 3. 尽可能扩大模拟规模，解决booksim大规模不稳定问题
 4. 检查从原子到WSE通信策略链路是否集成到实验平台
+
+#### BookSim 大规模稳定性与实验扩展
+
+- **问题**：Linux 专用命令导致 macOS 假失败；高注入率不收敛或排空超时会中断整条扫描。
+- **原因**：原运行器依赖 GNU `timeout` 和 `grep -P`，在 macOS 上会把成功仿真误报为失败；扫描脚本又把“不收敛、延迟超阈值、网络排空过久和真正执行错误”统一视为失败，并在单点失败后终止。大 mesh 每周期需遍历全部 router，排空成本随节点数和路径长度增长；若到达率超过网络服务率，队列还会持续增长，物理上不存在有限稳态时延。
+- **处理**：用 Python 实现跨平台超时和进程组清理，以 `sed/awk` 解析结果；每个注入率点独立保存 JSON、支持断点续跑，并按 `PASS/SATURATED/TIMEOUT/NO_SAMPLES` 分类，单点失败不再影响后续扫描。绘图只保留第一个失败点之前的稳态结果并标出饱和率，同时分别记录源端排队时延和完整端到端 makespan，避免把超时或饱和瞬态当作稳态数据。
+- **结果与边界**：真实 LAMMPS WSE plan 已验证到 256 ranks；基于实测通信模式的弱扩展投影已稳定完成 1024/4096 ranks，最大为 64×64 mesh、86016 原子、64512/64512 branches 送达。1024/4096 不是原生 trace，且尚未并行化 BookSim 核心推进算法。
+
+#### 原子到 WSE 通信策略的集成情况
+
+- 主入口 `run_noc_pipeline.sh` 默认开启 `WSE_PLAN_CAPTURE=1` 和 `WSE_COMPILE=1`：先由 `in.lammps` 生成原子体系并估算每-rank T1/C1，再在真实 LAMMPS 运行中通过 `LAMMPS_WSE_PLAN` 导出源码级通信计划，同时捕获 DUMPI trace。
+- 每-rank WSE plan 会合并为 `wse_plan.json`，并与同源 trim-only CCDG 做逐方向消息数/字节数对拍；通过后由 `wse_compiler.py` 生成波前、EST 和 replay CCDG，再由 `run_wse_program.sh` 驱动 BookSim。
+- BookSim 验收检查编译预测与实测 cycles 偏差 ≤1%、wavefront/branch/command 数量守恒和拥塞比例。现有 2688 原子、16-rank 样例中，WSE plan 与 CCDG 为 192 条消息、1175040 bytes 完全一致，编译/重放为 628853/628860 cycles，192/192 branches 送达。
+- 当前 short-range 闭环已经默认集成并可自动失败退出；long/PPPM/Kspace 尚未进入 WSE 编译器。WSE 验收结果目前写入独立 acceptance 和 `quality_gate.txt`，但还没有作为独立档位并入最终统一 `evaluation.json`。
+
+#### 实验图复现
+
+```bash
+python3 -m pip install matplotlib
+python3 booksim2/sweep_synthetic_scaling.py --plot-only
+```

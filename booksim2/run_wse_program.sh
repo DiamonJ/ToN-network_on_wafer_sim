@@ -54,18 +54,25 @@ sed -e "s|^sim_type = .*|sim_type = wse;|" \
 printf '\nwse_program_file = %s;\n' "$PROGRAM" >> "$CFG"
 
 rc=0
-timeout "$TIMEOUT" "$BOOKSIM" "$CFG" > "$LOG" 2>&1 || rc=$?
+python3 "$BS_DIR/run_with_timeout.py" "$TIMEOUT" "$BOOKSIM" "$CFG" > "$LOG" 2>&1 || rc=$?
 [ "$rc" -eq 0 ] || [ "$rc" -eq 255 ] || {
   echo "ERROR: BookSim WSE replay failed rc=$rc; see $LOG" >&2
   exit "$rc"
 }
-MEASURED="$(grep -oP 'completed in \K[0-9]+' "$LOG" | tail -1 || true)"
+MEASURED="$(sed -n 's/.*completed in \([0-9][0-9]*\) cycles.*/\1/p' "$LOG" | tail -1)"
 [ -n "$MEASURED" ] || { echo "ERROR: no BookSim completion cycle in $LOG" >&2; exit 1; }
 
 python3 - "$EXPECTED" "$MEASURED" "$PROGRAM" "$CFG" "$LOG" "$STATS" "$ACCEPTANCE" <<'PY'
 import json, re, sys
 expected, measured = map(int, sys.argv[1:3])
 error = abs(measured - expected) / expected if expected else float("inf")
+program = json.load(open(sys.argv[3]))
+workload = program.get("workload", {})
+atoms = int(workload.get("atoms", 0))
+mesh = program.get("hardware", {}).get("mesh", [0, 0])
+ranks = int(workload.get("ranks", int(mesh[0]) * int(mesh[1])))
+noc_ghz = float(program.get("hardware", {}).get("noc_frequency_ghz", 1.0))
+end_to_end_ns = measured / noc_ghz
 stats_text = open(sys.argv[6]).read()
 def stat(name, cast=int):
     match = re.search(rf"^{name} = ([0-9.eE+-]+);", stats_text, re.M)
@@ -97,6 +104,12 @@ result = {
     "status": "PASS" if all(checks.values()) else "FAIL",
     "compiler_cycles": expected,
     "booksim_cycles": measured,
+    "workload": {"atoms": atoms, "ranks": ranks},
+    "end_to_end_cycles": measured,
+    "end_to_end_ns": end_to_end_ns,
+    "end_to_end_us": end_to_end_ns / 1000.0,
+    "cycles_per_atom": measured / atoms if atoms else None,
+    "ns_per_atom": end_to_end_ns / atoms if atoms else None,
     "relative_error": error,
     "threshold": 0.01,
     "wavefronts": {"expected": wave_expected, "injected": wave_injected},

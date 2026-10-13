@@ -67,7 +67,7 @@ if [ -n "$SCHED_FILE" ]; then
     SCHED_TAG="_sched"
     # 相位化 est 表（ccdg_scheduler.py --pw）在文件名中带 _pw<pw>_w<w>，
     # 提取进 TAG 避免不同相位参数互相覆盖 cfg/log/stats/CSV
-    PHASE_TAG="$(basename "$SCHED_FILE" | grep -oP '_pw[0-9.eE+]+_w[0-9]+' | head -1 || true)"
+    PHASE_TAG="$(basename "$SCHED_FILE" | grep -oE '_pw[0-9.eE+]+_w[0-9]+' | head -1 || true)"
     [ -n "$PHASE_TAG" ] && SCHED_TAG="${SCHED_TAG}${PHASE_TAG}"
 fi
 # booksim yacc 解析器不支持空字符串值（config.l：只认 "name = 'val';" 语法，
@@ -110,30 +110,33 @@ echo "[$(date +%H:%M:%S)] cfg=$CFG" >&2
 # 4) 运行 BookSim（超时保护）
 # 注意: booksim 成功时返回 255（main.cpp: return result ? -1 : 0），仅 124(超时) 视为失败
 RC=0
-timeout "$TIMEOUT" "$BOOKSIM" "$CFG" > "$LOG" 2>&1 || RC=$?
+python3 "$BS_DIR/run_with_timeout.py" "$TIMEOUT" "$BOOKSIM" "$CFG" > "$LOG" 2>&1 || RC=$?
 if [ $RC -eq 124 ]; then
     echo "错误: 仿真超时 (${TIMEOUT}s): $LOG" >&2
 fi
 [ $RC -ne 0 ] && [ $RC -ne 255 ] && { echo "错误: booksim 异常退出 rc=$RC: $LOG" >&2; }
 
 # 5) 解析结果
-CYCLES="$(grep -oP 'completed in \K[0-9]+' "$LOG" | tail -1 || true)"
-SENT="$(grep -oP 'Packets sent: \K[0-9]+' "$LOG" | tail -1 || true)"
-RECV="$(grep -oP 'received: \K[0-9]+' "$LOG" | tail -1 || true)"
-UNRES="$(grep -oP 'WARNING: \K[0-9]+(?= cross-rank edges)' "$LOG" | tail -1 || true)"
+stat_value() {
+    awk -v key="$1" '$1 == key && $2 == "=" {gsub(/;/, "", $3); value=$3} END {print value}' "$2" 2>/dev/null
+}
+CYCLES="$(sed -n 's/.*completed in \([0-9][0-9]*\) cycles.*/\1/p' "$LOG" | tail -1)"
+SENT="$(sed -n 's/.*Packets sent: \([0-9][0-9]*\).*/\1/p' "$LOG" | tail -1)"
+RECV="$(sed -n 's/.*received: \([0-9][0-9]*\).*/\1/p' "$LOG" | tail -1)"
+UNRES="$(sed -n 's/.*WARNING: \([0-9][0-9]*\) cross-rank edges.*/\1/p' "$LOG" | tail -1)"
 UNRES="${UNRES:-0}"
-BLOCKED="$(grep -oP 'wse_inject_blocked_cycles = \K[0-9]+' "$STATS" 2>/dev/null | tail -1 || true)"
+BLOCKED="$(stat_value wse_inject_blocked_cycles "$STATS")"
 BLOCKED="${BLOCKED:-}"
-AVG_PACKET_QUEUE="$(grep -oP '^average_packet_queue_cycles = \K[^;]+' "$STATS" 2>/dev/null | tail -1 || true)"
-AVG_FLIT_QUEUE="$(grep -oP '^average_flit_queue_cycles = \K[^;]+' "$STATS" 2>/dev/null | tail -1 || true)"
-AVG_INJECTION_RATE="$(grep -oP '^average_injection_rate = \K[^;]+' "$STATS" 2>/dev/null | tail -1 || true)"
-SATURATED_INJECTION_RATE="$(grep -oP '^saturated_injection_rate = \K[^;]+' "$STATS" 2>/dev/null | tail -1 || true)"
-INJECTION_SATURATION_RATIO="$(grep -oP '^injection_saturation_ratio = \K[^;]+' "$STATS" 2>/dev/null | tail -1 || true)"
-COMM_COMPUTE_RATIO="$(grep -oP '^communication_to_compute_ratio = \K[^;]+' "$STATS" 2>/dev/null | tail -1 || true)"
-EXPOSED_COMM_COMPUTE_RATIO="$(grep -oP '^exposed_communication_to_compute_ratio = \K[^;]+' "$STATS" 2>/dev/null | tail -1 || true)"
+AVG_PACKET_QUEUE="$(stat_value average_packet_queue_cycles "$STATS")"
+AVG_FLIT_QUEUE="$(stat_value average_flit_queue_cycles "$STATS")"
+AVG_INJECTION_RATE="$(stat_value average_injection_rate "$STATS")"
+SATURATED_INJECTION_RATE="$(stat_value saturated_injection_rate "$STATS")"
+INJECTION_SATURATION_RATIO="$(stat_value injection_saturation_ratio "$STATS")"
+COMM_COMPUTE_RATIO="$(stat_value communication_to_compute_ratio "$STATS")"
+EXPOSED_COMM_COMPUTE_RATIO="$(stat_value exposed_communication_to_compute_ratio "$STATS")"
 if [ -z "$CYCLES" ]; then
     # 回退到 stats 文件
-    CYCLES="$(grep -oP 'total_sim_cycles = \K[0-9]+' "$STATS" 2>/dev/null | tail -1 || true)"
+    CYCLES="$(stat_value total_sim_cycles "$STATS")"
 fi
 if [ -z "$CYCLES" ]; then
     echo "错误: 未找到完成 cycle 数，仿真可能失败，详见 $LOG" >&2
@@ -178,9 +181,9 @@ if [ -f "$CSV" ] && ! head -1 "$CSV" | grep -q "exposed_communication_to_compute
 fi
 [ -f "$CSV" ] || echo "ccdg_dir,mode,ranks,mesh,total_cycles,wall_sec,packets_sent,packets_recv,unresolved,steps,cycles_per_iter,timesteps_per_sec,gating,inject_blocked_cycles,blocked_cycles,blocked_ratio,average_packet_queue_cycles,average_flit_queue_cycles,average_injection_rate,injection_saturation_ratio,saturated_injection_rate,exposed_communication_to_compute_ratio,communication_to_compute_ratio" > "$CSV"
 # 从 stats 文件解析 v3 统计（blocked_cycles/blocked_ratio 仅 v3 CCDG 有）
-COMPUTE_CYCLES="$(grep -oP 'compute_cycles = \K[0-9]+' "$STATS" 2>/dev/null | tail -1 || true)"
-BLOCKED_CYCLES="$(grep -oP 'blocked_cycles = \K[0-9]+' "$STATS" 2>/dev/null | tail -1 || true)"
-BLOCKED_RATIO="$(grep -oP 'blocked_ratio = \K[0-9.]+' "$STATS" 2>/dev/null | tail -1 || true)"
+COMPUTE_CYCLES="$(stat_value compute_cycles "$STATS")"
+BLOCKED_CYCLES="$(stat_value blocked_cycles "$STATS")"
+BLOCKED_RATIO="$(stat_value blocked_ratio "$STATS")"
 echo "$DIRTAG$CAP_TAG$SCHED_TAG,$MODE,$RANKS,$MESH,$CYCLES,$WALL_S,${SENT:-},${RECV:-},$UNRES,$STEPS,$CPI,$TPS,$GATING_TAG,${BLOCKED:-},${BLOCKED_CYCLES:-},${BLOCKED_RATIO:-},${AVG_PACKET_QUEUE:-},${AVG_FLIT_QUEUE:-},${AVG_INJECTION_RATE:-},${INJECTION_SATURATION_RATIO:-},${SATURATED_INJECTION_RATE:-},${EXPOSED_COMM_COMPUTE_RATIO:-},${COMM_COMPUTE_RATIO:-}" >> "$CSV"
 
 echo "[$(date +%H:%M:%S)] 完成: cycles=$CYCLES (≈${WALL_S}s @2GHz) steps=$STEPS cycles/iter=$CPI ($TPS steps/s) gating=$GATING_TAG blocked=${BLOCKED:-?} avg_packet_queue=${AVG_PACKET_QUEUE:-?} sat_injection=${SATURATED_INJECTION_RATE:-?} comm/compute=${COMM_COMPUTE_RATIO:-?} sent=${SENT:-?} recv=${RECV:-?} unresolved=$UNRES rc=$RC" >&2

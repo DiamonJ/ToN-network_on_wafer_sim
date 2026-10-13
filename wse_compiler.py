@@ -414,6 +414,11 @@ def compile_program(
     program = {
         "schema_version": 1,
         "compiler": "wse_phase1_short_v1",
+        "workload": {
+            "atoms": int(cost.get("input", {}).get("atoms", 0)),
+            "ranks": int(plan["num_ranks"]),
+            "timesteps": len({int(item.get("timestep", 0)) for item in messages}),
+        },
         "inputs": {
             "wse_plan": str(plan_path),
             "static_cost": str(cost_path),
@@ -442,6 +447,7 @@ def compile_program(
     report = {
         "schema_version": 1,
         "status": "PASS",
+        "workload": program["workload"],
         "scope": scope,
         "warnings": warnings,
         "limitations": [
